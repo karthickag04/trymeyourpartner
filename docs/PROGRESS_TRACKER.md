@@ -23,8 +23,8 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** P1-11 backend API skeleton (built and tested; CI job being added).
-**Next up:** P1-02 baseline migration, P1-07 design tokens and dark theme, P1-10 Android build in CI.
+**Now working on:** P1-10 Android build in CI (job added; first run pending).
+**Next up:** P1-02 baseline migration, P1-07 design tokens and dark theme, P1-06 Riverpod.
 
 ## Phase 0: Stop the bleeding
 
@@ -53,8 +53,8 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P1-07 | Design-system tokens, real dark theme, accessibility pass | ⬜ | — | |
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
-| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94` | Widget tests for splash and signed-out → sign-in added. Android build and Sentry not yet. |
-| P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | *(this commit)* | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
+| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, *(this commit)* | Widget tests for splash and signed-out → sign-in added. Android debug APK job added (waiting for its first CI run). Sentry not yet. |
+| P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
 ## Phase 2: Roles, admin console and moderation
 
