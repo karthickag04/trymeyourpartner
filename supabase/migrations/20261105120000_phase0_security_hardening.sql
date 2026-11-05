@@ -5,11 +5,16 @@
 -- Safe to run more than once. Run it in the Supabase SQL editor (staging first).
 -- It does not delete member data. The only data changes are:
 --   * the duplicate email copy in matrimonial_profiles is blanked
---     (the login email stays in auth.users),
+--     (the login email stays in auth.users; every blanked value is first
+--     copied to private.profile_email_backup),
 --   * every profile without an active plan gets an open-ended Free plan.
 -- =============================================================================
 
 begin;
+
+-- Private schema: not exposed through the API, not readable by members.
+create schema if not exists private;
+revoke all on schema private from public, anon, authenticated;
 
 -- -----------------------------------------------------------------------------
 -- 1. No anonymous access to member data (C1)
@@ -48,6 +53,33 @@ begin
   end loop;
 end $$;
 
+-- Tables that had row-level security switched off.
+-- deleted_users: archived accounts (email, phone, tokens). Only the
+-- SECURITY DEFINER delete/restore functions touch it; members get no access.
+alter table public.deleted_users enable row level security;
+revoke all on public.deleted_users from anon, authenticated;
+
+-- auth_user_profile: login-to-profile mapping used inside other policies.
+-- Members may read only their own row.
+alter table public.auth_user_profile enable row level security;
+drop policy if exists "Members read own mapping" on public.auth_user_profile;
+create policy "Members read own mapping" on public.auth_user_profile
+  for select to authenticated
+  using (auth_user_id::text = auth.uid()::text);
+
+-- Views ran with owner rights and bypassed every access rule.
+-- Run them with the caller's rights instead (the app does not use them today).
+do $$
+declare v text;
+begin
+  foreach v in array array['profile_summary','profile_matches','profile_matches_improved','home_matches_by_caste']
+  loop
+    if to_regclass('public.' || v) is not null then
+      execute format('alter view public.%I set (security_invoker = true)', v);
+    end if;
+  end loop;
+end $$;
+
 -- -----------------------------------------------------------------------------
 -- 2. Members cannot change trust fields or counters on their profile (C2)
 --    and the profile row no longer stores the email (readable by other members).
@@ -82,6 +114,18 @@ drop trigger if exists guard_member_profile_fields on public.matrimonial_profile
 create trigger guard_member_profile_fields
   before insert or update on public.matrimonial_profiles
   for each row execute function public.guard_member_profile_fields();
+
+-- Keep a private copy of every email before blanking it. Seed profiles without
+-- a login account have no other copy.
+create table if not exists private.profile_email_backup (
+  profile_id  uuid primary key,
+  email       text,
+  backed_up_at timestamptz not null default now()
+);
+insert into private.profile_email_backup (profile_id, email)
+select id, email from public.matrimonial_profiles
+where coalesce(email, '') <> ''
+on conflict (profile_id) do nothing;
 
 -- Blank the existing duplicate emails (the trigger sets email to '').
 update public.matrimonial_profiles set email = '' where email is distinct from '';
@@ -309,9 +353,6 @@ $$;
 --    The original bodies move to a private schema; thin public wrappers check
 --    the caller and then call them, so behaviour is otherwise unchanged.
 -- -----------------------------------------------------------------------------
-create schema if not exists private;
-revoke all on schema private from public, anon, authenticated;
-
 do $$
 begin
   if to_regprocedure('public.delete_profile_and_related(uuid)') is not null

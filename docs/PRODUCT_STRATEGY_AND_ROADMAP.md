@@ -66,6 +66,7 @@ These were verified against the live project and the SQL in this repo.
 | C4 | **Members can insert their own phone/email verifications.** | `sql/verifications.sql:23` (`FOR ALL … WITH CHECK owner`) | Fake "phone verified" badges. |
 | C5 | **Development runs against the production Supabase project.** The dashboard shows `main · PRODUCTION`, and there is no staging. | Supabase dashboard; `lib/config/supabase_config.dart` | Test data and experiments land in production. |
 | C7 | **Any caller could delete any member's profile.** `delete_profile_and_related(p_profile_id)` and `restore_profile_from_deleted(p_deleted_id)` run with elevated rights and never check who is calling. | `sql/deleted_users.sql:14, 67` | Account destruction by any user (and possibly anonymous visitors, under Supabase's default function grants). |
+| C8 | **Two tables had row-level security switched off, and four views bypassed it.** `deleted_users` (archived emails and phone numbers) and `auth_user_profile` were readable by anyone; `profile_summary`, `profile_matches`, `profile_matches_improved` and `home_matches_by_caste` ran with owner rights. Found on the live project; not visible in the repo's SQL. | Live database | More personal-data exposure. |
 | C6 | **A legacy anon JWT is hard-coded as the default key.** Legacy keys are being retired by Supabase in early 2027. | `lib/config/supabase_config.dart:3-6` | The app breaks when legacy keys are switched off. |
 
 **Immediate remediation (Phase 0):**
@@ -77,7 +78,7 @@ These were verified against the live project and the SQL in this repo.
 - **C6:** Switch to the publishable key (`sb_publishable_…`) passed via `--dart-define`.
 - **C7:** Move the original functions to a private schema behind public wrappers that check the caller; revoke function execution from anonymous visitors.
 
-**Status:** C1–C4, C6 and C7 are implemented in `supabase/migrations/20261105120000_phase0_security_hardening.sql` plus app changes, tested on a local copy of the schema. They take effect once the migration is applied (see `supabase/README.md`). C5 (staging project) needs the owner to create it. Dates of birth, income and `auth_user_id` remain visible to logged-in members until the Phase 2 safe-profile view.
+**Status (2026-11-05):** C1–C4 and C6–C8 are implemented and **applied to the live project**, verified by anonymous REST checks and 15 member-level checks (`supabase/tests/phase0_member_checks.sql`). They are implemented in `supabase/migrations/20261105120000_phase0_security_hardening.sql` plus app changes, tested on a local copy of the schema. C5: the owner confirmed the current project is a test project, so it serves as staging until launch. Dates of birth, income and `auth_user_id` remain visible to logged-in members until the Phase 2 safe-profile view.
 
 ---
 
@@ -545,7 +546,8 @@ Durations are indicative for a small team (2–3 Flutter, 1–2 backend, 1 QA/de
 - [x] Make `subscriptions`, `verifications` and `contact_reveals` member-read-only; server creates the Free plan; contact reveal and its quota decided by the `reveal_contact` RPC, which also returns the numbers (C3, C4)
 - [x] Caller checks on the delete/restore functions (C7)
 - [x] Switch the client to the publishable key via `--dart-define-from-file=.env`; remove the hard-coded legacy JWT (C6)
-- [ ] Apply the migration to staging, then production
+- [x] Apply the migration to the test project (serves as staging until launch)
+- [x] Enable row-level security on `deleted_users` and `auth_user_profile`; make views run with caller rights (C8)
 - [ ] Create a **staging** Supabase project; stop developing against prod (C5)
 - [ ] Rotate keys if any secret key was ever shipped; review Supabase Auth settings (email confirmation, redirect URLs)
 
