@@ -44,3 +44,11 @@ select 'feature off', current_setting('test.f', true);
 reset role;
 update public.app_settings set value = '{"contact_reveal": true}' where key = 'features';
 update public.app_settings set value = '{"monthly_contact_reveals": 5}' where key = 'free_plan';
+
+-- Portability helper agrees with auth.uid() for a signed-in member, and is null when signed out.
+set role authenticated;
+select set_config('request.jwt.claim.sub','11111111-1111-1111-1111-111111111111',false);
+select 'identity helper', public.app_current_user_id() = auth.uid();
+select set_config('request.jwt.claim.sub','',false);
+select 'identity helper signed out', public.app_current_user_id() is null;
+reset role;

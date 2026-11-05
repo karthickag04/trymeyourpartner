@@ -40,6 +40,7 @@ and "Claude Test B"). They are test data; delete them before real members join.
 |---|---|---|---|
 | `20261105000000_baseline.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | — | Not needed: generated from this project |
 | `20261105120000_phase0_security_hardening.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 15/15 member checks and all anonymous checks pass |
+| `20261106095000_app_identity_helper.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; equals `auth.uid()` for a signed-in member |
 | `20261106090000_app_settings.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; anonymous read OK, anonymous write 401; maintenance mode toggled live and seen in the app |
 
 ## History
@@ -47,6 +48,7 @@ and "Claude Test B"). They are test data; delete them before real members join.
 | Migration | What it does |
 |---|---|
 | `20261105000000_baseline.sql` | The full live schema and reference data, as the starting point for every new database. |
+| `20261106095000_app_identity_helper.sql` | `app_current_user_id()`: provider-neutral identity for SQL (ADR 0001). New SQL uses it instead of `auth.uid()`. |
 | `20261106090000_app_settings.sql` | Admin-controlled settings (maintenance, support contacts, feature switches, free-plan limits, default language); `reveal_contact` reads the free quota and the contact-reveal switch from them. |
 | `20261105120000_phase0_security_hardening.sql` | Phase 0 fixes from `docs/PRODUCT_STRATEGY_AND_ROADMAP.md` §2: no anonymous access to member data, no self-granted verification/plans, server-side contact reveal with quota, caller checks on delete/restore, email no longer copied into the shared profile row (old values backed up to `private.profile_email_backup`), row-level security switched on for `deleted_users` and `auth_user_profile`, views run with the caller's rights. |
 

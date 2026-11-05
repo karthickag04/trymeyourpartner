@@ -55,5 +55,7 @@ expect2 "ERROR:  permission denied for table app_settings"
 expect2 "maintenance still off|false"
 expect2 "raised quota|1 more, then CONTACT_LIMIT_REACHED"
 expect2 "feature off|FEATURE_DISABLED"
+expect2 "identity helper|t"
+expect2 "identity helper signed out|t"
 
 echo "All database checks passed."
