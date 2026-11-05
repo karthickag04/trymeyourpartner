@@ -1,0 +1,151 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Matrimonial App",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome"
+			],
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Matrimonial App",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Dart Analyze (non-fatal)",
+			"type": "shell",
+			"command": "dart",
+			"args": [
+				"analyze",
+				"--fatal-infos=false",
+				"--fatal-warnings=false"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Pub Get",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"pub",
+				"get"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Analyze (Photos)",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"analyze"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Flutter Pub Get",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"pub",
+				"get"
+			],
+			"group": "build"
+		}
+	]
+}

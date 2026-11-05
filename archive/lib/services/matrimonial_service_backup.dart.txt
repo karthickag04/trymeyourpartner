@@ -1,0 +1,3 @@
+Archived: lib/services/matrimonial_service_backup.dart
+
+Backup of the legacy MatrimonialService. Use DI-based services instead.

@@ -1,0 +1,5 @@
+Archived: lib/services/matrimonial_service_OLD.dart
+
+This legacy monolithic service has been archived. It’s superseded by interface-driven services via DI (see lib/core/services and lib/data/* implementations).
+
+If you need the old code, check git history or restore the file from this archive note.
