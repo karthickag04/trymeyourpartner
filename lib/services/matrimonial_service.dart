@@ -1032,6 +1032,12 @@ class MatrimonialService {
           .eq('is_active', true)
           .neq('id', base.id);
 
+      // "Similar" means the same gender as the profile being viewed,
+      // and never the viewer's own profile.
+      if (base.gender.isNotEmpty) query = query.eq('gender', base.gender);
+      final viewerId = _supabase.auth.currentUser?.id;
+      if (viewerId != null) query = query.neq('auth_user_id', viewerId);
+
       if (casteId != null) query = query.eq('caste_id', casteId);
       if (districtId != null)
         query = query.eq('district_id', districtId);

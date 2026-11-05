@@ -5,7 +5,7 @@ async function start(out) {
   const ctx = await browser.newContext({ viewport: { width: 420, height: 860 } });
   const p = await ctx.newPage();
   const net = [];
-  p.on('response', r => { if (r.url().includes('supabase.co') && r.status() >= 400 && !/\/(users|matches)\?/.test(r.url())) net.push(r.status() + ' ' + r.url().replace(/^https:\/\/[^/]+/, '').slice(0, 80)); });
+  p.on('response', r => { if (r.url().includes('supabase.co') && r.status() >= 400) net.push(r.status() + ' ' + r.url().replace(/^https:\/\/[^/]+/, '').slice(0, 80)); });
   let shot = 0;
   const api = {
     p, net, browser,

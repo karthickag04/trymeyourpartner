@@ -91,7 +91,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
     - assets/icons/app_icon.png
     - assets/videos/
 

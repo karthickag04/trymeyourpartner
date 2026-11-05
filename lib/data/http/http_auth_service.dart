@@ -117,6 +117,9 @@ class HttpAuthService implements AuthService {
   }
 
   @override
+  Future<Map<String, dynamic>> currentUserMetadata() async => const {};
+
+  @override
   Future<String?> currentUserEmail() async {
     await _ensureLoaded();
     return _email;

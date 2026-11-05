@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 // import 'package:url_launcher/url_launcher.dart';
-import '../services/user_service.dart';
 import '../di/service_locator.dart';
 import '../core/services/auth_service.dart';
 import '../services/auth/auth_user.dart';
@@ -41,6 +40,14 @@ class AuthProvider with ChangeNotifier {
     _initialize();
   }
 
+  /// Email, name and avatar come from the login account itself.
+  Future<void> _loadIdentity() async {
+    _userEmail = await _auth.currentUserEmail();
+    final meta = await _auth.currentUserMetadata();
+    _fullName = (meta['full_name'] ?? meta['name']) as String?;
+    _avatarUrl = (meta['avatar_url'] ?? meta['picture']) as String?;
+  }
+
   void _initialize() {
     // Listen to auth state changes via repository
     _auth.authStateChanges().listen((id) async {
@@ -51,19 +58,7 @@ class AuthProvider with ChangeNotifier {
       // Create/update user profile when user signs in
       if (_userId != null) {
         try {
-          // Fetch email/full name from a user profile table if available (best-effort)
-          final profile = await UserService.getUserProfile(_userId!);
-          // The login itself is the source of truth for the email.
-          _userEmail =
-              await _auth.currentUserEmail() ?? profile?['email'] as String?;
-          _fullName = profile?['full_name'] as String?;
-          _avatarUrl = profile?['avatar_url'] as String?;
-          await UserService.upsertUserProfile(
-            userId: _userId!,
-            email: _userEmail ?? '',
-            fullName: _fullName ?? '',
-            avatarUrl: _avatarUrl ?? '',
-          );
+          await _loadIdentity();
 
           // If user just logged in or session restored with different user, trigger data loading
           if (!wasAuthenticated || previousUserId != _userId) {
@@ -93,12 +88,7 @@ class AuthProvider with ChangeNotifier {
       if (_userId != null) {
         debugPrint('🔄 Session restored - triggering data reload');
         try {
-          await UserService.upsertUserProfile(
-            userId: _userId!,
-            email: _userEmail ?? '',
-            fullName: _fullName ?? '',
-            avatarUrl: _avatarUrl ?? '',
-          );
+          await _loadIdentity();
           _triggerDataReload();
         } catch (e) {
           debugPrint('Failed to sync user profile on session restore: $e');
@@ -145,17 +135,7 @@ class AuthProvider with ChangeNotifier {
       );
 
       if (ok) {
-        // Create user profile in database
-        try {
-          await UserService.upsertUserProfile(
-            userId: await _auth.currentUserId() ?? '',
-            email: email,
-            fullName: fullName,
-          );
-        } catch (e) {
-          debugPrint('Failed to create user profile: $e');
-          // Continue anyway - profile can be created later
-        }
+        // The matrimonial profile is created after sign-in (ProfileCompletionGate).
 
         // In generic mode we don't gate on email verification here
         return true;

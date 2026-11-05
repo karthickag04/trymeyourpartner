@@ -2,6 +2,9 @@ abstract class AuthService {
   Stream<String?> authStateChanges();
   Future<String?> currentUserId();
   Future<String?> currentUserEmail();
+
+  /// Display name and avatar stored on the login account, if any.
+  Future<Map<String, dynamic>> currentUserMetadata();
   Future<String?> currentAccessToken();
 
   Future<bool> signUp({

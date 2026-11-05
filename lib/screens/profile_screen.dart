@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/matrimonial_provider.dart';
 import '../models/matrimonial_user.dart';
-import '../services/user_service.dart';
 import '../utils/constants.dart';
 import 'profile_edit_screen.dart';
 import '../services/auth/auth_user.dart';
@@ -406,73 +405,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
-      child: FutureBuilder<List<int>>(
-        future: _getUserStats(userId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildStatItemLoading('Interests', Icons.favorite),
-                _buildStatItemLoading('Matches', Icons.people),
-                _buildStatItemLoading('Profile', Icons.person),
-              ],
-            );
-          }
-
-          final stats = snapshot.data ?? [0, 0, 0];
+      child: Consumer<MatrimonialProvider>(
+        builder: (context, matrimony, _) {
+          final profile = matrimony.currentUserProfile;
+          final complete =
+              profile != null && matrimony.isMandatoryComplete(profile);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildStatItem('Interests', stats[0].toString(), Icons.favorite),
-              _buildStatItem('Matches', stats[1].toString(), Icons.people),
+              _buildStatItem(
+                'Interests',
+                matrimony.sentInterests.length.toString(),
+                Icons.favorite,
+              ),
+              _buildStatItem(
+                'Matches',
+                matrimony.acceptedConnections.length.toString(),
+                Icons.people,
+              ),
               _buildStatItem(
                 'Profile',
-                stats[2] > 0 ? 'Complete' : 'Incomplete',
+                complete ? 'Complete' : 'Incomplete',
                 Icons.person,
               ),
             ],
           );
         },
       ),
-    );
-  }
-
-  Future<List<int>> _getUserStats(String userId) async {
-    try {
-      // Get matrimonial stats concurrently
-      final futures = await Future.wait([
-        UserService.getUserInterests(userId),
-        UserService.getUserMatches(userId),
-        UserService.getMatrimonialProfile(userId),
-      ]);
-
-      return [
-        (futures[0] as List<String>).length, // interests count
-        (futures[1] as List<Map<String, dynamic>>).length, // matches count
-        futures[2] != null ? 1 : 0, // profile completion status
-      ];
-    } catch (e) {
-      return [0, 0, 0];
-    }
-  }
-
-  Widget _buildStatItemLoading(String label, IconData icon) {
-    return Column(
-      children: [
-        Icon(icon, color: AppColors.accent, size: AppDimensions.iconL),
-        const SizedBox(height: AppDimensions.paddingS),
-        const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: AppColors.accent,
-          ),
-        ),
-        const SizedBox(height: AppDimensions.paddingXS),
-        Text(label, style: AppTextStyles.caption),
-      ],
     );
   }
 
@@ -713,18 +672,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Update auth profile metadata and public profile
       final ok = await auth.updateProfile(avatarUrl: url);
       debugPrint('[ProfilePhoto] auth.updateProfile: $ok');
-      try {
-        if (auth.userId != null) {
-          await UserService.upsertUserProfile(
-            userId: auth.userId!,
-            email: auth.userEmail ?? '',
-            fullName: auth.user?.fullName,
-            avatarUrl: url,
-          );
-        }
-      } catch (e) {
-        debugPrint('[ProfilePhoto] upsertUserProfile error: $e');
-      }
       // Also persist into matrimonial_profiles.profile_image_url so DB reflects latest avatar
       try {
         final mat = context.read<MatrimonialProvider>();
