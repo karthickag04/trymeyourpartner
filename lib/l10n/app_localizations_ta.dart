@@ -1717,4 +1717,265 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get statInterests => 'விருப்பங்கள்';
+
+  @override
+  String get searchTitle => 'சுயவிவரங்களைத் தேடு';
+
+  @override
+  String get savedSearchesTooltip => 'சேமித்த தேடல்கள்';
+
+  @override
+  String get contactRequestsTooltip => 'தொடர்புக் கோரிக்கைகள்';
+
+  @override
+  String get actionResetFilters => 'வடிகட்டிகளை மீட்டமை';
+
+  @override
+  String get searchTip =>
+      'குறிப்பு: வடிகட்டிகளை மாற்றி, தேடு என்பதைத் தட்டினால் முடிவுகள் இங்கே தோன்றும்.';
+
+  @override
+  String get searchLocationPrefs => 'இருப்பிட விருப்பங்கள்';
+
+  @override
+  String get searchBasicPrefs => 'அடிப்படை விருப்பங்கள்';
+
+  @override
+  String get fieldSubCasteShort => 'உட்பிரிவு';
+
+  @override
+  String get searchMoreEducations => 'மேலும் கல்வித் தகுதிகள்';
+
+  @override
+  String get searchMoreOccupations => 'மேலும் தொழில்கள்';
+
+  @override
+  String get searchMoreCastes => 'மேலும் சாதிகள்';
+
+  @override
+  String get searchRangePrefs => 'வரம்பு விருப்பங்கள்';
+
+  @override
+  String get filterOnlineNow => 'இப்போது ஆன்லைனில்';
+
+  @override
+  String get filterRecentlyActive => 'சமீபத்தில் செயலில் இருந்தவர்கள்';
+
+  @override
+  String get sortBy => 'வரிசைப்படுத்து';
+
+  @override
+  String get sortNewest => 'புதியவர்கள் முதலில்';
+
+  @override
+  String get sortYoungerFirst => 'வயதில் இளையவர்கள் முதலில்';
+
+  @override
+  String get sortOlderFirst => 'வயதில் மூத்தவர்கள் முதலில்';
+
+  @override
+  String get sortHigherIncome => 'அதிக வருமானம் முதலில்';
+
+  @override
+  String get actionSaveSearch => 'இந்தத் தேடலைச் சேமி';
+
+  @override
+  String get quickSearch => 'விரைவுத் தேடல் (வடிகட்டிகள் இன்றி)';
+
+  @override
+  String get searchEmptyTitle => 'சுயவிவரங்களைத் தேடுங்கள்';
+
+  @override
+  String get searchEmptyBody =>
+      'பொருத்தமான வரன்களைக் கண்டறிய மேலே உள்ள வடிகட்டிகளைப் பயன்படுத்துங்கள்';
+
+  @override
+  String get contactAvailable => 'தொடர்பு விவரம் கிடைக்கும்';
+
+  @override
+  String get contactStateRequestSent => 'கோரிக்கை அனுப்பப்பட்டது';
+
+  @override
+  String get contactStateRequestReceived => 'கோரிக்கை வந்துள்ளது';
+
+  @override
+  String get recentChip => 'சமீபத்தியவர்கள்';
+
+  @override
+  String get joinedWithinTooltip => 'சேர்ந்து எத்தனை நாட்கள்';
+
+  @override
+  String get actionClearAll => 'அனைத்தையும் அழி';
+
+  @override
+  String get completeRegistrationFirst => 'முதலில் பதிவை நிறைவு செய்யுங்கள்.';
+
+  @override
+  String get saveSearchTitle => 'இந்தத் தேடலைச் சேமி';
+
+  @override
+  String get saveSearchHint => 'எ.கா. சென்னை IT, 25-30, இந்து';
+
+  @override
+  String get savedSearchesTitle => 'சேமித்த தேடல்கள்';
+
+  @override
+  String get savedSearchesEmpty => 'இதுவரை சேமித்த தேடல்கள் இல்லை.';
+
+  @override
+  String get deleteSavedSearchTitle => 'சேமித்த தேடலை நீக்கவா?';
+
+  @override
+  String get runSearch => 'தேடலை இயக்கு';
+
+  @override
+  String get fieldAbout => 'பற்றி';
+
+  @override
+  String get fieldLocationPlain => 'இருப்பிடம்';
+
+  @override
+  String get searchLoading => 'ஏற்றுகிறது…';
+
+  @override
+  String rangeAge(int min, int max) {
+    return 'வயது: $min - $max';
+  }
+
+  @override
+  String rangeHeight(int min, int max) {
+    return 'உயரம்: $min - $max செ.மீ.';
+  }
+
+  @override
+  String heightCm(int value) {
+    return '$value செ.மீ.';
+  }
+
+  @override
+  String rangeIncome(String min, String max) {
+    return 'வருமானம்: ஆண்டுக்கு $min - $max லட்சம்';
+  }
+
+  @override
+  String incomeLakhShort(String value) {
+    return '$value லட்.';
+  }
+
+  @override
+  String profilesFound(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count சுயவிவரங்கள் கிடைத்தன',
+      one: '1 சுயவிவரம் கிடைத்தது',
+      zero: 'சுயவிவரங்கள் எதுவும் இல்லை',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profilesRecommended(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count பரிந்துரைக்கப்பட்ட சுயவிவரங்கள்',
+      one: '1 பரிந்துரைக்கப்பட்ட சுயவிவரம்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chipLabelValue(Object label, Object value) {
+    return '$label: $value';
+  }
+
+  @override
+  String chipAgeRange(int min, int max) {
+    return 'வயது $min-$max';
+  }
+
+  @override
+  String chipHeightRange(int min, int max) {
+    return 'உயரம் $min-$max செ.மீ.';
+  }
+
+  @override
+  String chipIncomeRange(String min, String max) {
+    return 'வருமானம் $min-$max லட்.';
+  }
+
+  @override
+  String joinedWithinDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'சேர்ந்தது: கடந்த $days நாட்கள்',
+      one: 'சேர்ந்தது: கடந்த 1 நாள்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchFailed => 'தேடல் வெற்றிபெறவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get filtersLoadFailed =>
+      'வடிகட்டி விருப்பங்களை ஏற்ற முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String defaultSearchName(Object date) {
+    return 'தேடல் $date';
+  }
+
+  @override
+  String savedSearchNamed(Object name) {
+    return '\"$name\" தேடல் சேமிக்கப்பட்டது';
+  }
+
+  @override
+  String get saveSearchFailed =>
+      'இந்தத் தேடலைச் சேமிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String deleteSavedSearchBody(Object name) {
+    return '\"$name\" நீக்கப்படும்.';
+  }
+
+  @override
+  String savedSearchAlertsOn(Object date) {
+    return 'அறிவிப்புகள் இயக்கத்தில் • $date';
+  }
+
+  @override
+  String savedSearchAlertsOff(Object date) {
+    return 'அறிவிப்புகள் நிறுத்தத்தில் • $date';
+  }
+
+  @override
+  String get toggleFailed =>
+      'இந்த அமைப்பை மாற்ற முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String heightCmOrUnknown(String value) {
+    return '$value செ.மீ.';
+  }
+
+  @override
+  String get langTamil => 'தமிழ்';
+
+  @override
+  String get langEnglish => 'ஆங்கிலம்';
+
+  @override
+  String get langTelugu => 'தெலுங்கு';
+
+  @override
+  String get langKannada => 'கன்னடம்';
+
+  @override
+  String get langMalayalam => 'மலையாளம்';
+
+  @override
+  String get langHindi => 'இந்தி';
 }

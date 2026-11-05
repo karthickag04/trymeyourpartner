@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../l10n/option_labels.dart';
 import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../auth/auth_provider.dart';
@@ -191,8 +194,8 @@ class _SearchScreenState extends State<SearchScreen> {
       // Optionally inform the user; avoid context after awaits by using captured messenger where possible
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Failed to load filters: $e'),
-          backgroundColor: Colors.red,
+          content: Text(context.l10n.filtersLoadFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -351,17 +354,18 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Profiles'),
+        title: Text(context.l10n.searchTitle),
         elevation: 0,
-        backgroundColor: Colors.pink.shade50,
+        backgroundColor: context.colors.primaryContainer,
+        foregroundColor: context.colors.onPrimaryContainer,
         actions: [
           IconButton(
-            tooltip: 'Saved searches',
+            tooltip: context.l10n.savedSearchesTooltip,
             icon: const Icon(Icons.bookmarks_outlined),
             onPressed: _openSavedSearches,
           ),
           IconButton(
-            tooltip: 'Contact requests',
+            tooltip: context.l10n.contactRequestsTooltip,
             icon: const Icon(Icons.handshake_outlined),
             onPressed: () {
               Navigator.of(context).push(
@@ -377,7 +381,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             flex: 2,
             child: Container(
-              color: Colors.pink.shade50,
+              color: context.palette.secondary,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Form(
@@ -441,7 +445,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: TextButton.icon(
                               onPressed: _isSearching ? null : _resetFilters,
                               icon: const Icon(Icons.refresh, size: 18),
-                              label: const Text('Reset Filters'),
+                              label: Text(context.l10n.actionResetFilters),
                             ),
                           ),
                         ),
@@ -455,8 +459,8 @@ class _SearchScreenState extends State<SearchScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Text(
-                'Tip: Adjust filters and tap Search to see results here.',
-                style: TextStyle(color: Colors.grey[700]),
+                context.l10n.searchTip,
+                style: TextStyle(color: context.palette.textSecondary),
               ),
             ),
         ],
@@ -471,8 +475,8 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Location Preferences',
+            Text(
+              context.l10n.searchLocationPrefs,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -480,8 +484,8 @@ class _SearchScreenState extends State<SearchScreen> {
             // State dropdown
             DropdownButtonFormField<LocationData>(
               value: _selectedState,
-              decoration: const InputDecoration(
-                labelText: 'State',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldState,
                 border: OutlineInputBorder(),
               ),
               items: _states
@@ -501,8 +505,8 @@ class _SearchScreenState extends State<SearchScreen> {
             // District dropdown
             DropdownButtonFormField<LocationData>(
               value: _selectedDistrict,
-              decoration: const InputDecoration(
-                labelText: 'District',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldDistrict,
                 border: OutlineInputBorder(),
               ),
               items: _districts
@@ -527,8 +531,8 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Basic Preferences',
+            Text(
+              context.l10n.searchBasicPrefs,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -536,8 +540,8 @@ class _SearchScreenState extends State<SearchScreen> {
             // Caste dropdown
             DropdownButtonFormField<caste_model.CasteData>(
               value: _selectedCaste,
-              decoration: const InputDecoration(
-                labelText: 'Caste',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldCaste,
                 border: OutlineInputBorder(),
               ),
               items: _castes
@@ -554,8 +558,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Sub-caste
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Sub-caste',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldSubCasteShort,
                 border: OutlineInputBorder(),
               ),
               onChanged: (v) => _subCaste = v.trim(),
@@ -566,8 +570,8 @@ class _SearchScreenState extends State<SearchScreen> {
             // Education dropdown
             DropdownButtonFormField<String>(
               value: _selectedEducation,
-              decoration: const InputDecoration(
-                labelText: 'Education',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldEducation,
                 border: OutlineInputBorder(),
               ),
               items: _educations
@@ -590,8 +594,8 @@ class _SearchScreenState extends State<SearchScreen> {
             // Occupation dropdown
             DropdownButtonFormField<String>(
               value: _selectedOccupation,
-              decoration: const InputDecoration(
-                labelText: 'Occupation',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldOccupation,
                 border: OutlineInputBorder(),
               ),
               items: _occupations
@@ -608,8 +612,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // City
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'City',
+              decoration: InputDecoration(
+                labelText: context.l10n.fieldCity,
                 border: OutlineInputBorder(),
               ),
               onChanged: (v) => _city = v.trim(),
@@ -619,35 +623,37 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Multi-select quick chips
             _chipsSelector<String>(
-              label: 'More Educations',
+              label: context.l10n.searchMoreEducations,
               options: _educations,
               selected: _selectedEducations,
               onChanged: () => setState(() {}),
             ),
             const SizedBox(height: 8),
             _chipsSelector<String>(
-              label: 'More Occupations',
+              label: context.l10n.searchMoreOccupations,
               options: _occupations,
               selected: _selectedOccupations,
               onChanged: () => setState(() {}),
             ),
             const SizedBox(height: 8),
             _chipsSelector<String>(
-              label: 'Marital Status',
+              label: context.l10n.fieldMaritalStatus,
               options: AppConstants.maritalStatuses,
               selected: _selectedMaritalStatuses,
+              display: (v) => context.optionLabel(v),
               onChanged: () => setState(() {}),
             ),
             const SizedBox(height: 8),
             _chipsSelector<String>(
-              label: 'Languages',
+              label: context.l10n.fieldLanguages,
               options: _languages,
               selected: _selectedLanguages,
+              display: (v) => context.optionLabel(v),
               onChanged: () => setState(() {}),
             ),
             const SizedBox(height: 8),
             _chipsSelector<caste_model.CasteData>(
-              label: 'More Castes',
+              label: context.l10n.searchMoreCastes,
               options: _castes,
               selected: _selectedCastes,
               display: (c) => c.name,
@@ -666,15 +672,18 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Range Preferences',
+            Text(
+              context.l10n.searchRangePrefs,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
             // Age range
             Text(
-              'Age: ${_ageRange.start.round()} - ${_ageRange.end.round()} years',
+              context.l10n.rangeAge(
+                _ageRange.start.round(),
+                _ageRange.end.round(),
+              ),
             ),
             RangeSlider(
               values: _ageRange,
@@ -696,7 +705,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Height range
             Text(
-              'Height: ${_heightRange.start.round()} - ${_heightRange.end.round()} cm',
+              context.l10n.rangeHeight(
+                _heightRange.start.round(),
+                _heightRange.end.round(),
+              ),
             ),
             RangeSlider(
               values: _heightRange,
@@ -704,8 +716,8 @@ class _SearchScreenState extends State<SearchScreen> {
               max: 200,
               divisions: 60,
               labels: RangeLabels(
-                '${_heightRange.start.round()} cm',
-                '${_heightRange.end.round()} cm',
+                context.l10n.heightCm(_heightRange.start.round()),
+                context.l10n.heightCm(_heightRange.end.round()),
               ),
               onChanged: (RangeValues values) {
                 setState(() {
@@ -718,7 +730,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Income range (LPA)
             Text(
-              'Income: ${_incomeRange.start.toStringAsFixed(1)}L - ${_incomeRange.end.toStringAsFixed(1)}L',
+              context.l10n.rangeIncome(
+                _incomeRange.start.toStringAsFixed(1),
+                _incomeRange.end.toStringAsFixed(1),
+              ),
             ),
             RangeSlider(
               values: _incomeRange,
@@ -726,8 +741,12 @@ class _SearchScreenState extends State<SearchScreen> {
               max: 50,
               divisions: 50,
               labels: RangeLabels(
-                '${_incomeRange.start.toStringAsFixed(1)}L',
-                '${_incomeRange.end.toStringAsFixed(1)}L',
+                context.l10n.incomeLakhShort(
+                  _incomeRange.start.toStringAsFixed(1),
+                ),
+                context.l10n.incomeLakhShort(
+                  _incomeRange.end.toStringAsFixed(1),
+                ),
               ),
               onChanged: (RangeValues values) {
                 setState(() {
@@ -745,7 +764,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: CheckboxListTile(
                     value: _onlineNow,
                     onChanged: (v) => setState(() => _onlineNow = v ?? false),
-                    title: const Text('Online now'),
+                    title: Text(context.l10n.filterOnlineNow),
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
                   ),
@@ -756,7 +775,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     value: _recentlyActive,
                     onChanged: (v) =>
                         setState(() => _recentlyActive = v ?? false),
-                    title: const Text('Recently active'),
+                    title: Text(context.l10n.filterRecentlyActive),
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
                   ),
@@ -766,21 +785,30 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _sortBy,
-              decoration: const InputDecoration(
-                labelText: 'Sort by',
+              decoration: InputDecoration(
+                labelText: context.l10n.sortBy,
                 border: OutlineInputBorder(),
               ),
-              items: const [
+              items: [
                 DropdownMenuItem(
                   value: 'active',
-                  child: Text('Recently active'),
+                  child: Text(context.l10n.filterRecentlyActive),
                 ),
-                DropdownMenuItem(value: 'newest', child: Text('Newest')),
-                DropdownMenuItem(value: 'ageAsc', child: Text('Younger first')),
-                DropdownMenuItem(value: 'ageDesc', child: Text('Older first')),
+                DropdownMenuItem(
+                  value: 'newest',
+                  child: Text(context.l10n.sortNewest),
+                ),
+                DropdownMenuItem(
+                  value: 'ageAsc',
+                  child: Text(context.l10n.sortYoungerFirst),
+                ),
+                DropdownMenuItem(
+                  value: 'ageDesc',
+                  child: Text(context.l10n.sortOlderFirst),
+                ),
                 DropdownMenuItem(
                   value: 'incomeDesc',
-                  child: Text('Higher income'),
+                  child: Text(context.l10n.sortHigherIncome),
                 ),
               ],
               onChanged: (v) => setState(() => _sortBy = v ?? 'active'),
@@ -802,22 +830,22 @@ class _SearchScreenState extends State<SearchScreen> {
                 _performSearch();
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.pink,
-          foregroundColor: Colors.white,
+          backgroundColor: context.colors.primary,
+          foregroundColor: context.colors.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: _isSearching
-            ? const SizedBox(
+            ? SizedBox(
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Colors.white,
+                  color: context.colors.onPrimary,
                 ),
               )
-            : const Text(
-                'Search Profiles',
+            : Text(
+                context.l10n.searchTitle,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
       ),
@@ -830,7 +858,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: OutlinedButton.icon(
         onPressed: _isSearching ? null : _promptAndSaveCurrentSearch,
         icon: const Icon(Icons.bookmark_add_outlined),
-        label: const Text('Save this Search'),
+        label: Text(context.l10n.actionSaveSearch),
       ),
     );
   }
@@ -846,13 +874,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 _performQuickSearch();
               },
         style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.orange,
-          side: const BorderSide(color: Colors.orange),
+          foregroundColor: context.palette.warning,
+          side: BorderSide(color: context.palette.warning),
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        child: const Text(
-          'Quick Search (No Filters)',
+        child: Text(
+          context.l10n.quickSearch,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
@@ -864,7 +892,7 @@ class _SearchScreenState extends State<SearchScreen> {
       width: double.infinity,
       child: TextButton(
         onPressed: _isSearching ? null : _resetFilters,
-        child: const Text('Reset Filters'),
+        child: Text(context.l10n.actionResetFilters),
       ),
     );
   }
@@ -885,24 +913,27 @@ class _SearchScreenState extends State<SearchScreen> {
     // debugPrint('[SearchScreen] results=$resultsSource count=${profilesToShow.length} loading=$isLoading');
 
     if (profilesToShow.isEmpty && !isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 64, color: Colors.grey),
+            Icon(Icons.search, size: 64, color: context.palette.textTertiary),
             SizedBox(height: 16),
             Text(
-              'Search for profiles',
+              context.l10n.searchEmptyTitle,
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey,
+                color: context.palette.textSecondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(height: 8),
             Text(
-              'Use the filters above to find compatible matches',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              context.l10n.searchEmptyBody,
+              style: TextStyle(
+                fontSize: 14,
+                color: context.palette.textTertiary,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -911,31 +942,33 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     if (isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: Colors.pink),
+            CircularProgressIndicator(color: context.colors.primary),
             SizedBox(height: 16),
-            Text('Loading...'),
+            Text(context.l10n.searchLoading),
           ],
         ),
       );
     }
 
     return Container(
-      color: Colors.white,
+      color: context.palette.cardBackground,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              '${profilesToShow.length} profiles found${resultsSource == "matches" ? " (recommended)" : ""}',
-              style: const TextStyle(
+              resultsSource == 'matches'
+                  ? context.l10n.profilesRecommended(profilesToShow.length)
+                  : context.l10n.profilesFound(profilesToShow.length),
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.pink,
+                color: context.colors.primary,
               ),
             ),
           ),
@@ -947,14 +980,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   (matrimonialProvider.isLoadingMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index >= profilesToShow.length) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.all(16),
                     child: Center(
                       child: SizedBox(
                         height: 24,
                         width: 24,
                         child: CircularProgressIndicator(
-                          color: Colors.pink,
+                          color: context.colors.primary,
                           strokeWidth: 2,
                         ),
                       ),
@@ -1022,15 +1055,21 @@ class _SearchScreenState extends State<SearchScreen> {
   (String, Color) _mapHandshakeToChip(ContactHandshakeStatus s) {
     switch (s) {
       case ContactHandshakeStatus.accepted:
-        return ('Contact available', context.palette.success);
+        return (context.l10n.contactAvailable, context.palette.success);
       case ContactHandshakeStatus.sentPending:
-        return ('Request sent', context.palette.accent);
+        return (context.l10n.contactStateRequestSent, context.palette.accent);
       case ContactHandshakeStatus.receivedPending:
-        return ('Request received', context.palette.warning);
+        return (
+          context.l10n.contactStateRequestReceived,
+          context.palette.warning,
+        );
       case ContactHandshakeStatus.declined:
-        return ('Declined', context.palette.error);
+        return (context.l10n.contactStatusDeclined, context.palette.error);
       case ContactHandshakeStatus.cancelled:
-        return ('Cancelled', Colors.grey);
+        return (
+          context.l10n.contactStatusCancelled,
+          context.palette.textTertiary,
+        );
       case ContactHandshakeStatus.none:
         return ('', Colors.transparent);
     }
@@ -1064,59 +1103,125 @@ class _SearchScreenState extends State<SearchScreen> {
 
     // State/District
     if (_selectedState != null) {
-      addChip('State: ${_selectedState!.name}', () => _selectedState = null);
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldState,
+          _selectedState!.name,
+        ),
+        () => _selectedState = null,
+      );
     }
     if (_selectedDistrict != null) {
       addChip(
-        'District: ${_selectedDistrict!.name}',
+        context.l10n.chipLabelValue(
+          context.l10n.fieldDistrict,
+          _selectedDistrict!.name,
+        ),
         () => _selectedDistrict = null,
       );
     }
     // Caste & sub-caste
     if (_selectedCaste != null) {
-      addChip('Caste: ${_selectedCaste!.name}', () => _selectedCaste = null);
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldCaste,
+          _selectedCaste!.name,
+        ),
+        () => _selectedCaste = null,
+      );
     }
     if (_selectedCastes.isNotEmpty) {
       for (final c in List.of(_selectedCastes)) {
-        addChip('Caste: ${c.name}', () => _selectedCastes.remove(c));
+        addChip(
+          context.l10n.chipLabelValue(context.l10n.fieldCaste, c.name),
+          () => _selectedCastes.remove(c),
+        );
       }
     }
     if (_subCaste != null && _subCaste!.isNotEmpty) {
-      addChip('Sub-caste: $_subCaste', () => _subCaste = null);
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldSubCasteShort,
+          _subCaste!,
+        ),
+        () => _subCaste = null,
+      );
     }
     // Education/Occupation
     if (_selectedEducation != null) {
-      addChip('Edu: $_selectedEducation', () => _selectedEducation = null);
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldEducation,
+          _selectedEducation!,
+        ),
+        () => _selectedEducation = null,
+      );
     }
     for (final e in List.of(_selectedEducations)) {
-      addChip('Edu: $e', () => _selectedEducations.remove(e));
+      addChip(
+        context.l10n.chipLabelValue(context.l10n.fieldEducation, e),
+        () => _selectedEducations.remove(e),
+      );
     }
     if (_selectedOccupation != null) {
-      addChip('Occ: $_selectedOccupation', () => _selectedOccupation = null);
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldOccupation,
+          _selectedOccupation!,
+        ),
+        () => _selectedOccupation = null,
+      );
     }
     for (final o in List.of(_selectedOccupations)) {
-      addChip('Occ: $o', () => _selectedOccupations.remove(o));
+      addChip(
+        context.l10n.chipLabelValue(context.l10n.fieldOccupation, o),
+        () => _selectedOccupations.remove(o),
+      );
     }
     // Marital status & languages
     for (final m in List.of(_selectedMaritalStatuses)) {
-      addChip('Status: $m', () => _selectedMaritalStatuses.remove(m));
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldMaritalStatus,
+          context.optionLabel(m),
+        ),
+        () => _selectedMaritalStatuses.remove(m),
+      );
     }
     for (final l in List.of(_selectedLanguages)) {
-      addChip('Lang: $l', () => _selectedLanguages.remove(l));
+      addChip(
+        context.l10n.chipLabelValue(
+          context.l10n.fieldLanguages,
+          context.optionLabel(l),
+        ),
+        () => _selectedLanguages.remove(l),
+      );
     }
     // City
     if (_city != null && _city!.isNotEmpty) {
-      addChip('City: $_city', () => _city = null);
+      addChip(
+        context.l10n.chipLabelValue(context.l10n.fieldCity, _city!),
+        () => _city = null,
+      );
     }
     // Ranges if not default
     if (!(_ageRange.start == 21 && _ageRange.end == 35)) {
-      addChip('Age ${_ageRange.start.round()}-${_ageRange.end.round()}', () {
-        _ageRange = const RangeValues(21, 35);
-      });
+      addChip(
+        context.l10n.chipAgeRange(
+          _ageRange.start.round(),
+          _ageRange.end.round(),
+        ),
+        () {
+          _ageRange = const RangeValues(21, 35);
+        },
+      );
     }
     if (!(_heightRange.start == 150 && _heightRange.end == 180)) {
       addChip(
-        'Ht ${_heightRange.start.round()}-${_heightRange.end.round()}cm',
+        context.l10n.chipHeightRange(
+          _heightRange.start.round(),
+          _heightRange.end.round(),
+        ),
         () {
           _heightRange = const RangeValues(150, 180);
         },
@@ -1124,7 +1229,10 @@ class _SearchScreenState extends State<SearchScreen> {
     }
     if (!(_incomeRange.start == 0 && _incomeRange.end == 50)) {
       addChip(
-        'Income ${_incomeRange.start.toStringAsFixed(0)}-${_incomeRange.end.toStringAsFixed(0)}L',
+        context.l10n.chipIncomeRange(
+          _incomeRange.start.toStringAsFixed(0),
+          _incomeRange.end.toStringAsFixed(0),
+        ),
         () {
           _incomeRange = const RangeValues(0, 50);
         },
@@ -1132,10 +1240,10 @@ class _SearchScreenState extends State<SearchScreen> {
     }
     // Activity
     if (_onlineNow) {
-      addChip('Online now', () => _onlineNow = false);
+      addChip(context.l10n.filterOnlineNow, () => _onlineNow = false);
     }
     if (_recentlyActive) {
-      addChip('Recent', () => _recentlyActive = false);
+      addChip(context.l10n.recentChip, () => _recentlyActive = false);
     }
 
     // Toggleable deep-link chip for 'Joined within N days' (7/14/30)
@@ -1144,7 +1252,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Padding(
           padding: const EdgeInsets.only(right: 8, bottom: 8),
           child: PopupMenuButton<int>(
-            tooltip: 'Joined within days',
+            tooltip: context.l10n.joinedWithinTooltip,
             onSelected: (v) {
               setState(() {
                 _deepLinkJoinedWithinDays = v;
@@ -1166,14 +1274,18 @@ class _SearchScreenState extends State<SearchScreen> {
                               padding: EdgeInsets.only(right: 6),
                               child: Icon(Icons.check, size: 16),
                             ),
-                          Text('Joined: $d days'),
+                          Text(context.l10n.joinedWithinDays(d)),
                         ],
                       ),
                     ),
                   )
                   .toList();
             },
-            child: Chip(label: Text('Joined: $_deepLinkJoinedWithinDays days')),
+            child: Chip(
+              label: Text(
+                context.l10n.joinedWithinDays(_deepLinkJoinedWithinDays!),
+              ),
+            ),
           ),
         ),
       );
@@ -1184,7 +1296,7 @@ class _SearchScreenState extends State<SearchScreen> {
       chips.add(
         TextButton(
           onPressed: _isSearching ? null : _resetFilters,
-          child: const Text('Clear all'),
+          child: Text(context.l10n.actionClearAll),
         ),
       );
     }
@@ -1261,8 +1373,8 @@ class _SearchScreenState extends State<SearchScreen> {
       // Use captured messenger to avoid context-after-await
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Search failed: $e'),
-          backgroundColor: Colors.red,
+          content: Text(context.l10n.searchFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1316,8 +1428,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Quick search failed: $e'),
-          backgroundColor: Colors.red,
+          content: Text(context.l10n.searchFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1364,7 +1476,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final my = context.read<MatrimonialProvider>().currentUserProfile;
     if (my == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please complete registration first.')),
+        SnackBar(content: Text(context.l10n.completeRegistrationFirst)),
       );
       return;
     }
@@ -1374,22 +1486,22 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Save this search'),
+          title: Text(context.l10n.saveSearchTitle),
           content: TextField(
             controller: nameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'e.g. Chennai IT, 25-30, Hindu',
+            decoration: InputDecoration(
+              labelText: context.l10n.fieldName,
+              hintText: context.l10n.saveSearchHint,
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.commonCancel),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Save'),
+              child: Text(context.l10n.commonSave),
             ),
           ],
         );
@@ -1397,7 +1509,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
     if (confirmed != true) return;
     final name = nameController.text.trim().isEmpty
-        ? 'Search ${DateTime.now().toLocal().toIso8601String().substring(0, 16)}'
+        ? context.l10n.defaultSearchName(context.formatDateTime(DateTime.now()))
         : nameController.text.trim();
     final filter = _currentFilterAsJson();
     try {
@@ -1405,12 +1517,12 @@ class _SearchScreenState extends State<SearchScreen> {
       if (!mounted) return;
       setState(() => _savedSearches = [created, ..._savedSearches]);
       messenger.showSnackBar(
-        SnackBar(content: Text('Saved search "${created.name}"')),
+        SnackBar(content: Text(context.l10n.savedSearchNamed(created.name))),
       );
     } catch (e) {
       if (!mounted) return;
       messenger.showSnackBar(
-        SnackBar(content: Text('Failed to save search: $e')),
+        SnackBar(content: Text(context.l10n.saveSearchFailed)),
       );
     }
   }
@@ -1454,14 +1566,14 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const ListTile(
+              ListTile(
                 leading: Icon(Icons.bookmarks_outlined),
-                title: Text('Saved searches'),
+                title: Text(context.l10n.savedSearchesTooltip),
               ),
               if (_savedSearches.isEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(16),
-                  child: Text('No saved searches yet.'),
+                  child: Text(context.l10n.savedSearchesEmpty),
                 )
               else
                 Flexible(
@@ -1473,27 +1585,32 @@ class _SearchScreenState extends State<SearchScreen> {
                       return Dismissible(
                         key: ValueKey(s.id),
                         background: Container(
-                          color: Colors.red,
+                          color: context.palette.error,
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: const Icon(Icons.delete, color: Colors.white),
+                          child: Icon(
+                            Icons.delete,
+                            color: context.colors.onError,
+                          ),
                         ),
                         direction: DismissDirection.endToStart,
                         confirmDismiss: (_) async {
                           final ok = await showDialog<bool>(
                             context: context,
                             builder: (_) => AlertDialog(
-                              title: const Text('Delete saved search?'),
-                              content: Text('"${s.name}" will be removed.'),
+                              title: Text(context.l10n.deleteSavedSearchTitle),
+                              content: Text(
+                                context.l10n.deleteSavedSearchBody(s.name),
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
                                       Navigator.pop(context, false),
-                                  child: const Text('Cancel'),
+                                  child: Text(context.l10n.commonCancel),
                                 ),
                                 ElevatedButton(
                                   onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Delete'),
+                                  child: Text(context.l10n.actionDelete),
                                 ),
                               ],
                             ),
@@ -1512,7 +1629,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: SwitchListTile(
                           title: Text(s.name),
                           subtitle: Text(
-                            'Alerts: ${s.alertEnabled ? 'On' : 'Off'} • ${s.createdAt.toLocal().toString().substring(0, 16)}',
+                            s.alertEnabled
+                                ? context.l10n.savedSearchAlertsOn(
+                                    context.formatDateTime(s.createdAt),
+                                  )
+                                : context.l10n.savedSearchAlertsOff(
+                                    context.formatDateTime(s.createdAt),
+                                  ),
                           ),
                           value: s.alertEnabled,
                           onChanged: (v) async {
@@ -1529,13 +1652,15 @@ class _SearchScreenState extends State<SearchScreen> {
                             } catch (e) {
                               if (!mounted) return;
                               messenger.showSnackBar(
-                                SnackBar(content: Text('Failed to toggle: $e')),
+                                SnackBar(
+                                  content: Text(context.l10n.toggleFailed),
+                                ),
                               );
                             }
                           },
                           secondary: IconButton(
                             icon: const Icon(Icons.play_arrow),
-                            tooltip: 'Run search',
+                            tooltip: context.l10n.runSearch,
                             onPressed: () {
                               Navigator.pop(context);
                               _applySavedFilterAndSearch(s);
@@ -1657,9 +1782,9 @@ class _SearchScreenState extends State<SearchScreen> {
         maxChildSize: 0.95,
         minChildSize: 0.5,
         builder: (context, scrollController) => Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration: BoxDecoration(
+            color: context.palette.cardBackground,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: SingleChildScrollView(
             controller: scrollController,
@@ -1672,7 +1797,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundColor: Colors.grey.shade200,
+                      backgroundColor: context.palette.surfaceMuted,
                       child: ClipOval(
                         child: SizedBox(
                           width: 80,
@@ -1742,24 +1867,29 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                           Text(
-                            '${profile.age} years • ${profile.city}',
+                            context.l10n.profileAgeCity(
+                              profile.age,
+                              profile.city,
+                            ),
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.grey[600],
+                              color: context.palette.textTertiary,
                             ),
                           ),
                           if (profile.isVerified)
-                            const Row(
+                            Row(
                               children: [
                                 Icon(
                                   Icons.verified,
-                                  color: Colors.green,
+                                  color: context.palette.success,
                                   size: 16,
                                 ),
                                 SizedBox(width: 4),
                                 Text(
-                                  'Verified',
-                                  style: TextStyle(color: Colors.green),
+                                  context.l10n.badgeVerified,
+                                  style: TextStyle(
+                                    color: context.palette.success,
+                                  ),
                                 ),
                               ],
                             ),
@@ -1773,19 +1903,30 @@ class _SearchScreenState extends State<SearchScreen> {
 
                 // Profile details
                 _buildDetailSection(
-                  'About',
-                  profile.aboutMe ?? 'No information provided',
+                  context.l10n.fieldAbout,
+                  profile.aboutMe ?? context.l10n.profileNoAbout,
                 ),
-                _buildDetailSection('Education', profile.education),
-                _buildDetailSection('Occupation', profile.occupation),
                 _buildDetailSection(
-                  'Location',
-                  '${profile.city}, ${profile.district}',
+                  context.l10n.fieldEducation,
+                  profile.education,
                 ),
-                _buildDetailSection('Caste', profile.caste),
                 _buildDetailSection(
-                  'Height',
-                  '${profile.height?.round() ?? 'Not specified'} cm',
+                  context.l10n.fieldOccupation,
+                  profile.occupation,
+                ),
+                _buildDetailSection(
+                  context.l10n.fieldLocationPlain,
+                  context.l10n.placeDistrictState(
+                    profile.city,
+                    profile.district,
+                  ),
+                ),
+                _buildDetailSection(context.l10n.fieldCaste, profile.caste),
+                _buildDetailSection(
+                  context.l10n.fieldHeight,
+                  profile.height == null
+                      ? context.l10n.commonNotSpecified
+                      : context.l10n.heightCm(profile.height!.round()),
                 ),
 
                 const SizedBox(height: 24),
@@ -1797,10 +1938,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: ElevatedButton.icon(
                         onPressed: () => _sendInterest(profile),
                         icon: const Icon(Icons.favorite_border),
-                        label: const Text('Send Interest'),
+                        label: Text(context.l10n.actionSendInterest),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.pink,
-                          foregroundColor: Colors.white,
+                          backgroundColor: context.colors.primary,
+                          foregroundColor: context.colors.onPrimary,
                         ),
                       ),
                     ),
@@ -1809,10 +1950,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: OutlinedButton.icon(
                         onPressed: () => _addToShortlist(profile),
                         icon: const Icon(Icons.bookmark_border),
-                        label: const Text('Shortlist'),
+                        label: Text(context.l10n.actionShortlist),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Colors.pink,
-                          side: const BorderSide(color: Colors.pink),
+                          foregroundColor: context.colors.primary,
+                          side: BorderSide(color: context.colors.primary),
                         ),
                       ),
                     ),
@@ -1834,10 +1975,10 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.pink,
+              color: context.colors.primary,
             ),
           ),
           const SizedBox(height: 4),
@@ -1857,8 +1998,8 @@ class _SearchScreenState extends State<SearchScreen> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Interest sent to ${profile.name}'),
-                backgroundColor: Colors.green,
+                content: Text(context.l10n.interestSentTo(profile.name)),
+                backgroundColor: context.palette.success,
               ),
             );
           }
@@ -1867,8 +2008,8 @@ class _SearchScreenState extends State<SearchScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to send interest: $e'),
-                backgroundColor: Colors.red,
+                content: Text(context.l10n.interestSendFailed),
+                backgroundColor: context.palette.error,
               ),
             );
           }
@@ -1886,9 +2027,11 @@ class _SearchScreenState extends State<SearchScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  was ? 'Removed from shortlist' : 'Added to shortlist',
+                  was
+                      ? context.l10n.shortlistRemoved
+                      : context.l10n.shortlistAdded,
                 ),
-                backgroundColor: Colors.blue,
+                backgroundColor: context.palette.info,
               ),
             );
           }
@@ -1897,8 +2040,8 @@ class _SearchScreenState extends State<SearchScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to update shortlist: $e'),
-                backgroundColor: Colors.red,
+                content: Text(context.l10n.shortlistFailed),
+                backgroundColor: context.palette.error,
               ),
             );
           }
@@ -1917,8 +2060,8 @@ class _SearchScreenState extends State<SearchScreen> {
               SnackBar(
                 content: Text(
                   wasShortlisted
-                      ? 'Removed from shortlist'
-                      : 'Added to shortlist',
+                      ? context.l10n.shortlistRemoved
+                      : context.l10n.shortlistAdded,
                 ),
                 backgroundColor: context.palette.accent,
               ),
@@ -1929,7 +2072,7 @@ class _SearchScreenState extends State<SearchScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to update shortlist: $error'),
+                content: Text(context.l10n.shortlistFailed),
                 backgroundColor: context.palette.error,
               ),
             );

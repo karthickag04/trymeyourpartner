@@ -56,6 +56,19 @@ extension OptionLabels on BuildContext {
         return l.workSalaried;
       case 'not_working':
         return l.workNotWorking;
+      // Languages
+      case 'Tamil':
+        return l.langTamil;
+      case 'English':
+        return l.langEnglish;
+      case 'Telugu':
+        return l.langTelugu;
+      case 'Kannada':
+        return l.langKannada;
+      case 'Malayalam':
+        return l.langMalayalam;
+      case 'Hindi':
+        return l.langHindi;
       default:
         return value;
     }

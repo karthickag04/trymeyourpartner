@@ -3013,6 +3013,408 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Interests'**
   String get statInterests;
+
+  /// No description provided for @searchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search profiles'**
+  String get searchTitle;
+
+  /// No description provided for @savedSearchesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved searches'**
+  String get savedSearchesTooltip;
+
+  /// No description provided for @contactRequestsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact requests'**
+  String get contactRequestsTooltip;
+
+  /// No description provided for @actionResetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset filters'**
+  String get actionResetFilters;
+
+  /// No description provided for @searchTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: adjust the filters and tap Search to see results here.'**
+  String get searchTip;
+
+  /// No description provided for @searchLocationPrefs.
+  ///
+  /// In en, this message translates to:
+  /// **'Location preferences'**
+  String get searchLocationPrefs;
+
+  /// No description provided for @searchBasicPrefs.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic preferences'**
+  String get searchBasicPrefs;
+
+  /// No description provided for @fieldSubCasteShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-caste'**
+  String get fieldSubCasteShort;
+
+  /// No description provided for @searchMoreEducations.
+  ///
+  /// In en, this message translates to:
+  /// **'More education options'**
+  String get searchMoreEducations;
+
+  /// No description provided for @searchMoreOccupations.
+  ///
+  /// In en, this message translates to:
+  /// **'More occupations'**
+  String get searchMoreOccupations;
+
+  /// No description provided for @searchMoreCastes.
+  ///
+  /// In en, this message translates to:
+  /// **'More castes'**
+  String get searchMoreCastes;
+
+  /// No description provided for @searchRangePrefs.
+  ///
+  /// In en, this message translates to:
+  /// **'Range preferences'**
+  String get searchRangePrefs;
+
+  /// No description provided for @filterOnlineNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Online now'**
+  String get filterOnlineNow;
+
+  /// No description provided for @filterRecentlyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently active'**
+  String get filterRecentlyActive;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @sortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get sortNewest;
+
+  /// No description provided for @sortYoungerFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Younger first'**
+  String get sortYoungerFirst;
+
+  /// No description provided for @sortOlderFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Older first'**
+  String get sortOlderFirst;
+
+  /// No description provided for @sortHigherIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher income'**
+  String get sortHigherIncome;
+
+  /// No description provided for @actionSaveSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this search'**
+  String get actionSaveSearch;
+
+  /// No description provided for @quickSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick search (no filters)'**
+  String get quickSearch;
+
+  /// No description provided for @searchEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for profiles'**
+  String get searchEmptyTitle;
+
+  /// No description provided for @searchEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the filters above to find compatible matches'**
+  String get searchEmptyBody;
+
+  /// No description provided for @contactAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact available'**
+  String get contactAvailable;
+
+  /// No description provided for @contactStateRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent'**
+  String get contactStateRequestSent;
+
+  /// No description provided for @contactStateRequestReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Request received'**
+  String get contactStateRequestReceived;
+
+  /// No description provided for @recentChip.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get recentChip;
+
+  /// No description provided for @joinedWithinTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined within days'**
+  String get joinedWithinTooltip;
+
+  /// No description provided for @actionClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get actionClearAll;
+
+  /// No description provided for @completeRegistrationFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete registration first.'**
+  String get completeRegistrationFirst;
+
+  /// No description provided for @saveSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this search'**
+  String get saveSearchTitle;
+
+  /// No description provided for @saveSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Chennai IT, 25-30, Hindu'**
+  String get saveSearchHint;
+
+  /// No description provided for @savedSearchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved searches'**
+  String get savedSearchesTitle;
+
+  /// No description provided for @savedSearchesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved searches yet.'**
+  String get savedSearchesEmpty;
+
+  /// No description provided for @deleteSavedSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete saved search?'**
+  String get deleteSavedSearchTitle;
+
+  /// No description provided for @runSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Run search'**
+  String get runSearch;
+
+  /// No description provided for @fieldAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get fieldAbout;
+
+  /// No description provided for @fieldLocationPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get fieldLocationPlain;
+
+  /// No description provided for @searchLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading…'**
+  String get searchLoading;
+
+  /// No description provided for @rangeAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age: {min} - {max} years'**
+  String rangeAge(int min, int max);
+
+  /// No description provided for @rangeHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Height: {min} - {max} cm'**
+  String rangeHeight(int min, int max);
+
+  /// No description provided for @heightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} cm'**
+  String heightCm(int value);
+
+  /// No description provided for @rangeIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Income: {min}L - {max}L per year'**
+  String rangeIncome(String min, String max);
+
+  /// No description provided for @incomeLakhShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{value}L'**
+  String incomeLakhShort(String value);
+
+  /// No description provided for @profilesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No profiles found} =1{1 profile found} other{{count} profiles found}}'**
+  String profilesFound(int count);
+
+  /// No description provided for @profilesRecommended.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 recommended profile} other{{count} recommended profiles}}'**
+  String profilesRecommended(int count);
+
+  /// No description provided for @chipLabelValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String chipLabelValue(Object label, Object value);
+
+  /// No description provided for @chipAgeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Age {min}-{max}'**
+  String chipAgeRange(int min, int max);
+
+  /// No description provided for @chipHeightRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Height {min}-{max} cm'**
+  String chipHeightRange(int min, int max);
+
+  /// No description provided for @chipIncomeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Income {min}-{max}L'**
+  String chipIncomeRange(String min, String max);
+
+  /// No description provided for @joinedWithinDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{Joined: last day} other{Joined: last {days} days}}'**
+  String joinedWithinDays(int days);
+
+  /// No description provided for @searchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Search didn\'t work. Please try again.'**
+  String get searchFailed;
+
+  /// No description provided for @filtersLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load the filter options. Please try again.'**
+  String get filtersLoadFailed;
+
+  /// No description provided for @defaultSearchName.
+  ///
+  /// In en, this message translates to:
+  /// **'Search {date}'**
+  String defaultSearchName(Object date);
+
+  /// No description provided for @savedSearchNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved search \"{name}\"'**
+  String savedSearchNamed(Object name);
+
+  /// No description provided for @saveSearchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save this search. Please try again.'**
+  String get saveSearchFailed;
+
+  /// No description provided for @deleteSavedSearchBody.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" will be removed.'**
+  String deleteSavedSearchBody(Object name);
+
+  /// No description provided for @savedSearchAlertsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts on • {date}'**
+  String savedSearchAlertsOn(Object date);
+
+  /// No description provided for @savedSearchAlertsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts off • {date}'**
+  String savedSearchAlertsOff(Object date);
+
+  /// No description provided for @toggleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t change this setting. Please try again.'**
+  String get toggleFailed;
+
+  /// No description provided for @heightCmOrUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} cm'**
+  String heightCmOrUnknown(String value);
+
+  /// No description provided for @langTamil.
+  ///
+  /// In en, this message translates to:
+  /// **'Tamil'**
+  String get langTamil;
+
+  /// No description provided for @langEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEnglish;
+
+  /// No description provided for @langTelugu.
+  ///
+  /// In en, this message translates to:
+  /// **'Telugu'**
+  String get langTelugu;
+
+  /// No description provided for @langKannada.
+  ///
+  /// In en, this message translates to:
+  /// **'Kannada'**
+  String get langKannada;
+
+  /// No description provided for @langMalayalam.
+  ///
+  /// In en, this message translates to:
+  /// **'Malayalam'**
+  String get langMalayalam;
+
+  /// No description provided for @langHindi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hindi'**
+  String get langHindi;
 }
 
 class _AppLocalizationsDelegate

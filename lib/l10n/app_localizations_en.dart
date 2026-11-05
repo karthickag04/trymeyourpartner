@@ -1686,4 +1686,265 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statInterests => 'Interests';
+
+  @override
+  String get searchTitle => 'Search profiles';
+
+  @override
+  String get savedSearchesTooltip => 'Saved searches';
+
+  @override
+  String get contactRequestsTooltip => 'Contact requests';
+
+  @override
+  String get actionResetFilters => 'Reset filters';
+
+  @override
+  String get searchTip =>
+      'Tip: adjust the filters and tap Search to see results here.';
+
+  @override
+  String get searchLocationPrefs => 'Location preferences';
+
+  @override
+  String get searchBasicPrefs => 'Basic preferences';
+
+  @override
+  String get fieldSubCasteShort => 'Sub-caste';
+
+  @override
+  String get searchMoreEducations => 'More education options';
+
+  @override
+  String get searchMoreOccupations => 'More occupations';
+
+  @override
+  String get searchMoreCastes => 'More castes';
+
+  @override
+  String get searchRangePrefs => 'Range preferences';
+
+  @override
+  String get filterOnlineNow => 'Online now';
+
+  @override
+  String get filterRecentlyActive => 'Recently active';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get sortNewest => 'Newest';
+
+  @override
+  String get sortYoungerFirst => 'Younger first';
+
+  @override
+  String get sortOlderFirst => 'Older first';
+
+  @override
+  String get sortHigherIncome => 'Higher income';
+
+  @override
+  String get actionSaveSearch => 'Save this search';
+
+  @override
+  String get quickSearch => 'Quick search (no filters)';
+
+  @override
+  String get searchEmptyTitle => 'Search for profiles';
+
+  @override
+  String get searchEmptyBody =>
+      'Use the filters above to find compatible matches';
+
+  @override
+  String get contactAvailable => 'Contact available';
+
+  @override
+  String get contactStateRequestSent => 'Request sent';
+
+  @override
+  String get contactStateRequestReceived => 'Request received';
+
+  @override
+  String get recentChip => 'Recent';
+
+  @override
+  String get joinedWithinTooltip => 'Joined within days';
+
+  @override
+  String get actionClearAll => 'Clear all';
+
+  @override
+  String get completeRegistrationFirst => 'Please complete registration first.';
+
+  @override
+  String get saveSearchTitle => 'Save this search';
+
+  @override
+  String get saveSearchHint => 'e.g. Chennai IT, 25-30, Hindu';
+
+  @override
+  String get savedSearchesTitle => 'Saved searches';
+
+  @override
+  String get savedSearchesEmpty => 'No saved searches yet.';
+
+  @override
+  String get deleteSavedSearchTitle => 'Delete saved search?';
+
+  @override
+  String get runSearch => 'Run search';
+
+  @override
+  String get fieldAbout => 'About';
+
+  @override
+  String get fieldLocationPlain => 'Location';
+
+  @override
+  String get searchLoading => 'Loading…';
+
+  @override
+  String rangeAge(int min, int max) {
+    return 'Age: $min - $max years';
+  }
+
+  @override
+  String rangeHeight(int min, int max) {
+    return 'Height: $min - $max cm';
+  }
+
+  @override
+  String heightCm(int value) {
+    return '$value cm';
+  }
+
+  @override
+  String rangeIncome(String min, String max) {
+    return 'Income: ${min}L - ${max}L per year';
+  }
+
+  @override
+  String incomeLakhShort(String value) {
+    return '${value}L';
+  }
+
+  @override
+  String profilesFound(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count profiles found',
+      one: '1 profile found',
+      zero: 'No profiles found',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profilesRecommended(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count recommended profiles',
+      one: '1 recommended profile',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chipLabelValue(Object label, Object value) {
+    return '$label: $value';
+  }
+
+  @override
+  String chipAgeRange(int min, int max) {
+    return 'Age $min-$max';
+  }
+
+  @override
+  String chipHeightRange(int min, int max) {
+    return 'Height $min-$max cm';
+  }
+
+  @override
+  String chipIncomeRange(String min, String max) {
+    return 'Income $min-${max}L';
+  }
+
+  @override
+  String joinedWithinDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Joined: last $days days',
+      one: 'Joined: last day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchFailed => 'Search didn\'t work. Please try again.';
+
+  @override
+  String get filtersLoadFailed =>
+      'We couldn\'t load the filter options. Please try again.';
+
+  @override
+  String defaultSearchName(Object date) {
+    return 'Search $date';
+  }
+
+  @override
+  String savedSearchNamed(Object name) {
+    return 'Saved search \"$name\"';
+  }
+
+  @override
+  String get saveSearchFailed =>
+      'We couldn\'t save this search. Please try again.';
+
+  @override
+  String deleteSavedSearchBody(Object name) {
+    return '\"$name\" will be removed.';
+  }
+
+  @override
+  String savedSearchAlertsOn(Object date) {
+    return 'Alerts on • $date';
+  }
+
+  @override
+  String savedSearchAlertsOff(Object date) {
+    return 'Alerts off • $date';
+  }
+
+  @override
+  String get toggleFailed =>
+      'We couldn\'t change this setting. Please try again.';
+
+  @override
+  String heightCmOrUnknown(String value) {
+    return '$value cm';
+  }
+
+  @override
+  String get langTamil => 'Tamil';
+
+  @override
+  String get langEnglish => 'English';
+
+  @override
+  String get langTelugu => 'Telugu';
+
+  @override
+  String get langKannada => 'Kannada';
+
+  @override
+  String get langMalayalam => 'Malayalam';
+
+  @override
+  String get langHindi => 'Hindi';
 }
