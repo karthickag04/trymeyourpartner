@@ -1,5 +1,7 @@
 # TryMeYourPartner
 
+> **Contributors and coding agents: start with [`AGENTS.md`](AGENTS.md).**
+
 Matrimony platform for the Tamil and wider Indian diaspora. One Flutter codebase for
 Android, iOS and Web, on a Supabase backend (Postgres, Auth, Storage, Realtime).
 

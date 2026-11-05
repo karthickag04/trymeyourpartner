@@ -10,22 +10,22 @@ Every item comes from the phased plan in
 
 Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 needs the owner
 
-## Work tracks (running in parallel)
+## Work tracks
 
 | Track | Owner | Branch | Scope |
 |---|---|---|---|
 | A | Coordinator (main session) | `claude/tender-volta-6ujx4z` | P1-12 unified settings, database migrations (only this track applies them to the live project), CI, Android build, reviewing and merging tracks B and C, this tracker |
-| B | Agent: UI foundation | `claude/ui-foundation` | P1-07 design tokens + light/dark/system themes, P1-13 i18n (English + Tamil) |
+| B | Agent: UI foundation | `claude/ui-foundation` | P1-07 design tokens + light/dark/system themes, P1-13 i18n (English + Tamil). **Paused, work in progress pushed to its branch; draft PR lists what is left. Merge before P1-06.** |
 | C | Agent: admin console | `claude/admin-console` | Phase 2: org and roles tables, admin console app, staff sign-in with MFA, admin API. **Merged** (`fe2c9c4`, PR #3) |
 
-Tracks B and C start from track A's branch; the coordinator merges them back after review and tests.
+Tracks B and C started from track A's branch and are merged back after review and tests. **2026-11-05:** cloud agents stopped; work continues in a local session (see [`AGENTS.md`](../AGENTS.md)).
 
 ## Summary
 
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 10 | 4 | 3 | 1 |
+| P1 Foundation & restructure | 10 | 6 | 1 | 1 |
 | P2 Roles, admin console, moderation | 2 | 2 | 5 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
@@ -33,8 +33,9 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** Track A: integrating track B when ready; next P1-06 Riverpod (after track B lands). Track C merged. Track B: P1-07 + P1-13. Track C: Phase 2.
-**Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
+**Status:** Phase 0 done (2 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
+**Next up:** finish and merge `claude/ui-foundation` (P1-07, P1-13); P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
+**Owner steps:** enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
 ## Phase 0: Stop the bleeding
 
@@ -60,7 +61,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-04 | `go_router`: URL per tab, shareable `/p/<code>` profile links, sign-in redirect back to the link | ✅ | `fa24b94` | Browser: link while signed out → `/login?from=/p/…` → profile after sign-in; tab URLs; back button |
 | P1-05 | Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`) | ✅ | `92e2736` | Analyze, tests, build and browser flows unchanged |
 | P1-06 | Begin the Riverpod migration (auth, profile first) | ⬜ | — | |
-| P1-07 | Design-system tokens, light/dark/system themes with per-user choice, accessibility pass | ⬜ | — | Track B |
+| P1-07 | Design-system tokens, light/dark/system themes with per-user choice, accessibility pass | 🟡 | branch `claude/ui-foundation` | Track B, partly done (see its PR); not yet merged |
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
 | P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f`, `8fd3174` | Widget tests for splash and signed-out → sign-in added. Android debug APK builds green in CI (run 8) and is attached to each run for 7 days. Sentry not yet. |
@@ -69,7 +70,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-16 | Realtime behind `RealtimeService` (move `notifications_service.dart`) | ✅ | `7ddf5be` | `subscribeNotifications` added to the interface (Supabase channels; HTTP polling); notifications code no longer imports Supabase (allowlist 5 → 4). Live browser: a notification inserted in the database showed as a toast within seconds |
 | P1-17 | API verifies tokens by issuer/JWKS (any OIDC provider), not by calling Supabase | 🙋 | `e44595e` | Built: `TokenVerifier` (auto/jwks/provider), 7 new tests (valid token; wrong key, issuer, audience; expired; garbage). Live: real token 200, tampered 401 (provider fallback, because the project has no public keys yet). **Owner:** in Supabase → Settings → JWT Keys, migrate to asymmetric signing keys; the API then switches to JWKS automatically. |
 | P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
-| P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
+| P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | 🟡 | branch `claude/ui-foundation` | Track B, partly done (screens up to search translated); not yet merged |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
 ## Phase 2: Roles, admin console and moderation
