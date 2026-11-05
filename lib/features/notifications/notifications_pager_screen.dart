@@ -9,6 +9,10 @@ import '../../shared/models/contact_request.dart';
 import '../../app/di/service_locator.dart';
 import '../../shared/models/profile.dart';
 import '../../shared/widgets/storage_image.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
+import '../../shared/widgets/count_badge.dart';
 
 class NotificationsPagerScreen extends StatefulWidget {
   final int initialIndex; // 0: Accepted, 1: Interests, 2: Contact Requests
@@ -127,14 +131,23 @@ class _NotificationsPagerScreenState extends State<NotificationsPagerScreen>
     final contactsUnseen = (contactsPending - _seenContacts).clamp(0, 9999);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.l10n.notificationsTitle),
         bottom: TabBar(
           controller: _tab,
           isScrollable: true,
           tabs: [
-            _TabLabel(title: 'Accepted', count: acceptedUnseen),
-            _TabLabel(title: 'Interests', count: interestsUnseen),
-            _TabLabel(title: 'Contact Requests', count: contactsUnseen),
+            _TabLabel(
+              title: context.l10n.notificationsTabAccepted,
+              count: acceptedUnseen,
+            ),
+            _TabLabel(
+              title: context.l10n.notificationsTabInterests,
+              count: interestsUnseen,
+            ),
+            _TabLabel(
+              title: context.l10n.notificationsTabContactRequests,
+              count: contactsUnseen,
+            ),
           ],
         ),
       ),
@@ -219,27 +232,9 @@ class _TabLabel extends StatelessWidget {
           ),
           if (show) ...[
             const SizedBox(width: 6),
-            ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 20, maxWidth: 40),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                alignment: Alignment.center,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    count > 99 ? '99+' : '$count',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+            CountBadge(
+              count: count,
+              semanticLabel: context.l10n.newItemsLabel(count),
             ),
           ],
         ],
@@ -255,10 +250,10 @@ class _AcceptedTab extends StatelessWidget {
       builder: (context, mat, _) {
         final items = mat.acceptedConnections;
         if (items.isEmpty) {
-          return const _EmptyState(
+          return _EmptyState(
             icon: Icons.handshake_outlined,
-            title: 'No accepted connections yet',
-            subtitle: 'When interests are accepted, they appear here.',
+            title: context.l10n.acceptedEmptyTitle,
+            subtitle: context.l10n.acceptedEmptySubtitle,
           );
         }
         return ListView.separated(
@@ -282,10 +277,10 @@ class _InterestsTab extends StatelessWidget {
       builder: (context, mat, auth, _) {
         final items = mat.receivedInterests;
         if (items.isEmpty) {
-          return const _EmptyState(
+          return _EmptyState(
             icon: Icons.favorite_border,
-            title: 'No new requests',
-            subtitle: 'Interests received will appear here.',
+            title: context.l10n.interestsEmptyTitle,
+            subtitle: context.l10n.interestsEmptySubtitle,
           );
         }
         return ListView.separated(
@@ -308,7 +303,7 @@ class _InterestsTab extends StatelessWidget {
                         toAuthUserId: uid,
                       );
                     },
-                    child: const Text('Decline'),
+                    child: Text(context.l10n.actionDecline),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
@@ -320,7 +315,7 @@ class _InterestsTab extends StatelessWidget {
                         toAuthUserId: uid,
                       );
                     },
-                    child: const Text('Accept'),
+                    child: Text(context.l10n.actionAccept),
                   ),
                 ],
               ),
@@ -354,12 +349,18 @@ class _ContactRequestsTab extends StatelessWidget {
       onRefresh: onRefresh,
       child: ListView(
         children: [
-          const _SectionHeader('Received (approve/decline)'),
+          _SectionHeader(context.l10n.contactReceivedHeader),
           ...received.map(
             (r) => ListTile(
-              leading: _avatarFor(r.requesterProfileId),
-              title: Text('From: ${_nameFor(r.requesterProfileId)}'),
-              subtitle: Text('Requested at: ${r.createdAt.toLocal()}'),
+              leading: _avatarFor(context, r.requesterProfileId),
+              title: Text(
+                context.l10n.contactFrom(_nameFor(r.requesterProfileId)),
+              ),
+              subtitle: Text(
+                context.l10n.contactRequestedAt(
+                  context.formatDateTime(r.createdAt),
+                ),
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -373,7 +374,7 @@ class _ContactRequestsTab extends StatelessWidget {
                       );
                       await onRefresh();
                     },
-                    child: const Text('Decline'),
+                    child: Text(context.l10n.actionDecline),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
@@ -386,30 +387,34 @@ class _ContactRequestsTab extends StatelessWidget {
                       );
                       await onRefresh();
                     },
-                    child: const Text('Approve'),
+                    child: Text(context.l10n.actionApprove),
                   ),
                 ],
               ),
             ),
           ),
           if (received.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('No received requests.'),
+            Padding(
+              padding: const EdgeInsets.all(AppDimensions.paddingM),
+              child: Text(context.l10n.contactNoReceived),
             ),
           const Divider(height: 1),
-          const _SectionHeader('Sent (pending)'),
+          _SectionHeader(context.l10n.contactSentHeader),
           ...sent.map(
             (s) => ListTile(
-              leading: _avatarFor(s.targetProfileId),
-              title: Text('To: ${_nameFor(s.targetProfileId)}'),
-              subtitle: Text('Status: ${s.status.value}'),
+              leading: _avatarFor(context, s.targetProfileId),
+              title: Text(context.l10n.contactTo(_nameFor(s.targetProfileId))),
+              subtitle: Text(
+                context.l10n.contactRequestStatus(
+                  _statusLabel(context, s.status),
+                ),
+              ),
             ),
           ),
           if (sent.isEmpty)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('No sent requests.'),
+            Padding(
+              padding: const EdgeInsets.all(AppDimensions.paddingM),
+              child: Text(context.l10n.contactNoSent),
             ),
         ],
       ),
@@ -422,12 +427,22 @@ class _ContactRequestsTab extends StatelessWidget {
     return (p.name.isNotEmpty ? p.name : profileId);
   }
 
-  Widget _avatarFor(String profileId) {
+  String _statusLabel(BuildContext context, ContactRequestStatus status) {
+    final l = context.l10n;
+    return switch (status) {
+      ContactRequestStatus.pending => l.contactStatusPending,
+      ContactRequestStatus.accepted => l.contactStatusAccepted,
+      ContactRequestStatus.declined => l.contactStatusDeclined,
+      ContactRequestStatus.cancelled => l.contactStatusCancelled,
+    };
+  }
+
+  Widget _avatarFor(BuildContext context, String profileId) {
     final p = profilesByProfileId[profileId];
     final title = _nameFor(profileId);
     if (p?.imageUrl != null && p!.imageUrl!.isNotEmpty) {
       return CircleAvatar(
-        backgroundColor: Colors.grey.withValues(alpha: 0.2),
+        backgroundColor: context.palette.surfaceMuted,
         child: ClipOval(
           child: SizedBox(
             width: 40,
@@ -456,7 +471,10 @@ class _ProfileTile extends StatelessWidget {
       leading: const CircleAvatar(child: Icon(Icons.person_outline)),
       title: Text(user.displayName.isNotEmpty ? user.displayName : user.name),
       subtitle: Text(
-        '${user.age} · ${user.city.isNotEmpty ? user.city : user.district}',
+        context.l10n.profileAgePlace(
+          user.age,
+          user.city.isNotEmpty ? user.city : user.district,
+        ),
       ),
       trailing: trailing,
       onTap: () => openProfile(context, user),
@@ -480,13 +498,21 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 64, color: Colors.grey),
-          const SizedBox(height: 12),
-          Text(title, style: const TextStyle(fontSize: 18, color: Colors.grey)),
-          const SizedBox(height: 8),
+          Icon(icon, size: 64, color: context.palette.textTertiary),
+          const SizedBox(height: AppDimensions.paddingSM),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: context.styles.title.copyWith(
+              color: context.palette.textSecondary,
+            ),
+          ),
+          const SizedBox(height: AppDimensions.paddingS),
           Text(
             subtitle,
-            style: const TextStyle(fontSize: 14, color: Colors.grey),
+            style: context.styles.body2.copyWith(
+              color: context.palette.textTertiary,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

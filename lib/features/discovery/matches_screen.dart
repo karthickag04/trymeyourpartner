@@ -111,7 +111,7 @@ class _MatchesScreenState extends State<MatchesScreen>
         return Scaffold(
           appBar: AppBar(
             title: _buildPagerHeader(context),
-            backgroundColor: AppColors.primary,
+            backgroundColor: context.palette.primary,
             elevation: 0,
           ),
           body: Consumer<MatrimonialProvider>(
@@ -246,7 +246,7 @@ class _MatchesScreenState extends State<MatchesScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Matches'),
-        backgroundColor: AppColors.primary,
+        backgroundColor: context.palette.primary,
         elevation: 0,
       ),
       body: Center(
@@ -258,18 +258,18 @@ class _MatchesScreenState extends State<MatchesScreen>
               Icon(
                 Icons.favorite_border,
                 size: AppDimensions.iconXL * 2,
-                color: AppColors.textTertiary,
+                color: context.palette.textTertiary,
               ),
               const SizedBox(height: AppDimensions.paddingL),
               Text(
                 'Sign In Required',
-                style: AppTextStyles.heading3,
+                style: context.styles.heading3,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppDimensions.paddingS),
               Text(
                 'Sign in to find your perfect match and connect with compatible profiles',
-                style: AppTextStyles.body2,
+                style: context.styles.body2,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppDimensions.paddingL),
@@ -278,7 +278,7 @@ class _MatchesScreenState extends State<MatchesScreen>
                 icon: const Icon(Icons.login),
                 label: const Text('Sign In'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
+                  backgroundColor: context.palette.accent,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppDimensions.paddingL,
@@ -471,13 +471,13 @@ class _MatchesScreenState extends State<MatchesScreen>
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(color: AppColors.accent),
+          CircularProgressIndicator(color: context.palette.accent),
           SizedBox(height: AppDimensions.paddingM),
-          Text('Loading matches...', style: AppTextStyles.subtitle1),
+          Text('Loading matches...', style: context.styles.subtitle1),
         ],
       ),
     );
@@ -493,18 +493,18 @@ class _MatchesScreenState extends State<MatchesScreen>
             Icon(
               Icons.error_outline,
               size: AppDimensions.iconXL,
-              color: AppColors.error,
+              color: context.palette.error,
             ),
             const SizedBox(height: AppDimensions.paddingM),
             Text(
               'Something went wrong',
-              style: AppTextStyles.heading3,
+              style: context.styles.heading3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingS),
             Text(
               error,
-              style: AppTextStyles.body2,
+              style: context.styles.body2,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingL),
@@ -534,18 +534,18 @@ class _MatchesScreenState extends State<MatchesScreen>
             Icon(
               icon,
               size: AppDimensions.iconXL * 1.5,
-              color: AppColors.textTertiary,
+              color: context.palette.textTertiary,
             ),
             const SizedBox(height: AppDimensions.paddingL),
             Text(
               title,
-              style: AppTextStyles.heading3,
+              style: context.styles.heading3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingS),
             Text(
               description,
-              style: AppTextStyles.body2,
+              style: context.styles.body2,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingL),
@@ -615,7 +615,7 @@ class _MatchesScreenState extends State<MatchesScreen>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Interest sent to ${profile.name}'),
-                backgroundColor: AppColors.success,
+                backgroundColor: context.palette.success,
               ),
             );
           }
@@ -625,7 +625,7 @@ class _MatchesScreenState extends State<MatchesScreen>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Failed to send interest: $error'),
-                backgroundColor: AppColors.error,
+                backgroundColor: context.palette.error,
               ),
             );
           }
@@ -643,7 +643,7 @@ class _MatchesScreenState extends State<MatchesScreen>
             content: Text(
               wasShortlisted ? 'Removed from shortlist' : 'Added to shortlist',
             ),
-            backgroundColor: AppColors.accent,
+            backgroundColor: context.palette.accent,
           ),
         );
       }
@@ -666,7 +666,7 @@ class _MatchesScreenState extends State<MatchesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Interest accepted from ${profile.name}'),
-              backgroundColor: AppColors.success,
+              backgroundColor: context.palette.success,
             ),
           );
         })
@@ -675,7 +675,7 @@ class _MatchesScreenState extends State<MatchesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to accept interest: $e'),
-              backgroundColor: AppColors.error,
+              backgroundColor: context.palette.error,
             ),
           );
         });
@@ -696,7 +696,7 @@ class _MatchesScreenState extends State<MatchesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Interest rejected from ${profile.name}'),
-              backgroundColor: AppColors.textSecondary,
+              backgroundColor: context.palette.textSecondary,
             ),
           );
         })
@@ -705,7 +705,7 @@ class _MatchesScreenState extends State<MatchesScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to reject interest: $e'),
-              backgroundColor: AppColors.error,
+              backgroundColor: context.palette.error,
             ),
           );
         });
@@ -713,9 +713,9 @@ class _MatchesScreenState extends State<MatchesScreen>
 
   void _showSignInDialog(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Text('Please restart the app to sign in.'),
-        backgroundColor: AppColors.warning,
+        backgroundColor: context.palette.warning,
       ),
     );
   }

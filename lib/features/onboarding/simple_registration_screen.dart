@@ -248,9 +248,9 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
           '🔁 _save: showing success snackbar and scheduling navigation',
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Profile created'),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.palette.success,
           ),
         );
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -276,7 +276,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to save: $e'),
-          backgroundColor: AppColors.error,
+          backgroundColor: context.palette.error,
         ),
       );
     } finally {
@@ -294,7 +294,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Complete Registration'),
-          backgroundColor: AppColors.primary,
+          backgroundColor: context.palette.primary,
         ),
         body: p == null
             ? const Center(child: CircularProgressIndicator())
@@ -307,10 +307,10 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                     children: [
                       Text(
                         'Email (from login)',
-                        style: AppTextStyles.subtitle2,
+                        style: context.styles.subtitle2,
                       ),
                       const SizedBox(height: 6),
-                      Text(email, style: AppTextStyles.body2),
+                      Text(email, style: context.styles.body2),
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _nameCtrl,

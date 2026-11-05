@@ -455,7 +455,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             ],
           ),
         ],
-        backgroundColor: AppColors.primary,
+        backgroundColor: context.palette.primary,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -855,7 +855,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                   : const Icon(Icons.save),
               label: const Text('Save'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
+                backgroundColor: context.palette.accent,
                 foregroundColor: Colors.white,
               ),
             ),
@@ -880,11 +880,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     context.read<MatrimonialProvider>().refreshMatches();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
                           'Please fill all mandatory fields marked with * to proceed.',
                         ),
-                        backgroundColor: AppColors.warning,
+                        backgroundColor: context.palette.warning,
                       ),
                     );
                   }
@@ -914,9 +914,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final profile = provider.currentUserProfile;
     if (profile == null) {
       messenger.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -948,9 +948,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       final success = await MatrimonialService.deactivateProfile(profile.id);
       if (success) {
         messenger.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Profile deactivated'),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.palette.success,
           ),
         );
         // Refresh provider state and navigate back to main
@@ -961,7 +961,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       messenger.showSnackBar(
         SnackBar(
           content: Text('Failed to deactivate: $e'),
-          backgroundColor: AppColors.error,
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -976,9 +976,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final profile = provider.currentUserProfile;
     if (profile == null) {
       messenger.showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -1011,9 +1011,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       final success = await MatrimonialService.deleteProfile(profile.id);
       if (success) {
         messenger.showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('Profile deleted. Signing out...'),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.palette.success,
           ),
         );
         // Sign out the user to clear session and navigate to login
@@ -1027,7 +1027,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       messenger.showSnackBar(
         SnackBar(
           content: Text('Failed to delete profile: $e'),
-          backgroundColor: AppColors.error,
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1072,9 +1072,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.08),
+        color: context.palette.warning.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: context.palette.warning.withValues(alpha: 0.3),
+        ),
       ),
       child: const Text(
         'Fields marked with * are mandatory to see relevant matches.',
@@ -1179,7 +1181,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTextStyles.subtitle2),
+          Text(label, style: context.styles.subtitle2),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -1272,14 +1274,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         children: [
           Row(
             children: [
-              Expanded(child: Text(title, style: AppTextStyles.heading3)),
+              Expanded(child: Text(title, style: context.styles.heading3)),
               OutlinedButton.icon(
                 onPressed: enableEdit ? onToggleEdit : null,
                 icon: Icon(isEditing ? Icons.lock_open : Icons.edit, size: 18),
                 label: Text(isEditing ? 'Done' : 'Edit'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.accent,
-                  side: const BorderSide(color: AppColors.accent),
+                  foregroundColor: context.palette.accent,
+                  side: BorderSide(color: context.palette.accent),
                 ),
               ),
             ],
@@ -1484,11 +1486,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         // Profile isn't ready yet; avoid throwing noisy errors. Inform user on manual save.
         if (!isAutoSave && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
                 'Profile is loading. Please try again in a moment.',
               ),
-              backgroundColor: AppColors.warning,
+              backgroundColor: context.palette.warning,
             ),
           );
         }
@@ -1517,7 +1519,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             content: Text(
               isAutoSave ? '💾 Auto-saved: $successMessage' : successMessage,
             ),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.palette.success,
             duration: Duration(seconds: isAutoSave ? 2 : 3),
           ),
         );
@@ -1532,7 +1534,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             content: Text(
               isAutoSave ? '❌ Auto-save failed: $e' : 'Failed to save: $e',
             ),
-            backgroundColor: AppColors.error,
+            backgroundColor: context.palette.error,
             duration: Duration(seconds: 4),
           ),
         );
@@ -1553,9 +1555,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         (_religion == null || _religion!.trim().isEmpty) ||
         (_caste == null || _caste!.trim().isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('Please fill Date of Birth, Religion and Caste'),
-          backgroundColor: AppColors.warning,
+          backgroundColor: context.palette.warning,
         ),
       );
       return;

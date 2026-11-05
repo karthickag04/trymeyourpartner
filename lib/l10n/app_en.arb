@@ -1,0 +1,387 @@
+{
+  "@@locale": "en",
+  "appName": "TryMeYourPartner",
+  "@appName": {
+    "description": "Brand name; not translated."
+  },
+  "commonOk": "OK",
+  "commonCancel": "Cancel",
+  "commonSave": "Save",
+  "commonRetry": "Try again",
+  "commonClose": "Close",
+  "commonBack": "Back",
+  "commonNext": "Next",
+  "commonDone": "Done",
+  "commonApply": "Apply",
+  "commonClear": "Clear",
+  "commonReset": "Reset",
+  "commonView": "View",
+  "commonSearch": "Search",
+  "commonLoading": "Loading…",
+  "commonNotSpecified": "Not specified",
+  "commonSomethingWentWrong": "Something went wrong. Please try again.",
+  "languageEnglish": "English",
+  "languageTamil": "தமிழ்",
+  "languageLabel": "Language",
+  "languageChooseTooltip": "Change language",
+  "authTagline": "Find your life partner with trust",
+  "authSignIn": "Sign In",
+  "authSignUp": "Sign Up",
+  "authEmailLabel": "Email",
+  "authEmailRequired": "Please enter your email",
+  "authEmailInvalid": "Please enter a valid email",
+  "authPasswordLabel": "Password",
+  "authPasswordRequired": "Please enter your password",
+  "authPasswordTooShort": "Password must be at least {min} characters",
+  "@authPasswordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "authShowPassword": "Show password",
+  "authHidePassword": "Hide password",
+  "authForgotPassword": "Forgot password?",
+  "authFullNameLabel": "Full name",
+  "authFullNameRequired": "Please enter your full name",
+  "authOrContinueWith": "Or continue with",
+  "authContinueWithGoogle": "Continue with Google",
+  "authWelcomeBack": "Welcome back!",
+  "authAccountCreated": "Account created successfully! Welcome to TryMeYourPartner!",
+  "authCheckEmailTitle": "Check your email",
+  "authVerificationSent": "We've sent a verification link to {email}",
+  "@authVerificationSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authVerificationInstruction": "Please open the link in your email to verify your account.",
+  "authSignedInWithGoogle": "Signed in with Google!",
+  "authGoogleUnavailableTitle": "Google sign-in unavailable",
+  "authGoogleUnavailableBody": "Google sign-in is not set up for this app yet. Please sign in with your email instead.",
+  "authEnterEmailFirst": "Please enter your email first",
+  "authPasswordResetSent": "Password reset email sent!",
+  "authErrorInvalidCredentials": "The email or password is incorrect.",
+  "authErrorAlreadyRegistered": "An account with this email already exists. Please sign in.",
+  "authErrorEmailNotConfirmed": "Please verify your email before signing in.",
+  "authErrorSignUpFailed": "We couldn't create your account. Please try again.",
+  "authErrorGoogleFailed": "Google sign-in didn't work. Please try again.",
+  "authErrorNetwork": "Can't reach the server. Check your internet connection and try again.",
+  "splashTagline": "Where families find the right match",
+  "splashLoading": "Loading your experience...",
+  "navHome": "Home",
+  "navMatches": "Matches",
+  "navSearch": "Search",
+  "navInterests": "Interests",
+  "navProfile": "Profile",
+  "toastNewMessage": "New message",
+  "toastInterestReceived": "You received a new interest",
+  "toastInterestAccepted": "Your interest was accepted",
+  "toastInterestRejected": "Your interest was declined",
+  "toastNewNotification": "New notification",
+  "interestsBadgeLabel": "{count, plural, =1{1 new interest} other{{count} new interests}}",
+  "@interestsBadgeLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeJustNow": "Just now",
+  "timeMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count, plural, =1{An hour ago} other{{count} hours ago}}",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeYesterday": "Yesterday",
+  "timeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeWeeksAgo": "{count, plural, =1{A week ago} other{{count} weeks ago}}",
+  "@timeWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMonthsAgo": "{count, plural, =1{A month ago} other{{count} months ago}}",
+  "@timeMonthsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMinutesShort": "{count}m",
+  "@timeMinutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursShort": "{count}h",
+  "@timeHoursShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysShort": "{count}d",
+  "@timeDaysShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "presenceOnline": "Online",
+  "presenceOffline": "Offline",
+  "profileNotAvailable": "This profile is not available.",
+  "contactLimitReached": "You have used all contact views in your plan.",
+  "notificationsTitle": "Notifications",
+  "notificationsMarkAllRead": "Mark all as read",
+  "notificationsMarkRead": "Mark read",
+  "notificationNewMessage": "New message",
+  "notificationNewInterest": "New interest",
+  "notificationInterestAccepted": "Interest accepted",
+  "notificationGeneric": "Notification",
+  "contactRequestsTitle": "Contact requests",
+  "contactRequestsReceived": "Received",
+  "contactRequestsSent": "Sent",
+  "contactRequestsEmpty": "No requests yet",
+  "contactRequestStatus": "Status: {status}",
+  "@contactRequestStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "contactStatusPending": "Pending",
+  "contactStatusAccepted": "Accepted",
+  "contactStatusDeclined": "Declined",
+  "contactStatusCancelled": "Cancelled",
+  "actionAccept": "Accept",
+  "actionDecline": "Decline",
+  "messagesTitle": "Messages",
+  "messagesSignInRequired": "Please sign in to see your messages",
+  "messagesLoadFailed": "We couldn't load your messages.",
+  "messagesEmpty": "No messages yet",
+  "profileNotActive": "Profile not active",
+  "profileNotActiveNow": "This profile is not active at the moment",
+  "unreadCountLabel": "{count, plural, =1{1 unread message} other{{count} unread messages}}",
+  "@unreadCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countOverflow": "{max}+",
+  "@countOverflow": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "chatLoadFailed": "We couldn't load this conversation.",
+  "chatSendFailed": "Your message wasn't sent. Please try again.",
+  "chatMyProfileInactive": "Your profile is deactivated. Reactivate it to send messages.",
+  "chatOtherProfileInactive": "This profile is not active at the moment. You can read earlier messages but can't send new ones.",
+  "chatTyping": "Typing…",
+  "chatSuggestPrompt": "Suggest a conversation starter",
+  "chatMessageHint": "Type a message",
+  "chatSend": "Send",
+  "chatLastSeen": "Last seen {time}",
+  "@chatLastSeen": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "5 minutes ago"
+      }
+    }
+  },
+  "chatStarterPassion": "What's something you're passionate about outside of work?",
+  "chatStarterWeekend": "Weekend plans: relaxing at home or going out?",
+  "chatStarterSmallJoy": "What's a small joy that made your day recently?",
+  "chatTickSent": "Sent",
+  "chatTickDelivered": "Delivered",
+  "chatTickRead": "Read",
+  "notificationsTabAccepted": "Accepted",
+  "notificationsTabInterests": "Interests",
+  "notificationsTabContactRequests": "Contact requests",
+  "newItemsLabel": "{count, plural, =1{1 new} other{{count} new}}",
+  "@newItemsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "acceptedEmptyTitle": "No accepted connections yet",
+  "acceptedEmptySubtitle": "When interests are accepted, they will appear here.",
+  "interestsEmptyTitle": "No new interests",
+  "interestsEmptySubtitle": "Interests you receive will appear here.",
+  "contactReceivedHeader": "Received (approve or decline)",
+  "contactFrom": "From: {name}",
+  "@contactFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "contactRequestedAt": "Requested on {date}",
+  "@contactRequestedAt": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "actionApprove": "Approve",
+  "contactNoReceived": "No requests received.",
+  "contactSentHeader": "Sent (awaiting reply)",
+  "contactTo": "To: {name}",
+  "@contactTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "contactNoSent": "No requests sent.",
+  "profileAgePlace": "{age} yrs · {place}",
+  "@profileAgePlace": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "ageYears": "{age} yrs",
+  "@ageYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "interestsTitle": "Interests",
+  "interestsTabReceived": "Received",
+  "interestsTabSent": "Sent",
+  "interestsLoadingReceived": "Loading interests you received…",
+  "interestsLoadingSent": "Loading interests you sent…",
+  "interestsReceivedEmptyTitle": "No interests received yet",
+  "interestsReceivedEmptySubtitle": "When someone shows interest in your profile, they will appear here.",
+  "interestsSentEmptyTitle": "No interests sent yet",
+  "interestsSentEmptySubtitle": "Browse profiles and send interests to start connecting.",
+  "profileAgeCity": "{age} years • {city}",
+  "@profileAgeCity": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoAbout": "No information provided",
+  "interestAccepted": "You accepted {name}'s interest",
+  "@interestAccepted": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestAcceptFailed": "We couldn't accept this interest. Please try again.",
+  "interestDeclined": "You declined {name}'s interest",
+  "@interestDeclined": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestDeclineFailed": "We couldn't decline this interest. Please try again.",
+  "ageYearsLong": "{age} years",
+  "@ageYearsLong": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "actionShortlist": "Shortlist",
+  "actionShortlisted": "Shortlisted",
+  "actionReject": "Decline",
+  "actionSendInterest": "Send interest",
+  "actionInterestSent": "Interest sent",
+  "badgeVerified": "Verified profile",
+  "badgeShortlisted": "In your shortlist",
+  "placeDistrictState": "{district}, {state}",
+  "@placeDistrictState": {
+    "placeholders": {
+      "district": {},
+      "state": {}
+    }
+  },
+  "profileAgeHeight": "{age} years, {height}",
+  "@profileAgeHeight": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "whyMatchedTooltip": "Why this match",
+  "actionInterest": "Interest",
+  "actionAddToShortlist": "Add to shortlist",
+  "actionRemoveFromShortlist": "Remove from shortlist",
+  "whyMatchNearby": "You live near {district}",
+  "@whyMatchNearby": {
+    "placeholders": {
+      "district": {}
+    }
+  },
+  "whyMatchEducation": "Similar education: {education}",
+  "@whyMatchEducation": {
+    "placeholders": {
+      "education": {}
+    }
+  },
+  "whyMatchCaste": "Caste preference matched: {caste}",
+  "@whyMatchCaste": {
+    "placeholders": {
+      "caste": {}
+    }
+  },
+  "whyMatchLanguages": "Languages in common: {languages}",
+  "@whyMatchLanguages": {
+    "placeholders": {
+      "languages": {}
+    }
+  },
+  "whyMatchGeneral": "Good compatibility based on your preferences"
+}

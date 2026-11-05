@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'auth_provider.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
+import '../../shared/widgets/language_selector.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -37,13 +39,16 @@ class _AuthScreenState extends State<AuthScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.palette.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppDimensions.paddingL),
           child: Column(
             children: [
-              const SizedBox(height: AppDimensions.paddingXL),
+              const Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: LanguageSelector(),
+              ),
 
               // App Logo and Welcome
               _buildHeader(),
@@ -72,22 +77,22 @@ class _AuthScreenState extends State<AuthScreen>
           width: 120,
           height: 120,
           decoration: BoxDecoration(
-            color: AppColors.accent,
+            color: context.palette.accent,
             borderRadius: BorderRadius.circular(AppDimensions.radiusXL),
           ),
-          child: const Icon(
-            Icons.play_circle_filled,
+          child: Icon(
+            Icons.favorite,
             size: 60,
-            color: Colors.white,
+            color: context.palette.onPrimary,
           ),
         ),
 
         const SizedBox(height: AppDimensions.paddingL),
 
         Text(
-          AppConstants.appName,
-          style: AppTextStyles.heading1.copyWith(
-            color: AppColors.accent,
+          context.l10n.appName,
+          style: context.styles.heading1.copyWith(
+            color: context.palette.accent,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -95,9 +100,9 @@ class _AuthScreenState extends State<AuthScreen>
         const SizedBox(height: AppDimensions.paddingS),
 
         Text(
-          'Your Educational Streaming Platform',
-          style: AppTextStyles.subtitle1.copyWith(
-            color: AppColors.textSecondary,
+          context.l10n.authTagline,
+          style: context.styles.subtitle1.copyWith(
+            color: context.palette.textSecondary,
           ),
           textAlign: TextAlign.center,
         ),
@@ -109,11 +114,11 @@ class _AuthScreenState extends State<AuthScreen>
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: context.palette.shadow,
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -127,14 +132,16 @@ class _AuthScreenState extends State<AuthScreen>
             TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: AppColors.accent,
+                color: context.palette.accent,
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               ),
-              labelColor: Colors.white,
-              unselectedLabelColor: AppColors.textSecondary,
-              tabs: const [
-                Tab(text: 'Sign In'),
-                Tab(text: 'Sign Up'),
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              labelColor: context.palette.onPrimary,
+              unselectedLabelColor: context.palette.textSecondary,
+              tabs: [
+                Tab(text: context.l10n.authSignIn),
+                Tab(text: context.l10n.authSignUp),
               ],
             ),
 
@@ -166,9 +173,9 @@ class _AuthScreenState extends State<AuthScreen>
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              style: AppTextStyles.body1,
+              style: context.styles.body1,
               decoration: InputDecoration(
-                labelText: 'Email',
+                labelText: context.l10n.authEmailLabel,
                 prefixIcon: const Icon(Icons.email),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -176,10 +183,10 @@ class _AuthScreenState extends State<AuthScreen>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return context.l10n.authEmailRequired;
                 }
                 if (!value.contains('@')) {
-                  return 'Please enter a valid email';
+                  return context.l10n.authEmailInvalid;
                 }
                 return null;
               },
@@ -191,11 +198,14 @@ class _AuthScreenState extends State<AuthScreen>
             TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,
-              style: AppTextStyles.body1,
+              style: context.styles.body1,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: context.l10n.authPasswordLabel,
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
+                  tooltip: _obscurePassword
+                      ? context.l10n.authShowPassword
+                      : context.l10n.authHidePassword,
                   onPressed: () {
                     setState(() {
                       _obscurePassword = !_obscurePassword;
@@ -211,10 +221,10 @@ class _AuthScreenState extends State<AuthScreen>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
+                  return context.l10n.authPasswordRequired;
                 }
                 if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
+                  return context.l10n.authPasswordTooShort(6);
                 }
                 return null;
               },
@@ -227,12 +237,14 @@ class _AuthScreenState extends State<AuthScreen>
               Container(
                 padding: const EdgeInsets.all(AppDimensions.paddingS),
                 decoration: BoxDecoration(
-                  color: AppColors.error.withValues(alpha: 0.1),
+                  color: context.palette.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                 ),
                 child: Text(
-                  authProvider.error,
-                  style: AppTextStyles.caption.copyWith(color: AppColors.error),
+                  _errorMessage(context, authProvider.error),
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.error,
+                  ),
                 ),
               ),
 
@@ -244,14 +256,17 @@ class _AuthScreenState extends State<AuthScreen>
               child: ElevatedButton(
                 onPressed: authProvider.isLoading ? null : _signIn,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
+                  backgroundColor: context.palette.accent,
+                  foregroundColor: context.palette.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: AppDimensions.paddingM,
                   ),
                 ),
                 child: authProvider.isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Sign In'),
+                    ? CircularProgressIndicator(
+                        color: context.palette.onPrimary,
+                      )
+                    : Text(context.l10n.authSignIn),
               ),
             ),
 
@@ -259,8 +274,10 @@ class _AuthScreenState extends State<AuthScreen>
             TextButton(
               onPressed: _forgotPassword,
               child: Text(
-                'Forgot Password?',
-                style: AppTextStyles.caption.copyWith(color: AppColors.accent),
+                context.l10n.authForgotPassword,
+                style: context.styles.caption.copyWith(
+                  color: context.palette.accent,
+                ),
               ),
             ),
           ],
@@ -277,9 +294,9 @@ class _AuthScreenState extends State<AuthScreen>
             // Name Field
             TextFormField(
               controller: _nameController,
-              style: AppTextStyles.body1,
+              style: context.styles.body1,
               decoration: InputDecoration(
-                labelText: 'Full Name',
+                labelText: context.l10n.authFullNameLabel,
                 prefixIcon: const Icon(Icons.person),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -287,7 +304,7 @@ class _AuthScreenState extends State<AuthScreen>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your full name';
+                  return context.l10n.authFullNameRequired;
                 }
                 return null;
               },
@@ -299,9 +316,9 @@ class _AuthScreenState extends State<AuthScreen>
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              style: AppTextStyles.body1,
+              style: context.styles.body1,
               decoration: InputDecoration(
-                labelText: 'Email',
+                labelText: context.l10n.authEmailLabel,
                 prefixIcon: const Icon(Icons.email),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -309,10 +326,10 @@ class _AuthScreenState extends State<AuthScreen>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return context.l10n.authEmailRequired;
                 }
                 if (!value.contains('@')) {
-                  return 'Please enter a valid email';
+                  return context.l10n.authEmailInvalid;
                 }
                 return null;
               },
@@ -324,11 +341,14 @@ class _AuthScreenState extends State<AuthScreen>
             TextFormField(
               controller: _passwordController,
               obscureText: _obscurePassword,
-              style: AppTextStyles.body1,
+              style: context.styles.body1,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: context.l10n.authPasswordLabel,
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
+                  tooltip: _obscurePassword
+                      ? context.l10n.authShowPassword
+                      : context.l10n.authHidePassword,
                   onPressed: () {
                     setState(() {
                       _obscurePassword = !_obscurePassword;
@@ -344,10 +364,10 @@ class _AuthScreenState extends State<AuthScreen>
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
+                  return context.l10n.authPasswordRequired;
                 }
                 if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
+                  return context.l10n.authPasswordTooShort(6);
                 }
                 return null;
               },
@@ -360,12 +380,14 @@ class _AuthScreenState extends State<AuthScreen>
               Container(
                 padding: const EdgeInsets.all(AppDimensions.paddingS),
                 decoration: BoxDecoration(
-                  color: AppColors.error.withValues(alpha: 0.1),
+                  color: context.palette.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusS),
                 ),
                 child: Text(
-                  authProvider.error,
-                  style: AppTextStyles.caption.copyWith(color: AppColors.error),
+                  _errorMessage(context, authProvider.error),
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.error,
+                  ),
                 ),
               ),
 
@@ -377,14 +399,17 @@ class _AuthScreenState extends State<AuthScreen>
               child: ElevatedButton(
                 onPressed: authProvider.isLoading ? null : _signUp,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
+                  backgroundColor: context.palette.accent,
+                  foregroundColor: context.palette.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: AppDimensions.paddingM,
                   ),
                 ),
                 child: authProvider.isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Sign Up'),
+                    ? CircularProgressIndicator(
+                        color: context.palette.onPrimary,
+                      )
+                    : Text(context.l10n.authSignUp),
               ),
             ),
           ],
@@ -399,9 +424,9 @@ class _AuthScreenState extends State<AuthScreen>
         return Column(
           children: [
             Text(
-              'Or continue with',
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textSecondary,
+              context.l10n.authOrContinueWith,
+              style: context.styles.caption.copyWith(
+                color: context.palette.textSecondary,
               ),
             ),
 
@@ -412,13 +437,13 @@ class _AuthScreenState extends State<AuthScreen>
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: authProvider.isLoading ? null : _signInWithGoogle,
-                icon: const Icon(Icons.login, color: Colors.white),
-                label: const Text('Continue with Google'),
+                icon: const Icon(Icons.login),
+                label: Text(context.l10n.authContinueWithGoogle),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     vertical: AppDimensions.paddingM,
                   ),
-                  side: const BorderSide(color: AppColors.divider),
+                  side: BorderSide(color: context.palette.divider),
                 ),
               ),
             ),
@@ -442,9 +467,9 @@ class _AuthScreenState extends State<AuthScreen>
     if (success && mounted) {
       // Navigation will be handled by AuthWrapper
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Welcome back!'),
-          backgroundColor: AppColors.success,
+        SnackBar(
+          content: Text(context.l10n.authWelcomeBack),
+          backgroundColor: context.palette.success,
         ),
       );
     }
@@ -466,11 +491,9 @@ class _AuthScreenState extends State<AuthScreen>
       if (success) {
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Account created successfully! Welcome to TryMeYourPartner!',
-            ),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.authAccountCreated),
+            backgroundColor: context.palette.success,
           ),
         );
       } else if (authProvider.error.contains('verification')) {
@@ -485,28 +508,32 @@ class _AuthScreenState extends State<AuthScreen>
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text('Check Your Email'),
+        title: Text(context.l10n.authCheckEmailTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.mark_email_unread, size: 64, color: AppColors.accent),
+            Icon(
+              Icons.mark_email_unread,
+              size: 64,
+              color: context.palette.accent,
+            ),
             const SizedBox(height: AppDimensions.paddingM),
             Text(
-              'We\'ve sent a verification link to ${_emailController.text}',
+              context.l10n.authVerificationSent(_emailController.text),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingM),
-            const Text(
-              'Please click the link in your email to verify your account.',
+            Text(
+              context.l10n.authVerificationInstruction,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14),
+              style: context.styles.body2,
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(context.l10n.commonOk),
           ),
         ],
       ),
@@ -522,9 +549,9 @@ class _AuthScreenState extends State<AuthScreen>
     if (mounted) {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Signed in with Google!'),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.authSignedInWithGoogle),
+            backgroundColor: context.palette.success,
           ),
         );
       } else if (authProvider.error.contains('not configured')) {
@@ -532,14 +559,18 @@ class _AuthScreenState extends State<AuthScreen>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Google Sign-In Unavailable'),
-            content: const Column(
+            title: Text(context.l10n.authGoogleUnavailableTitle),
+            content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.info_outline, size: 48, color: AppColors.warning),
+                Icon(
+                  Icons.info_outline,
+                  size: 48,
+                  color: context.palette.warning,
+                ),
                 SizedBox(height: 16),
                 Text(
-                  'Google Sign-In is not configured for this app yet. Please use email sign-in instead.',
+                  context.l10n.authGoogleUnavailableBody,
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -547,7 +578,7 @@ class _AuthScreenState extends State<AuthScreen>
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
+                child: Text(context.l10n.commonOk),
               ),
             ],
           ),
@@ -560,9 +591,9 @@ class _AuthScreenState extends State<AuthScreen>
     if (_emailController.text.trim().isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please enter your email first'),
-            backgroundColor: AppColors.warning,
+          SnackBar(
+            content: Text(context.l10n.authEnterEmailFirst),
+            backgroundColor: context.palette.warning,
           ),
         );
       }
@@ -576,11 +607,34 @@ class _AuthScreenState extends State<AuthScreen>
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password reset email sent!'),
-          backgroundColor: AppColors.success,
+        SnackBar(
+          content: Text(context.l10n.authPasswordResetSent),
+          backgroundColor: context.palette.success,
         ),
       );
     }
+  }
+
+  /// Turns the sign-in service's message into a translated, friendly one.
+  /// Unknown errors get a generic message instead of raw exception text.
+  String _errorMessage(BuildContext context, String raw) {
+    final l = context.l10n;
+    final e = raw.toLowerCase();
+    if (e.contains('invalid login credentials')) {
+      return l.authErrorInvalidCredentials;
+    }
+    if (e.contains('already registered') || e.contains('already exists')) {
+      return l.authErrorAlreadyRegistered;
+    }
+    if (e.contains('not confirmed')) return l.authErrorEmailNotConfirmed;
+    if (e.contains('google')) return l.authErrorGoogleFailed;
+    if (e.contains('failed to create account')) return l.authErrorSignUpFailed;
+    if (e.contains('socket') ||
+        e.contains('network') ||
+        e.contains('failed host lookup') ||
+        e.contains('clientexception')) {
+      return l.authErrorNetwork;
+    }
+    return l.commonSomethingWentWrong;
   }
 }

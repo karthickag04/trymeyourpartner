@@ -5,6 +5,9 @@ import '../../shared/state/matrimonial_provider.dart';
 // Legacy notifications are now hidden in favor of unified notifications.
 // import '../screens/notification_center_screen.dart';
 import '../notifications/notifications_service.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
 
 /// The tabbed main screen. Each tab has its own URL; [shell] (from the router)
 /// keeps every tab's state while switching.
@@ -20,23 +23,24 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
   final _notifService = NotificationsService();
 
   List<BottomNavigationBarItem> _buildNavItems(BuildContext context) {
+    final l = context.l10n;
     return [
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.home_rounded),
-        label: 'Home',
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.home_rounded),
+        label: l.navHome,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.favorite_rounded),
-        label: 'Matches',
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.favorite_rounded),
+        label: l.navMatches,
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.search_rounded),
-        label: 'Search',
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.search_rounded),
+        label: l.navSearch,
       ),
-      BottomNavigationBarItem(icon: _InterestsIcon(), label: 'Interests'),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.person_rounded),
-        label: 'Profile',
+      BottomNavigationBarItem(icon: _InterestsIcon(), label: l.navInterests),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.person_rounded),
+        label: l.navProfile,
       ),
     ];
   }
@@ -54,20 +58,21 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
           if (!mounted) return;
           final type = row['type'] as String?;
           if (type == null) return;
+          final l = context.l10n;
           String text;
           if (type == 'message') {
             text =
                 (row['payload'] as Map<String, dynamic>?)?['message']
                     ?.toString() ??
-                'New message';
+                l.toastNewMessage;
           } else if (type == 'interest_sent') {
-            text = 'You received a new interest';
+            text = l.toastInterestReceived;
           } else if (type == 'interest_accepted') {
-            text = 'Your interest was accepted';
+            text = l.toastInterestAccepted;
           } else if (type == 'interest_rejected') {
-            text = 'Your interest was rejected';
+            text = l.toastInterestRejected;
           } else {
-            text = 'New notification';
+            text = l.toastNewNotification;
           }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -108,7 +113,7 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: context.palette.shadow,
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -122,9 +127,6 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
             initialLocation: index == widget.shell.currentIndex,
           ),
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.pink,
-          unselectedItemColor: Colors.grey,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12,
@@ -166,18 +168,22 @@ class _InterestsBadge extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
           decoration: BoxDecoration(
-            color: Colors.redAccent,
+            color: context.palette.error,
             borderRadius: BorderRadius.circular(10),
           ),
           constraints: const BoxConstraints(minWidth: 16),
-          child: Text(
-            '$c',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
+          child: Semantics(
+            label: context.l10n.interestsBadgeLabel(c),
+            excludeSemantics: true,
+            child: Text(
+              context.formatNumber(c),
+              style: context.styles.overline.copyWith(
+                color: context.colors.onError,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         );
       },

@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../app/di/service_locator.dart';
 import 'notifications_service.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
 
 @Deprecated('Use UnifiedNotificationsScreen/NotificationsPagerScreen')
 class _LegacyNotificationCenterScreen extends StatefulWidget {
@@ -81,9 +83,10 @@ class _NotificationCenterScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(context.l10n.notificationsTitle),
         actions: [
           IconButton(
+            tooltip: context.l10n.notificationsMarkAllRead,
             icon: const Icon(Icons.mark_email_read_outlined),
             onPressed: () async {
               final p = context.read<MatrimonialProvider>().currentUserProfile;
@@ -119,7 +122,9 @@ class _NotificationCenterScreenState
                 return ListTile(
                   leading: Icon(
                     _iconFor(type),
-                    color: read ? Colors.grey : Colors.pink,
+                    color: read
+                        ? context.palette.textTertiary
+                        : context.colors.primary,
                   ),
                   title: Text(
                     title,
@@ -132,7 +137,7 @@ class _NotificationCenterScreenState
                       ? null
                       : TextButton(
                           onPressed: () => _markRead(n['id'] as String),
-                          child: const Text('Mark read'),
+                          child: Text(context.l10n.notificationsMarkRead),
                         ),
                 );
               },
@@ -154,15 +159,16 @@ class _NotificationCenterScreenState
   }
 
   String _titleFor(String type, Map<String, dynamic>? payload) {
+    final l = context.l10n;
     switch (type) {
       case 'message':
-        return 'New message';
+        return l.notificationNewMessage;
       case 'interest_sent':
-        return 'New interest';
+        return l.notificationNewInterest;
       case 'interest_accepted':
-        return 'Interest accepted';
+        return l.notificationInterestAccepted;
       default:
-        return 'Notification';
+        return l.notificationGeneric;
     }
   }
 

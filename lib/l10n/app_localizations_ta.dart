@@ -1,0 +1,672 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Tamil (`ta`).
+class AppLocalizationsTa extends AppLocalizations {
+  AppLocalizationsTa([String locale = 'ta']) : super(locale);
+
+  @override
+  String get appName => 'TryMeYourPartner';
+
+  @override
+  String get commonOk => 'சரி';
+
+  @override
+  String get commonCancel => 'ரத்துசெய்';
+
+  @override
+  String get commonSave => 'சேமி';
+
+  @override
+  String get commonRetry => 'மீண்டும் முயலவும்';
+
+  @override
+  String get commonClose => 'மூடு';
+
+  @override
+  String get commonBack => 'பின்செல்';
+
+  @override
+  String get commonNext => 'அடுத்து';
+
+  @override
+  String get commonDone => 'முடிந்தது';
+
+  @override
+  String get commonApply => 'பயன்படுத்து';
+
+  @override
+  String get commonClear => 'அழி';
+
+  @override
+  String get commonReset => 'மீட்டமை';
+
+  @override
+  String get commonView => 'பார்';
+
+  @override
+  String get commonSearch => 'தேடு';
+
+  @override
+  String get commonLoading => 'ஏற்றுகிறது…';
+
+  @override
+  String get commonNotSpecified => 'குறிப்பிடப்படவில்லை';
+
+  @override
+  String get commonSomethingWentWrong =>
+      'ஏதோ தவறு நடந்துவிட்டது. மீண்டும் முயலவும்.';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageTamil => 'தமிழ்';
+
+  @override
+  String get languageLabel => 'மொழி';
+
+  @override
+  String get languageChooseTooltip => 'மொழியை மாற்று';
+
+  @override
+  String get authTagline =>
+      'நம்பிக்கையுடன் உங்கள் வாழ்க்கைத் துணையைக் கண்டறியுங்கள்';
+
+  @override
+  String get authSignIn => 'உள்நுழைக';
+
+  @override
+  String get authSignUp => 'பதிவு செய்க';
+
+  @override
+  String get authEmailLabel => 'மின்னஞ்சல்';
+
+  @override
+  String get authEmailRequired => 'உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்';
+
+  @override
+  String get authEmailInvalid => 'சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்';
+
+  @override
+  String get authPasswordLabel => 'கடவுச்சொல்';
+
+  @override
+  String get authPasswordRequired => 'உங்கள் கடவுச்சொல்லை உள்ளிடவும்';
+
+  @override
+  String authPasswordTooShort(int min) {
+    return 'கடவுச்சொல் குறைந்தது $min எழுத்துகள் கொண்டிருக்க வேண்டும்';
+  }
+
+  @override
+  String get authShowPassword => 'கடவுச்சொல்லைக் காட்டு';
+
+  @override
+  String get authHidePassword => 'கடவுச்சொல்லை மறை';
+
+  @override
+  String get authForgotPassword => 'கடவுச்சொல் மறந்துவிட்டதா?';
+
+  @override
+  String get authFullNameLabel => 'முழுப் பெயர்';
+
+  @override
+  String get authFullNameRequired => 'உங்கள் முழுப் பெயரை உள்ளிடவும்';
+
+  @override
+  String get authOrContinueWith => 'அல்லது இதன் மூலம் தொடரவும்';
+
+  @override
+  String get authContinueWithGoogle => 'Google மூலம் தொடரவும்';
+
+  @override
+  String get authWelcomeBack => 'மீண்டும் வருக!';
+
+  @override
+  String get authAccountCreated =>
+      'உங்கள் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது! TryMeYourPartner-க்கு உங்களை அன்புடன் வரவேற்கிறோம்!';
+
+  @override
+  String get authCheckEmailTitle => 'உங்கள் மின்னஞ்சலைப் பாருங்கள்';
+
+  @override
+  String authVerificationSent(String email) {
+    return '$email என்ற முகவரிக்குச் சரிபார்ப்பு இணைப்பை அனுப்பியுள்ளோம்';
+  }
+
+  @override
+  String get authVerificationInstruction =>
+      'உங்கள் கணக்கைச் சரிபார்க்க, மின்னஞ்சலில் உள்ள இணைப்பைத் திறக்கவும்.';
+
+  @override
+  String get authSignedInWithGoogle => 'Google மூலம் உள்நுழைந்துவிட்டீர்கள்!';
+
+  @override
+  String get authGoogleUnavailableTitle =>
+      'Google உள்நுழைவு தற்போது கிடைக்கவில்லை';
+
+  @override
+  String get authGoogleUnavailableBody =>
+      'இந்தச் செயலியில் Google உள்நுழைவு இன்னும் அமைக்கப்படவில்லை. தயவுசெய்து மின்னஞ்சல் மூலம் உள்நுழையவும்.';
+
+  @override
+  String get authEnterEmailFirst =>
+      'முதலில் உங்கள் மின்னஞ்சல் முகவரியை உள்ளிடவும்';
+
+  @override
+  String get authPasswordResetSent =>
+      'கடவுச்சொல்லை மீட்டமைக்கும் மின்னஞ்சல் அனுப்பப்பட்டது!';
+
+  @override
+  String get authErrorInvalidCredentials =>
+      'மின்னஞ்சல் அல்லது கடவுச்சொல் தவறாக உள்ளது.';
+
+  @override
+  String get authErrorAlreadyRegistered =>
+      'இந்த மின்னஞ்சலில் ஏற்கனவே ஒரு கணக்கு உள்ளது. தயவுசெய்து உள்நுழையவும்.';
+
+  @override
+  String get authErrorEmailNotConfirmed =>
+      'உள்நுழைவதற்கு முன் உங்கள் மின்னஞ்சலைச் சரிபார்க்கவும்.';
+
+  @override
+  String get authErrorSignUpFailed =>
+      'உங்கள் கணக்கை உருவாக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get authErrorGoogleFailed =>
+      'Google உள்நுழைவு வெற்றிபெறவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get authErrorNetwork =>
+      'சேவையகத்தை அணுக முடியவில்லை. இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.';
+
+  @override
+  String get splashTagline => 'குடும்பங்கள் சரியான வரனைக் கண்டடையும் இடம்';
+
+  @override
+  String get splashLoading => 'உங்களுக்காகத் தயாராகிறது...';
+
+  @override
+  String get navHome => 'முகப்பு';
+
+  @override
+  String get navMatches => 'வரன்கள்';
+
+  @override
+  String get navSearch => 'தேடல்';
+
+  @override
+  String get navInterests => 'விருப்பங்கள்';
+
+  @override
+  String get navProfile => 'சுயவிவரம்';
+
+  @override
+  String get toastNewMessage => 'புதிய செய்தி';
+
+  @override
+  String get toastInterestReceived =>
+      'உங்களுக்கு ஒரு புதிய விருப்பம் வந்துள்ளது';
+
+  @override
+  String get toastInterestAccepted => 'உங்கள் விருப்பம் ஏற்றுக்கொள்ளப்பட்டது';
+
+  @override
+  String get toastInterestRejected => 'உங்கள் விருப்பம் ஏற்கப்படவில்லை';
+
+  @override
+  String get toastNewNotification => 'புதிய அறிவிப்பு';
+
+  @override
+  String interestsBadgeLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count புதிய விருப்பங்கள்',
+      one: '1 புதிய விருப்பம்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeJustNow => 'இப்போது';
+
+  @override
+  String timeMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count நிமிடங்களுக்கு முன்',
+      one: '1 நிமிடத்திற்கு முன்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count மணி நேரத்திற்கு முன்',
+      one: '1 மணி நேரத்திற்கு முன்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeYesterday => 'நேற்று';
+
+  @override
+  String timeDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count நாட்களுக்கு முன்',
+      one: '1 நாளுக்கு முன்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeWeeksAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count வாரங்களுக்கு முன்',
+      one: '1 வாரத்திற்கு முன்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeMonthsAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count மாதங்களுக்கு முன்',
+      one: '1 மாதத்திற்கு முன்',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timeMinutesShort(int count) {
+    return '$count நி';
+  }
+
+  @override
+  String timeHoursShort(int count) {
+    return '$count ம';
+  }
+
+  @override
+  String timeDaysShort(int count) {
+    return '$count நா';
+  }
+
+  @override
+  String get presenceOnline => 'ஆன்லைனில்';
+
+  @override
+  String get presenceOffline => 'ஆஃப்லைன்';
+
+  @override
+  String get profileNotAvailable => 'இந்தச் சுயவிவரம் தற்போது கிடைக்கவில்லை.';
+
+  @override
+  String get contactLimitReached =>
+      'உங்கள் திட்டத்தில் உள்ள அனைத்துத் தொடர்பு விவரப் பார்வைகளையும் பயன்படுத்திவிட்டீர்கள்.';
+
+  @override
+  String get notificationsTitle => 'அறிவிப்புகள்';
+
+  @override
+  String get notificationsMarkAllRead => 'அனைத்தையும் படித்ததாகக் குறி';
+
+  @override
+  String get notificationsMarkRead => 'படித்ததாகக் குறி';
+
+  @override
+  String get notificationNewMessage => 'புதிய செய்தி';
+
+  @override
+  String get notificationNewInterest => 'புதிய விருப்பம்';
+
+  @override
+  String get notificationInterestAccepted => 'விருப்பம் ஏற்கப்பட்டது';
+
+  @override
+  String get notificationGeneric => 'அறிவிப்பு';
+
+  @override
+  String get contactRequestsTitle => 'தொடர்பு விவரக் கோரிக்கைகள்';
+
+  @override
+  String get contactRequestsReceived => 'பெற்றவை';
+
+  @override
+  String get contactRequestsSent => 'அனுப்பியவை';
+
+  @override
+  String get contactRequestsEmpty => 'இதுவரை கோரிக்கைகள் எதுவும் இல்லை';
+
+  @override
+  String contactRequestStatus(String status) {
+    return 'நிலை: $status';
+  }
+
+  @override
+  String get contactStatusPending => 'நிலுவையில் உள்ளது';
+
+  @override
+  String get contactStatusAccepted => 'ஏற்கப்பட்டது';
+
+  @override
+  String get contactStatusDeclined => 'மறுக்கப்பட்டது';
+
+  @override
+  String get contactStatusCancelled => 'ரத்துசெய்யப்பட்டது';
+
+  @override
+  String get actionAccept => 'ஏற்றுக்கொள்';
+
+  @override
+  String get actionDecline => 'மறு';
+
+  @override
+  String get messagesTitle => 'செய்திகள்';
+
+  @override
+  String get messagesSignInRequired =>
+      'உங்கள் செய்திகளைப் பார்க்க உள்நுழையவும்';
+
+  @override
+  String get messagesLoadFailed => 'உங்கள் செய்திகளை ஏற்ற முடியவில்லை.';
+
+  @override
+  String get messagesEmpty => 'இதுவரை செய்திகள் எதுவும் இல்லை';
+
+  @override
+  String get profileNotActive => 'சுயவிவரம் செயலில் இல்லை';
+
+  @override
+  String get profileNotActiveNow => 'இந்தச் சுயவிவரம் தற்போது செயலில் இல்லை';
+
+  @override
+  String unreadCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'படிக்காத $count செய்திகள்',
+      one: 'படிக்காத 1 செய்தி',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countOverflow(int max) {
+    return '$max+';
+  }
+
+  @override
+  String get chatLoadFailed => 'இந்த உரையாடலை ஏற்ற முடியவில்லை.';
+
+  @override
+  String get chatSendFailed =>
+      'உங்கள் செய்தி அனுப்பப்படவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get chatMyProfileInactive =>
+      'உங்கள் சுயவிவரம் செயலிழக்கப்பட்டுள்ளது. செய்திகள் அனுப்ப அதை மீண்டும் செயல்படுத்தவும்.';
+
+  @override
+  String get chatOtherProfileInactive =>
+      'இந்தச் சுயவிவரம் தற்போது செயலில் இல்லை. முந்தைய செய்திகளைப் படிக்கலாம்; புதிய செய்திகளை அனுப்ப இயலாது.';
+
+  @override
+  String get chatTyping => 'தட்டச்சு செய்கிறார்…';
+
+  @override
+  String get chatSuggestPrompt => 'உரையாடலைத் தொடங்க ஒரு கேள்வியைப் பரிந்துரை';
+
+  @override
+  String get chatMessageHint => 'செய்தியைத் தட்டச்சு செய்யவும்';
+
+  @override
+  String get chatSend => 'அனுப்பு';
+
+  @override
+  String chatLastSeen(String time) {
+    return 'கடைசியாகப் பார்த்தது $time';
+  }
+
+  @override
+  String get chatStarterPassion =>
+      'வேலைக்கு அப்பால் நீங்கள் மிகவும் விரும்பிச் செய்வது எது?';
+
+  @override
+  String get chatStarterWeekend =>
+      'வார இறுதி திட்டம்: வீட்டில் ஓய்வா, வெளியே செல்வதா?';
+
+  @override
+  String get chatStarterSmallJoy =>
+      'சமீபத்தில் உங்கள் நாளை இனிதாக்கிய ஒரு சிறிய மகிழ்ச்சி என்ன?';
+
+  @override
+  String get chatTickSent => 'அனுப்பப்பட்டது';
+
+  @override
+  String get chatTickDelivered => 'சென்றடைந்தது';
+
+  @override
+  String get chatTickRead => 'படிக்கப்பட்டது';
+
+  @override
+  String get notificationsTabAccepted => 'ஏற்கப்பட்டவை';
+
+  @override
+  String get notificationsTabInterests => 'விருப்பங்கள்';
+
+  @override
+  String get notificationsTabContactRequests => 'தொடர்புக் கோரிக்கைகள்';
+
+  @override
+  String newItemsLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count புதியவை',
+      one: '1 புதியது',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get acceptedEmptyTitle => 'இதுவரை ஏற்கப்பட்ட இணைப்புகள் இல்லை';
+
+  @override
+  String get acceptedEmptySubtitle =>
+      'விருப்பங்கள் ஏற்கப்பட்டதும் அவை இங்கே தோன்றும்.';
+
+  @override
+  String get interestsEmptyTitle => 'புதிய விருப்பங்கள் எதுவும் இல்லை';
+
+  @override
+  String get interestsEmptySubtitle =>
+      'உங்களுக்கு வரும் விருப்பங்கள் இங்கே தோன்றும்.';
+
+  @override
+  String get contactReceivedHeader => 'பெற்றவை (ஒப்புதல் அல்லது மறுப்பு)';
+
+  @override
+  String contactFrom(Object name) {
+    return 'அனுப்பியவர்: $name';
+  }
+
+  @override
+  String contactRequestedAt(Object date) {
+    return 'கோரிய நாள்: $date';
+  }
+
+  @override
+  String get actionApprove => 'ஒப்புதல் அளி';
+
+  @override
+  String get contactNoReceived => 'கோரிக்கைகள் எதுவும் வரவில்லை.';
+
+  @override
+  String get contactSentHeader => 'அனுப்பியவை (பதிலுக்காகக் காத்திருக்கிறது)';
+
+  @override
+  String contactTo(Object name) {
+    return 'பெறுநர்: $name';
+  }
+
+  @override
+  String get contactNoSent => 'நீங்கள் கோரிக்கைகள் எதுவும் அனுப்பவில்லை.';
+
+  @override
+  String profileAgePlace(int age, String place) {
+    return '$age வயது · $place';
+  }
+
+  @override
+  String ageYears(int age) {
+    return '$age வயது';
+  }
+
+  @override
+  String get interestsTitle => 'விருப்பங்கள்';
+
+  @override
+  String get interestsTabReceived => 'பெற்றவை';
+
+  @override
+  String get interestsTabSent => 'அனுப்பியவை';
+
+  @override
+  String get interestsLoadingReceived =>
+      'உங்களுக்கு வந்த விருப்பங்களை ஏற்றுகிறது…';
+
+  @override
+  String get interestsLoadingSent =>
+      'நீங்கள் அனுப்பிய விருப்பங்களை ஏற்றுகிறது…';
+
+  @override
+  String get interestsReceivedEmptyTitle =>
+      'இதுவரை விருப்பங்கள் எதுவும் வரவில்லை';
+
+  @override
+  String get interestsReceivedEmptySubtitle =>
+      'உங்கள் சுயவிவரத்தில் யாரேனும் விருப்பம் தெரிவித்தால், அவர்கள் இங்கே தோன்றுவார்கள்.';
+
+  @override
+  String get interestsSentEmptyTitle => 'இதுவரை நீங்கள் விருப்பம் அனுப்பவில்லை';
+
+  @override
+  String get interestsSentEmptySubtitle =>
+      'சுயவிவரங்களைப் பார்த்து, விருப்பம் அனுப்பி உறவைத் தொடங்குங்கள்.';
+
+  @override
+  String profileAgeCity(int age, String city) {
+    return '$age வயது • $city';
+  }
+
+  @override
+  String get profileNoAbout => 'தகவல் எதுவும் வழங்கப்படவில்லை';
+
+  @override
+  String interestAccepted(Object name) {
+    return '$name அவர்களின் விருப்பத்தை ஏற்றுக்கொண்டீர்கள்';
+  }
+
+  @override
+  String get interestAcceptFailed =>
+      'இந்த விருப்பத்தை ஏற்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String interestDeclined(Object name) {
+    return '$name அவர்களின் விருப்பத்தை மறுத்துவிட்டீர்கள்';
+  }
+
+  @override
+  String get interestDeclineFailed =>
+      'இந்த விருப்பத்தை மறுக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String ageYearsLong(int age) {
+    return '$age வயது';
+  }
+
+  @override
+  String get actionShortlist => 'விருப்பப் பட்டியலில் சேர்';
+
+  @override
+  String get actionShortlisted => 'விருப்பப் பட்டியலில் உள்ளது';
+
+  @override
+  String get actionReject => 'மறு';
+
+  @override
+  String get actionSendInterest => 'விருப்பம் அனுப்பு';
+
+  @override
+  String get actionInterestSent => 'விருப்பம் அனுப்பப்பட்டது';
+
+  @override
+  String get badgeVerified => 'சரிபார்க்கப்பட்ட சுயவிவரம்';
+
+  @override
+  String get badgeShortlisted => 'உங்கள் விருப்பப் பட்டியலில் உள்ளது';
+
+  @override
+  String placeDistrictState(Object district, Object state) {
+    return '$district, $state';
+  }
+
+  @override
+  String profileAgeHeight(int age, String height) {
+    return '$age வயது, $height';
+  }
+
+  @override
+  String get whyMatchedTooltip => 'இந்த வரன் ஏன் பொருத்தம்';
+
+  @override
+  String get actionInterest => 'விருப்பம்';
+
+  @override
+  String get actionAddToShortlist => 'விருப்பப் பட்டியலில் சேர்';
+
+  @override
+  String get actionRemoveFromShortlist => 'விருப்பப் பட்டியலிலிருந்து நீக்கு';
+
+  @override
+  String whyMatchNearby(Object district) {
+    return 'நீங்கள் $district அருகில் வசிக்கிறீர்கள்';
+  }
+
+  @override
+  String whyMatchEducation(Object education) {
+    return 'ஒத்த கல்வித் தகுதி: $education';
+  }
+
+  @override
+  String whyMatchCaste(Object caste) {
+    return 'சாதி விருப்பம் பொருந்துகிறது: $caste';
+  }
+
+  @override
+  String whyMatchLanguages(Object languages) {
+    return 'பொதுவான மொழிகள்: $languages';
+  }
+
+  @override
+  String get whyMatchGeneral =>
+      'உங்கள் விருப்பங்களின் அடிப்படையில் நல்ல பொருத்தம்';
+}

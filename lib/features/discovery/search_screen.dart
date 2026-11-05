@@ -1022,13 +1022,13 @@ class _SearchScreenState extends State<SearchScreen> {
   (String, Color) _mapHandshakeToChip(ContactHandshakeStatus s) {
     switch (s) {
       case ContactHandshakeStatus.accepted:
-        return ('Contact available', AppColors.success);
+        return ('Contact available', context.palette.success);
       case ContactHandshakeStatus.sentPending:
-        return ('Request sent', AppColors.accent);
+        return ('Request sent', context.palette.accent);
       case ContactHandshakeStatus.receivedPending:
-        return ('Request received', AppColors.warning);
+        return ('Request received', context.palette.warning);
       case ContactHandshakeStatus.declined:
-        return ('Declined', AppColors.error);
+        return ('Declined', context.palette.error);
       case ContactHandshakeStatus.cancelled:
         return ('Cancelled', Colors.grey);
       case ContactHandshakeStatus.none:
@@ -1920,7 +1920,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ? 'Removed from shortlist'
                       : 'Added to shortlist',
                 ),
-                backgroundColor: AppColors.accent,
+                backgroundColor: context.palette.accent,
               ),
             );
           }
@@ -1930,7 +1930,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Failed to update shortlist: $error'),
-                backgroundColor: AppColors.error,
+                backgroundColor: context.palette.error,
               ),
             );
           }
