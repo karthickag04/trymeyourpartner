@@ -31,8 +31,7 @@ class HelpScreen extends StatelessWidget {
           children: [
             Text(l.helpIntro),
             const SizedBox(height: AppDimensions.paddingM),
-            if (items.isEmpty)
-              Text(l.helpNoContacts),
+            if (items.isEmpty) Text(l.helpNoContacts),
             for (final (icon, label, value) in items)
               Card(
                 child: ListTile(
@@ -44,9 +43,9 @@ class HelpScreen extends StatelessWidget {
                     icon: const Icon(Icons.copy),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(l.helpCopied(label))));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l.helpCopied(label))),
+                      );
                     },
                   ),
                 ),

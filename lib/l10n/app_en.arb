@@ -596,5 +596,103 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homeSubtitle": "Try Me For Your Partner Selection",
+  "statMatches": "Matches",
+  "statShortlisted": "Shortlisted",
+  "statViewedYou": "Viewed you",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "greetingWithName": "{greeting}, {name}",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": {},
+      "name": {}
+    }
+  },
+  "homeTopPicks": "Top picks for you",
+  "homeYourMatches": "Your matches",
+  "homeViewedYou": "Viewed you",
+  "homeNewThisWeek": "New this week",
+  "homeViewedByYou": "Viewed by you",
+  "homeSeeAll": "See all",
+  "homeEmptyTopPicks": "No top picks yet. Highly compatible profiles will appear here.",
+  "homeEmptyMatches": "No matches yet. Update your preferences or try searching.",
+  "homeEmptyViewedYou": "No one has viewed your profile yet.",
+  "homeEmptyNewThisWeek": "No new profiles in the last 7 days.",
+  "homeEmptyViewedByYou": "Start viewing profiles to see them here.",
+  "homeCompleteProfileTitle": "Complete your profile",
+  "homeCompleteProfileProgress": "{percent}% complete · Get better matches with full details",
+  "@homeCompleteProfileProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCompleteAction": "Complete",
+  "homeDeactivatedTitle": "Your profile is deactivated",
+  "homeDeactivatedBody": "Reactivate your profile to send and receive messages and appear in searches.",
+  "statLabel": "{label}: {count}",
+  "@statLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "matchesTabMatches": "Matches",
+  "matchesTabTopPicks": "Top picks",
+  "matchesTabInterests": "Interests",
+  "matchesTabShortlistedByYou": "Shortlisted by you",
+  "matchesTabShortlistedYou": "Shortlisted you",
+  "matchesTabViewed": "Viewed",
+  "matchesTabViewedYou": "Viewed you",
+  "matchesTabAccepted": "Accepted",
+  "matchesChooseList": "Choose a list",
+  "matchesPreviousList": "Previous list",
+  "matchesNextList": "Next list",
+  "signInRequiredTitle": "Sign in required",
+  "signInRequiredBody": "Sign in to find your match and connect with compatible profiles",
+  "matchesEmptyTitle": "No matches yet",
+  "matchesEmptyBody": "Complete your profile to get better matches",
+  "actionCompleteProfile": "Complete profile",
+  "interestsNoneReceivedTitle": "No interests received",
+  "interestsNoneReceivedBody": "Your profile will receive interests from compatible matches",
+  "actionImproveProfile": "Improve profile",
+  "topPicksEmptyTitle": "No top picks yet",
+  "topPicksEmptyBody": "Highly compatible profiles will appear here once matches are available",
+  "actionRefreshMatches": "Refresh matches",
+  "shortlistEmptyTitle": "No shortlisted profiles",
+  "shortlistEmptyBody": "Browse profiles and shortlist the ones you like",
+  "actionBrowseProfiles": "Browse profiles",
+  "shortlistedYouEmptyTitle": "No one has shortlisted you yet",
+  "shortlistedYouEmptyBody": "As more people discover your profile, you'll see them here",
+  "viewedEmptyTitle": "No profile views",
+  "viewedEmptyBody": "Start viewing profiles to see them here",
+  "viewedYouEmptyTitle": "No profile views yet",
+  "viewedYouEmptyBody": "People who view your profile will appear here",
+  "actionRefresh": "Refresh",
+  "acceptedNoneTitle": "No accepted connections",
+  "acceptedNoneBody": "Accepted interests will appear here",
+  "matchesLoading": "Loading matches…",
+  "errorTitle": "Something went wrong",
+  "errorLoadMatches": "We couldn't load your matches. Check your connection and try again.",
+  "interestAcceptedFrom": "You accepted {name}'s interest",
+  "@interestAcceptedFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestRejectedFrom": "You declined {name}'s interest",
+  "@interestRejectedFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "restartToSignIn": "Please restart the app to sign in."
 }

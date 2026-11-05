@@ -16,6 +16,10 @@ import '../../app/di/service_locator.dart';
 import '../profile/profile_edit_screen.dart';
 import '../../shared/services/matrimonial_service.dart';
 import '../auth/auth_provider.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
+import '../../shared/widgets/count_badge.dart';
 // no direct model import needed here
 
 class NewMatrimonialHomeScreen extends StatefulWidget {
@@ -50,12 +54,14 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
   SliverAppBar _buildSliverAppBar(BuildContext context, MatrimonialProvider p) {
     final name = p.currentUserProfile?.displayName;
     final greeting = _greeting();
-    final scheme = Theme.of(context).colorScheme;
+    // A deep brand colour in both themes, so the white title stays readable.
+    final onBar = context.palette.onImage;
     return SliverAppBar(
       pinned: true,
       floating: false,
       snap: false,
-      backgroundColor: scheme.primary,
+      backgroundColor: context.palette.brandGradient.first,
+      foregroundColor: onBar,
       expandedHeight: 120,
       title: _StyledAppTitle(fontSize: 22),
       flexibleSpace: FlexibleSpaceBar(
@@ -74,12 +80,13 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      '$greeting${name != null && name.isNotEmpty ? ", $name" : ''}',
+                      name != null && name.isNotEmpty
+                          ? context.l10n.greetingWithName(greeting, name)
+                          : greeting,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: scheme.onPrimary.withValues(alpha: 0.95),
-                        fontSize: 12,
+                      style: context.styles.caption.copyWith(
+                        color: onBar.withValues(alpha: 0.95),
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -88,10 +95,9 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                'Try Me For Your Partner Selection',
-                style: TextStyle(
-                  color: scheme.onPrimary.withValues(alpha: 0.8),
-                  fontSize: 12,
+                context.l10n.homeSubtitle,
+                style: context.styles.caption.copyWith(
+                  color: onBar.withValues(alpha: 0.9),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -103,12 +109,12 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
         // Notifications button with combined badge (interests + pending contact requests)
         Padding(
           padding: const EdgeInsets.only(right: 0),
-          child: _NotificationsButton(color: scheme.onPrimary),
+          child: _NotificationsButton(color: onBar),
         ),
         // Messages button with unread badge
         Padding(
           padding: const EdgeInsets.only(right: 6),
-          child: _MessagesButton(color: scheme.onPrimary),
+          child: _MessagesButton(color: onBar),
         ),
       ],
     );
@@ -120,9 +126,21 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
   ) {
     // Only key stats; notification count removed
     final stats = [
-      _Stat('Matches', p.matchedProfiles.length, Icons.favorite_rounded),
-      _Stat('Shortlisted', p.shortlistedByMe.length, Icons.star_rounded),
-      _Stat('Viewed You', p.viewersOfMe.length, Icons.remove_red_eye_rounded),
+      _Stat(
+        context.l10n.statMatches,
+        p.matchedProfiles.length,
+        Icons.favorite_rounded,
+      ),
+      _Stat(
+        context.l10n.statShortlisted,
+        p.shortlistedByMe.length,
+        Icons.star_rounded,
+      ),
+      _Stat(
+        context.l10n.statViewedYou,
+        p.viewersOfMe.length,
+        Icons.remove_red_eye_rounded,
+      ),
     ];
     final profile = p.currentUserProfile;
     final pct = profile == null ? null : p.completionPercent(profile);
@@ -166,9 +184,9 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
 
   String _greeting() {
     final h = DateTime.now().hour;
-    if (h < 12) return 'Good morning';
-    if (h < 17) return 'Good afternoon';
-    return 'Good evening';
+    if (h < 12) return context.l10n.greetingMorning;
+    if (h < 17) return context.l10n.greetingAfternoon;
+    return context.l10n.greetingEvening;
   }
 
   // ---- Section switcher UI (replaced by horizontal panels) ----
@@ -182,35 +200,40 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
       // Top Picks
       _buildSection(
         context,
-        title: 'Top picks for you',
+        title: context.l10n.homeTopPicks,
+        emptyHint: context.l10n.homeEmptyTopPicks,
         items: p.getTopPicks(limit: 10),
         onSeeAll: () => _openMatchesTab(context, 1),
       ),
       // Your matches
       _buildSection(
         context,
-        title: 'Your matches',
+        title: context.l10n.homeYourMatches,
+        emptyHint: context.l10n.homeEmptyMatches,
         items: p.matchedProfiles,
         onSeeAll: () => _openMatchesTab(context, 0),
       ),
       // Viewed you
       _buildSection(
         context,
-        title: 'Viewed you',
+        title: context.l10n.homeViewedYou,
+        emptyHint: context.l10n.homeEmptyViewedYou,
         items: p.viewersOfMe,
         onSeeAll: () => _openMatchesTab(context, 6),
       ),
       // New this week (See all opens Search with newest filter)
       _buildSection(
         context,
-        title: 'New this week',
+        title: context.l10n.homeNewThisWeek,
+        emptyHint: context.l10n.homeEmptyNewThisWeek,
         items: p.newThisWeek,
         onSeeAll: () => _openSearchForNewThisWeek(context),
       ),
       // Viewed by you
       _buildSection(
         context,
-        title: 'Viewed by you',
+        title: context.l10n.homeViewedByYou,
+        emptyHint: context.l10n.homeEmptyViewedByYou,
         items: p.viewedProfiles,
         onSeeAll: () => _openMatchesTab(context, 5),
       ),
@@ -227,6 +250,7 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
   Widget _buildSection(
     BuildContext context, {
     required String title,
+    required String emptyHint,
     required List<MatrimonialUser> items,
     required VoidCallback onSeeAll,
   }) {
@@ -245,7 +269,10 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
-              TextButton(onPressed: onSeeAll, child: const Text('See all')),
+              TextButton(
+                onPressed: onSeeAll,
+                child: Text(context.l10n.homeSeeAll),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -253,8 +280,8 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8),
               child: Text(
-                _emptyHintFor(title),
-                style: TextStyle(color: Colors.grey[700]),
+                emptyHint,
+                style: TextStyle(color: context.palette.textSecondary),
               ),
             )
           else
@@ -283,23 +310,6 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
         ],
       ),
     );
-  }
-
-  String _emptyHintFor(String title) {
-    switch (title) {
-      case 'Top picks for you':
-        return 'No top picks yet. We\'ll show highly compatible profiles here soon.';
-      case 'Your matches':
-        return 'No matches yet. Update your preferences or try searching.';
-      case 'Viewed you':
-        return 'No one has viewed your profile yet.';
-      case 'New this week':
-        return 'No new profiles in the last 7 days yet.';
-      case 'Viewed by you':
-        return 'Start viewing profiles to see them here.';
-      default:
-        return 'Nothing to show yet.';
-    }
   }
 
   // Navigation helpers
@@ -341,7 +351,7 @@ class _IncompleteProfileBanner extends StatelessWidget {
         border: Border.all(color: scheme.primary.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: context.palette.shadow,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -356,7 +366,7 @@ class _IncompleteProfileBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Complete your profile',
+                  context.l10n.homeCompleteProfileTitle,
                   style: Theme.of(
                     context,
                   ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
@@ -373,10 +383,8 @@ class _IncompleteProfileBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '$percent% complete · Get better matches with full details',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: Colors.black54),
+                  context.l10n.homeCompleteProfileProgress(percent),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
@@ -389,7 +397,7 @@ class _IncompleteProfileBanner extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.edit),
-            label: const Text('Complete'),
+            label: Text(context.l10n.homeCompleteAction),
           ),
         ],
       ),
@@ -411,7 +419,7 @@ class _ReactivateProfileBanner extends StatelessWidget {
         border: Border.all(color: scheme.error.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: context.palette.shadow,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -426,17 +434,15 @@ class _ReactivateProfileBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your profile is deactivated',
+                  context.l10n.homeDeactivatedTitle,
                   style: Theme.of(
                     context,
                   ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Reactivate your profile to send/receive messages and appear in searches.',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: Colors.black54),
+                  context.l10n.homeDeactivatedBody,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
@@ -453,7 +459,7 @@ class _ReactivateProfileBanner extends StatelessWidget {
                       context.read<AuthProvider>().user?.id ?? '';
                   await p.forceRefreshUserData(authUserId);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profile reactivated')),
+                    SnackBar(content: Text(context.l10n.profileReactivated)),
                   );
                   // After reactivation, encourage completion
                   Navigator.of(context).push(
@@ -465,12 +471,12 @@ class _ReactivateProfileBanner extends StatelessWidget {
               } catch (e) {
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Failed to reactivate: $e')),
+                  SnackBar(content: Text(context.l10n.profileReactivateFailed)),
                 );
               }
             },
             icon: const Icon(Icons.play_circle_fill),
-            label: const Text('Reactivate'),
+            label: Text(context.l10n.actionReactivate),
           ),
         ],
       ),
@@ -582,6 +588,7 @@ class _NotificationsButtonState extends State<_NotificationsButton> {
       clipBehavior: Clip.none,
       children: [
         IconButton(
+          tooltip: context.l10n.notificationsTitle,
           onPressed: () async {
             // Mark current combined as seen before navigating
             final pid = context
@@ -607,23 +614,10 @@ class _NotificationsButtonState extends State<_NotificationsButton> {
           Positioned(
             right: 4,
             top: 6,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                (() {
-                  final unseen = _combined - _lastSeenCombined;
-                  final v = unseen < 0 ? 0 : unseen;
-                  return v > 99 ? '99+' : '$v';
-                })(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
+            child: CountBadge(
+              count: _combined - _lastSeenCombined,
+              semanticLabel: context.l10n.newItemsLabel(
+                _combined - _lastSeenCombined,
               ),
             ),
           ),
@@ -707,6 +701,7 @@ class _MessagesButtonState extends State<_MessagesButton> {
       clipBehavior: Clip.none,
       children: [
         IconButton(
+          tooltip: context.l10n.messagesTitle,
           onPressed: () async {
             await Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const MessagesInboxScreen()),
@@ -720,20 +715,9 @@ class _MessagesButtonState extends State<_MessagesButton> {
           Positioned(
             right: 4,
             top: 6,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                _unread > 99 ? '99+' : '$_unread',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            child: CountBadge(
+              count: _unread,
+              semanticLabel: context.l10n.unreadCountLabel(_unread),
             ),
           ),
       ],
@@ -747,7 +731,7 @@ class _StyledAppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const titleText = 'TryMeYourPartner';
+    final titleText = context.l10n.appName;
 
     final blackStroke = TextSpan(
       text: titleText,
@@ -757,7 +741,7 @@ class _StyledAppTitle extends StatelessWidget {
         foreground: Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 0.5
-          ..color = Colors.black,
+          ..color = context.palette.imageScrim,
       ),
     );
 
@@ -769,7 +753,7 @@ class _StyledAppTitle extends StatelessWidget {
         foreground: Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 0.02
-          ..color = Colors.white,
+          ..color = context.palette.onImage,
       ),
     );
 
@@ -778,7 +762,7 @@ class _StyledAppTitle extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.w800,
-        color: const Color.fromARGB(255, 246, 246, 246),
+        color: context.palette.onImage.withValues(alpha: 0.96),
       ),
     );
 
@@ -811,33 +795,37 @@ class _StatPill extends StatelessWidget {
     if (scale < 0.8) scale = 0.8; // keep readability
     if (scale > 1.0) scale = 1.0; // stay compact
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(stat.icon, size: 16 * scale, color: primary),
-          SizedBox(width: 6 * scale),
-          Text(
-            '${stat.count}',
-            style: TextStyle(
-              fontSize: 13 * scale,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
+    return Semantics(
+      label: context.l10n.statLabel(stat.title, stat.count),
+      excludeSemantics: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: context.palette.cardBackground,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: context.palette.shadow,
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(stat.icon, size: 16 * scale, color: primary),
+            SizedBox(width: 6 * scale),
+            Text(
+              context.formatNumber(stat.count),
+              style: TextStyle(
+                fontSize: 13 * scale,
+                fontWeight: FontWeight.w700,
+                color: context.palette.textPrimary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

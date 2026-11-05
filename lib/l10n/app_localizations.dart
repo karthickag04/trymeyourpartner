@@ -1777,6 +1777,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{age} • {city}'**
   String ageCityShort(int age, String city);
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Me For Your Partner Selection'**
+  String get homeSubtitle;
+
+  /// No description provided for @statMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get statMatches;
+
+  /// No description provided for @statShortlisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Shortlisted'**
+  String get statShortlisted;
+
+  /// No description provided for @statViewedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed you'**
+  String get statViewedYou;
+
+  /// No description provided for @greetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// No description provided for @greetingWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'{greeting}, {name}'**
+  String greetingWithName(Object greeting, Object name);
+
+  /// No description provided for @homeTopPicks.
+  ///
+  /// In en, this message translates to:
+  /// **'Top picks for you'**
+  String get homeTopPicks;
+
+  /// No description provided for @homeYourMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Your matches'**
+  String get homeYourMatches;
+
+  /// No description provided for @homeViewedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed you'**
+  String get homeViewedYou;
+
+  /// No description provided for @homeNewThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'New this week'**
+  String get homeNewThisWeek;
+
+  /// No description provided for @homeViewedByYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed by you'**
+  String get homeViewedByYou;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeEmptyTopPicks.
+  ///
+  /// In en, this message translates to:
+  /// **'No top picks yet. Highly compatible profiles will appear here.'**
+  String get homeEmptyTopPicks;
+
+  /// No description provided for @homeEmptyMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches yet. Update your preferences or try searching.'**
+  String get homeEmptyMatches;
+
+  /// No description provided for @homeEmptyViewedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has viewed your profile yet.'**
+  String get homeEmptyViewedYou;
+
+  /// No description provided for @homeEmptyNewThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No new profiles in the last 7 days.'**
+  String get homeEmptyNewThisWeek;
+
+  /// No description provided for @homeEmptyViewedByYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Start viewing profiles to see them here.'**
+  String get homeEmptyViewedByYou;
+
+  /// No description provided for @homeCompleteProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your profile'**
+  String get homeCompleteProfileTitle;
+
+  /// No description provided for @homeCompleteProfileProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete · Get better matches with full details'**
+  String homeCompleteProfileProgress(int percent);
+
+  /// No description provided for @homeCompleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get homeCompleteAction;
+
+  /// No description provided for @homeDeactivatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is deactivated'**
+  String get homeDeactivatedTitle;
+
+  /// No description provided for @homeDeactivatedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Reactivate your profile to send and receive messages and appear in searches.'**
+  String get homeDeactivatedBody;
+
+  /// No description provided for @statLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {count}'**
+  String statLabel(String label, int count);
+
+  /// No description provided for @matchesTabMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get matchesTabMatches;
+
+  /// No description provided for @matchesTabTopPicks.
+  ///
+  /// In en, this message translates to:
+  /// **'Top picks'**
+  String get matchesTabTopPicks;
+
+  /// No description provided for @matchesTabInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get matchesTabInterests;
+
+  /// No description provided for @matchesTabShortlistedByYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Shortlisted by you'**
+  String get matchesTabShortlistedByYou;
+
+  /// No description provided for @matchesTabShortlistedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Shortlisted you'**
+  String get matchesTabShortlistedYou;
+
+  /// No description provided for @matchesTabViewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed'**
+  String get matchesTabViewed;
+
+  /// No description provided for @matchesTabViewedYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Viewed you'**
+  String get matchesTabViewedYou;
+
+  /// No description provided for @matchesTabAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get matchesTabAccepted;
+
+  /// No description provided for @matchesChooseList.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a list'**
+  String get matchesChooseList;
+
+  /// No description provided for @matchesPreviousList.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous list'**
+  String get matchesPreviousList;
+
+  /// No description provided for @matchesNextList.
+  ///
+  /// In en, this message translates to:
+  /// **'Next list'**
+  String get matchesNextList;
+
+  /// No description provided for @signInRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in required'**
+  String get signInRequiredTitle;
+
+  /// No description provided for @signInRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to find your match and connect with compatible profiles'**
+  String get signInRequiredBody;
+
+  /// No description provided for @matchesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches yet'**
+  String get matchesEmptyTitle;
+
+  /// No description provided for @matchesEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your profile to get better matches'**
+  String get matchesEmptyBody;
+
+  /// No description provided for @actionCompleteProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete profile'**
+  String get actionCompleteProfile;
+
+  /// No description provided for @interestsNoneReceivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No interests received'**
+  String get interestsNoneReceivedTitle;
+
+  /// No description provided for @interestsNoneReceivedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile will receive interests from compatible matches'**
+  String get interestsNoneReceivedBody;
+
+  /// No description provided for @actionImproveProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Improve profile'**
+  String get actionImproveProfile;
+
+  /// No description provided for @topPicksEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No top picks yet'**
+  String get topPicksEmptyTitle;
+
+  /// No description provided for @topPicksEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Highly compatible profiles will appear here once matches are available'**
+  String get topPicksEmptyBody;
+
+  /// No description provided for @actionRefreshMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh matches'**
+  String get actionRefreshMatches;
+
+  /// No description provided for @shortlistEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No shortlisted profiles'**
+  String get shortlistEmptyTitle;
+
+  /// No description provided for @shortlistEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse profiles and shortlist the ones you like'**
+  String get shortlistEmptyBody;
+
+  /// No description provided for @actionBrowseProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse profiles'**
+  String get actionBrowseProfiles;
+
+  /// No description provided for @shortlistedYouEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No one has shortlisted you yet'**
+  String get shortlistedYouEmptyTitle;
+
+  /// No description provided for @shortlistedYouEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'As more people discover your profile, you\'ll see them here'**
+  String get shortlistedYouEmptyBody;
+
+  /// No description provided for @viewedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile views'**
+  String get viewedEmptyTitle;
+
+  /// No description provided for @viewedEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start viewing profiles to see them here'**
+  String get viewedEmptyBody;
+
+  /// No description provided for @viewedYouEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile views yet'**
+  String get viewedYouEmptyTitle;
+
+  /// No description provided for @viewedYouEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'People who view your profile will appear here'**
+  String get viewedYouEmptyBody;
+
+  /// No description provided for @actionRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get actionRefresh;
+
+  /// No description provided for @acceptedNoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No accepted connections'**
+  String get acceptedNoneTitle;
+
+  /// No description provided for @acceptedNoneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted interests will appear here'**
+  String get acceptedNoneBody;
+
+  /// No description provided for @matchesLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading matches…'**
+  String get matchesLoading;
+
+  /// No description provided for @errorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorTitle;
+
+  /// No description provided for @errorLoadMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your matches. Check your connection and try again.'**
+  String get errorLoadMatches;
+
+  /// No description provided for @interestAcceptedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'You accepted {name}\'s interest'**
+  String interestAcceptedFrom(Object name);
+
+  /// No description provided for @interestRejectedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'You declined {name}\'s interest'**
+  String interestRejectedFrom(Object name);
+
+  /// No description provided for @restartToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Please restart the app to sign in.'**
+  String get restartToSignIn;
 }
 
 class _AppLocalizationsDelegate

@@ -248,9 +248,7 @@ class ProfileDetailScreen extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: context.palette.imageScrim.withValues(
-                        alpha: 0.45,
-                      ),
+                      color: context.palette.imageScrim.withValues(alpha: 0.45),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -316,7 +314,9 @@ class ProfileDetailScreen extends StatelessWidget {
                       Text(
                         context.l10n.ageYearsOld(profile.age),
                         style: context.styles.subtitle1.copyWith(
-                          color: context.palette.onImage.withValues(alpha: 0.85),
+                          color: context.palette.onImage.withValues(
+                            alpha: 0.85,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -333,7 +333,9 @@ class ProfileDetailScreen extends StatelessWidget {
                           profile.state,
                         ),
                         style: context.styles.body2.copyWith(
-                          color: context.palette.onImage.withValues(alpha: 0.85),
+                          color: context.palette.onImage.withValues(
+                            alpha: 0.85,
+                          ),
                         ),
                       ),
                     ],
@@ -393,8 +395,16 @@ class ProfileDetailScreen extends StatelessWidget {
         if (profile.subCaste.isNotEmpty)
           _buildInfoRow(context, context.l10n.fieldSubCaste, profile.subCaste),
         _buildInfoRow(context, context.l10n.fieldEducation, profile.education),
-        _buildInfoRow(context, context.l10n.fieldOccupation, profile.occupation),
-        _buildInfoRow(context, context.l10n.fieldWorkingLocation, profile.workingLocation),
+        _buildInfoRow(
+          context,
+          context.l10n.fieldOccupation,
+          profile.occupation,
+        ),
+        _buildInfoRow(
+          context,
+          context.l10n.fieldWorkingLocation,
+          profile.workingLocation,
+        ),
         if (profile.annualIncome != null)
           _buildInfoRow(
             context,
@@ -403,7 +413,11 @@ class ProfileDetailScreen extends StatelessWidget {
               context.formatNumber(profile.annualIncome!.round()),
             ),
           ),
-        _buildInfoRow(context, context.l10n.fieldHeight, profile.heightInFeetInches),
+        _buildInfoRow(
+          context,
+          context.l10n.fieldHeight,
+          profile.heightInFeetInches,
+        ),
         if (profile.weight != null)
           _buildInfoRow(
             context,
@@ -412,11 +426,23 @@ class ProfileDetailScreen extends StatelessWidget {
               context.formatNumber(profile.weight!.round()),
             ),
           ),
-        _buildInfoRow(context, context.l10n.fieldMaritalStatus, profile.maritalStatus),
+        _buildInfoRow(
+          context,
+          context.l10n.fieldMaritalStatus,
+          profile.maritalStatus,
+        ),
         if (profile.languages.isNotEmpty)
-          _buildInfoRow(context, context.l10n.fieldLanguages, profile.languages.join(', ')),
+          _buildInfoRow(
+            context,
+            context.l10n.fieldLanguages,
+            profile.languages.join(', '),
+          ),
         if (profile.hobbies.isNotEmpty)
-          _buildInfoRow(context, context.l10n.fieldHobbies, profile.hobbies.join(', ')),
+          _buildInfoRow(
+            context,
+            context.l10n.fieldHobbies,
+            profile.hobbies.join(', '),
+          ),
       ],
     );
   }
@@ -425,7 +451,11 @@ class ProfileDetailScreen extends StatelessWidget {
     return Column(
       children: [
         if (profile.familyInfo.fatherName != null)
-          _buildInfoRow(context, context.l10n.fieldFatherName, profile.familyInfo.fatherName!),
+          _buildInfoRow(
+            context,
+            context.l10n.fieldFatherName,
+            profile.familyInfo.fatherName!,
+          ),
         if (profile.familyInfo.fatherOccupation != null)
           _buildInfoRow(
             context,
@@ -433,7 +463,11 @@ class ProfileDetailScreen extends StatelessWidget {
             profile.familyInfo.fatherOccupation!,
           ),
         if (profile.familyInfo.motherName != null)
-          _buildInfoRow(context, context.l10n.fieldMotherName, profile.familyInfo.motherName!),
+          _buildInfoRow(
+            context,
+            context.l10n.fieldMotherName,
+            profile.familyInfo.motherName!,
+          ),
         if (profile.familyInfo.motherOccupation != null)
           _buildInfoRow(
             context,
@@ -453,7 +487,11 @@ class ProfileDetailScreen extends StatelessWidget {
             profile.familyInfo.numberOfSisters.toString(),
           ),
         if (profile.familyInfo.familyType != null)
-          _buildInfoRow(context, context.l10n.fieldFamilyType, profile.familyInfo.familyType!),
+          _buildInfoRow(
+            context,
+            context.l10n.fieldFamilyType,
+            profile.familyInfo.familyType!,
+          ),
         if (profile.familyInfo.familyValues != null)
           _buildInfoRow(
             context,
@@ -545,7 +583,10 @@ class ProfileDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(context.l10n.fieldOtherPreferences, style: context.styles.subtitle2),
+                Text(
+                  context.l10n.fieldOtherPreferences,
+                  style: context.styles.subtitle2,
+                ),
                 const SizedBox(height: 4),
                 Text(
                   profile.partnerPreference.otherPreferences!,
@@ -655,9 +696,7 @@ class ProfileDetailScreen extends StatelessWidget {
                 if (blocked) {
                   messenger.showSnackBar(
                     SnackBar(
-                      content: Text(
-                        context.l10n.blockedNoReveal,
-                      ),
+                      content: Text(context.l10n.blockedNoReveal),
                       backgroundColor: context.palette.error,
                     ),
                   );
@@ -676,7 +715,9 @@ class ProfileDetailScreen extends StatelessWidget {
                     break;
                   case ContactHandshakeStatus.sentPending:
                     messenger.showSnackBar(
-                      SnackBar(content: Text(context.l10n.contactRequestPending)),
+                      SnackBar(
+                        content: Text(context.l10n.contactRequestPending),
+                      ),
                     );
                     break;
                   case ContactHandshakeStatus.receivedPending:
@@ -771,9 +812,7 @@ class ProfileDetailScreen extends StatelessWidget {
                 if (!otherActive) {
                   messenger.showSnackBar(
                     SnackBar(
-                      content: Text(
-                        context.l10n.messagingDisabledInactive,
-                      ),
+                      content: Text(context.l10n.messagingDisabledInactive),
                       backgroundColor: context.palette.warning,
                     ),
                   );
@@ -786,9 +825,7 @@ class ProfileDetailScreen extends StatelessWidget {
                 if (blocked) {
                   messenger.showSnackBar(
                     SnackBar(
-                      content: Text(
-                        context.l10n.messagingDisabledBlocked,
-                      ),
+                      content: Text(context.l10n.messagingDisabledBlocked),
                       backgroundColor: context.palette.error,
                     ),
                   );
@@ -856,7 +893,9 @@ class ProfileDetailScreen extends StatelessWidget {
       if (!nav.mounted) return;
       _revealContact(nav.context);
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text(context.l10n.contactAcceptFailed)));
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.l10n.contactAcceptFailed)),
+      );
     }
   }
 
@@ -893,7 +932,9 @@ class ProfileDetailScreen extends StatelessWidget {
           messenger.showSnackBar(
             SnackBar(
               content: Text(
-                already ? context.l10n.shortlistRemoved : context.l10n.shortlistAdded,
+                already
+                    ? context.l10n.shortlistRemoved
+                    : context.l10n.shortlistAdded,
               ),
               backgroundColor: context.palette.accent,
             ),
@@ -928,10 +969,12 @@ class ProfileDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(context.l10n.contactDetailsTitle, style: context.styles.subtitle1),
+                Text(
+                  context.l10n.contactDetailsTitle,
+                  style: context.styles.subtitle1,
+                ),
                 const SizedBox(height: 8),
-                if (contact.isEmpty)
-                  Text(context.l10n.contactNoPhone),
+                if (contact.isEmpty) Text(context.l10n.contactNoPhone),
                 if ((contact.phoneNumber ?? '').isNotEmpty)
                   Text(context.l10n.contactPhone(contact.phoneNumber!)),
                 if ((contact.whatsappNumber ?? '').isNotEmpty)
@@ -1000,7 +1043,10 @@ class ProfileDetailScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(context.l10n.messageTo(profile.name), style: context.styles.subtitle1),
+              Text(
+                context.l10n.messageTo(profile.name),
+                style: context.styles.subtitle1,
+              ),
               const SizedBox(height: 8),
               TextField(
                 controller: controller,
@@ -1099,9 +1145,7 @@ class ProfileDetailScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(context.l10n.blockProfileTitle),
-        content: Text(
-          context.l10n.blockProfileBody(profile.name),
-        ),
+        content: Text(context.l10n.blockProfileBody(profile.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -1261,10 +1305,7 @@ class _SimilarProfilesListState extends State<_SimilarProfilesList> {
       );
     }
     if (_items.isEmpty) {
-      return Text(
-        context.l10n.similarEmpty,
-        style: context.styles.body2,
-      );
+      return Text(context.l10n.similarEmpty, style: context.styles.body2);
     }
     return SizedBox(
       height: 220,

@@ -1027,4 +1027,219 @@ class AppLocalizationsEn extends AppLocalizations {
   String ageCityShort(int age, String city) {
     return '$age • $city';
   }
+
+  @override
+  String get homeSubtitle => 'Try Me For Your Partner Selection';
+
+  @override
+  String get statMatches => 'Matches';
+
+  @override
+  String get statShortlisted => 'Shortlisted';
+
+  @override
+  String get statViewedYou => 'Viewed you';
+
+  @override
+  String get greetingMorning => 'Good morning';
+
+  @override
+  String get greetingAfternoon => 'Good afternoon';
+
+  @override
+  String get greetingEvening => 'Good evening';
+
+  @override
+  String greetingWithName(Object greeting, Object name) {
+    return '$greeting, $name';
+  }
+
+  @override
+  String get homeTopPicks => 'Top picks for you';
+
+  @override
+  String get homeYourMatches => 'Your matches';
+
+  @override
+  String get homeViewedYou => 'Viewed you';
+
+  @override
+  String get homeNewThisWeek => 'New this week';
+
+  @override
+  String get homeViewedByYou => 'Viewed by you';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeEmptyTopPicks =>
+      'No top picks yet. Highly compatible profiles will appear here.';
+
+  @override
+  String get homeEmptyMatches =>
+      'No matches yet. Update your preferences or try searching.';
+
+  @override
+  String get homeEmptyViewedYou => 'No one has viewed your profile yet.';
+
+  @override
+  String get homeEmptyNewThisWeek => 'No new profiles in the last 7 days.';
+
+  @override
+  String get homeEmptyViewedByYou => 'Start viewing profiles to see them here.';
+
+  @override
+  String get homeCompleteProfileTitle => 'Complete your profile';
+
+  @override
+  String homeCompleteProfileProgress(int percent) {
+    return '$percent% complete · Get better matches with full details';
+  }
+
+  @override
+  String get homeCompleteAction => 'Complete';
+
+  @override
+  String get homeDeactivatedTitle => 'Your profile is deactivated';
+
+  @override
+  String get homeDeactivatedBody =>
+      'Reactivate your profile to send and receive messages and appear in searches.';
+
+  @override
+  String statLabel(String label, int count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get matchesTabMatches => 'Matches';
+
+  @override
+  String get matchesTabTopPicks => 'Top picks';
+
+  @override
+  String get matchesTabInterests => 'Interests';
+
+  @override
+  String get matchesTabShortlistedByYou => 'Shortlisted by you';
+
+  @override
+  String get matchesTabShortlistedYou => 'Shortlisted you';
+
+  @override
+  String get matchesTabViewed => 'Viewed';
+
+  @override
+  String get matchesTabViewedYou => 'Viewed you';
+
+  @override
+  String get matchesTabAccepted => 'Accepted';
+
+  @override
+  String get matchesChooseList => 'Choose a list';
+
+  @override
+  String get matchesPreviousList => 'Previous list';
+
+  @override
+  String get matchesNextList => 'Next list';
+
+  @override
+  String get signInRequiredTitle => 'Sign in required';
+
+  @override
+  String get signInRequiredBody =>
+      'Sign in to find your match and connect with compatible profiles';
+
+  @override
+  String get matchesEmptyTitle => 'No matches yet';
+
+  @override
+  String get matchesEmptyBody => 'Complete your profile to get better matches';
+
+  @override
+  String get actionCompleteProfile => 'Complete profile';
+
+  @override
+  String get interestsNoneReceivedTitle => 'No interests received';
+
+  @override
+  String get interestsNoneReceivedBody =>
+      'Your profile will receive interests from compatible matches';
+
+  @override
+  String get actionImproveProfile => 'Improve profile';
+
+  @override
+  String get topPicksEmptyTitle => 'No top picks yet';
+
+  @override
+  String get topPicksEmptyBody =>
+      'Highly compatible profiles will appear here once matches are available';
+
+  @override
+  String get actionRefreshMatches => 'Refresh matches';
+
+  @override
+  String get shortlistEmptyTitle => 'No shortlisted profiles';
+
+  @override
+  String get shortlistEmptyBody =>
+      'Browse profiles and shortlist the ones you like';
+
+  @override
+  String get actionBrowseProfiles => 'Browse profiles';
+
+  @override
+  String get shortlistedYouEmptyTitle => 'No one has shortlisted you yet';
+
+  @override
+  String get shortlistedYouEmptyBody =>
+      'As more people discover your profile, you\'ll see them here';
+
+  @override
+  String get viewedEmptyTitle => 'No profile views';
+
+  @override
+  String get viewedEmptyBody => 'Start viewing profiles to see them here';
+
+  @override
+  String get viewedYouEmptyTitle => 'No profile views yet';
+
+  @override
+  String get viewedYouEmptyBody =>
+      'People who view your profile will appear here';
+
+  @override
+  String get actionRefresh => 'Refresh';
+
+  @override
+  String get acceptedNoneTitle => 'No accepted connections';
+
+  @override
+  String get acceptedNoneBody => 'Accepted interests will appear here';
+
+  @override
+  String get matchesLoading => 'Loading matches…';
+
+  @override
+  String get errorTitle => 'Something went wrong';
+
+  @override
+  String get errorLoadMatches =>
+      'We couldn\'t load your matches. Check your connection and try again.';
+
+  @override
+  String interestAcceptedFrom(Object name) {
+    return 'You accepted $name\'s interest';
+  }
+
+  @override
+  String interestRejectedFrom(Object name) {
+    return 'You declined $name\'s interest';
+  }
+
+  @override
+  String get restartToSignIn => 'Please restart the app to sign in.';
 }

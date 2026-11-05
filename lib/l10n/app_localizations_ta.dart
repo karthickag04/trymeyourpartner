@@ -1041,4 +1041,227 @@ class AppLocalizationsTa extends AppLocalizations {
   String ageCityShort(int age, String city) {
     return '$age • $city';
   }
+
+  @override
+  String get homeSubtitle =>
+      'உங்கள் வாழ்க்கைத் துணைத் தேர்வுக்கு TryMeYourPartner';
+
+  @override
+  String get statMatches => 'வரன்கள்';
+
+  @override
+  String get statShortlisted => 'விருப்பப் பட்டியல்';
+
+  @override
+  String get statViewedYou => 'உங்களைப் பார்த்தவர்கள்';
+
+  @override
+  String get greetingMorning => 'காலை வணக்கம்';
+
+  @override
+  String get greetingAfternoon => 'மதிய வணக்கம்';
+
+  @override
+  String get greetingEvening => 'மாலை வணக்கம்';
+
+  @override
+  String greetingWithName(Object greeting, Object name) {
+    return '$greeting, $name';
+  }
+
+  @override
+  String get homeTopPicks => 'உங்களுக்கான சிறந்த தேர்வுகள்';
+
+  @override
+  String get homeYourMatches => 'உங்கள் வரன்கள்';
+
+  @override
+  String get homeViewedYou => 'உங்களைப் பார்த்தவர்கள்';
+
+  @override
+  String get homeNewThisWeek => 'இந்த வாரப் புதியவர்கள்';
+
+  @override
+  String get homeViewedByYou => 'நீங்கள் பார்த்தவர்கள்';
+
+  @override
+  String get homeSeeAll => 'அனைத்தும் பார்';
+
+  @override
+  String get homeEmptyTopPicks =>
+      'இன்னும் சிறந்த தேர்வுகள் இல்லை. மிகப் பொருத்தமான சுயவிவரங்கள் இங்கே தோன்றும்.';
+
+  @override
+  String get homeEmptyMatches =>
+      'இன்னும் வரன்கள் இல்லை. உங்கள் எதிர்பார்ப்புகளைப் புதுப்பிக்கவும் அல்லது தேடிப் பாருங்கள்.';
+
+  @override
+  String get homeEmptyViewedYou =>
+      'இதுவரை யாரும் உங்கள் சுயவிவரத்தைப் பார்க்கவில்லை.';
+
+  @override
+  String get homeEmptyNewThisWeek =>
+      'கடந்த 7 நாட்களில் புதிய சுயவிவரங்கள் இல்லை.';
+
+  @override
+  String get homeEmptyViewedByYou =>
+      'சுயவிவரங்களைப் பார்க்கத் தொடங்குங்கள்; அவை இங்கே தோன்றும்.';
+
+  @override
+  String get homeCompleteProfileTitle =>
+      'உங்கள் சுயவிவரத்தை நிறைவு செய்யுங்கள்';
+
+  @override
+  String homeCompleteProfileProgress(int percent) {
+    return '$percent% நிறைவு · முழு விவரங்களுடன் மேலும் பொருத்தமான வரன்களைப் பெறுங்கள்';
+  }
+
+  @override
+  String get homeCompleteAction => 'நிறைவு செய்';
+
+  @override
+  String get homeDeactivatedTitle => 'உங்கள் சுயவிவரம் செயலிழக்கப்பட்டுள்ளது';
+
+  @override
+  String get homeDeactivatedBody =>
+      'செய்திகள் அனுப்பவும் பெறவும், தேடல்களில் தோன்றவும் உங்கள் சுயவிவரத்தை மீண்டும் செயல்படுத்துங்கள்.';
+
+  @override
+  String statLabel(String label, int count) {
+    return '$label: $count';
+  }
+
+  @override
+  String get matchesTabMatches => 'வரன்கள்';
+
+  @override
+  String get matchesTabTopPicks => 'சிறந்த தேர்வுகள்';
+
+  @override
+  String get matchesTabInterests => 'விருப்பங்கள்';
+
+  @override
+  String get matchesTabShortlistedByYou => 'நீங்கள் தேர்ந்தெடுத்தவர்கள்';
+
+  @override
+  String get matchesTabShortlistedYou => 'உங்களைத் தேர்ந்தெடுத்தவர்கள்';
+
+  @override
+  String get matchesTabViewed => 'பார்த்தவை';
+
+  @override
+  String get matchesTabViewedYou => 'உங்களைப் பார்த்தவர்கள்';
+
+  @override
+  String get matchesTabAccepted => 'ஏற்கப்பட்டவை';
+
+  @override
+  String get matchesChooseList => 'பட்டியலைத் தேர்ந்தெடு';
+
+  @override
+  String get matchesPreviousList => 'முந்தைய பட்டியல்';
+
+  @override
+  String get matchesNextList => 'அடுத்த பட்டியல்';
+
+  @override
+  String get signInRequiredTitle => 'உள்நுழைவு தேவை';
+
+  @override
+  String get signInRequiredBody =>
+      'உங்களுக்கான வரனைக் கண்டறிந்து பொருத்தமான சுயவிவரங்களுடன் இணைய உள்நுழையவும்';
+
+  @override
+  String get matchesEmptyTitle => 'இன்னும் வரன்கள் இல்லை';
+
+  @override
+  String get matchesEmptyBody =>
+      'மேலும் பொருத்தமான வரன்களைப் பெற உங்கள் சுயவிவரத்தை நிறைவு செய்யுங்கள்';
+
+  @override
+  String get actionCompleteProfile => 'சுயவிவரத்தை நிறைவு செய்';
+
+  @override
+  String get interestsNoneReceivedTitle => 'விருப்பங்கள் எதுவும் வரவில்லை';
+
+  @override
+  String get interestsNoneReceivedBody =>
+      'பொருத்தமான வரன்களிடமிருந்து உங்களுக்கு விருப்பங்கள் வரும்';
+
+  @override
+  String get actionImproveProfile => 'சுயவிவரத்தை மேம்படுத்து';
+
+  @override
+  String get topPicksEmptyTitle => 'இன்னும் சிறந்த தேர்வுகள் இல்லை';
+
+  @override
+  String get topPicksEmptyBody =>
+      'வரன்கள் கிடைத்ததும் மிகப் பொருத்தமான சுயவிவரங்கள் இங்கே தோன்றும்';
+
+  @override
+  String get actionRefreshMatches => 'வரன்களைப் புதுப்பி';
+
+  @override
+  String get shortlistEmptyTitle => 'விருப்பப் பட்டியலில் சுயவிவரங்கள் இல்லை';
+
+  @override
+  String get shortlistEmptyBody =>
+      'சுயவிவரங்களைப் பார்த்து, பிடித்தவற்றை விருப்பப் பட்டியலில் சேருங்கள்';
+
+  @override
+  String get actionBrowseProfiles => 'சுயவிவரங்களைப் பார்';
+
+  @override
+  String get shortlistedYouEmptyTitle =>
+      'இதுவரை யாரும் உங்களைத் தேர்ந்தெடுக்கவில்லை';
+
+  @override
+  String get shortlistedYouEmptyBody =>
+      'மேலும் பலர் உங்கள் சுயவிவரத்தைக் காணும்போது, அவர்கள் இங்கே தோன்றுவார்கள்';
+
+  @override
+  String get viewedEmptyTitle => 'பார்த்த சுயவிவரங்கள் இல்லை';
+
+  @override
+  String get viewedEmptyBody =>
+      'சுயவிவரங்களைப் பார்க்கத் தொடங்குங்கள்; அவை இங்கே தோன்றும்';
+
+  @override
+  String get viewedYouEmptyTitle => 'இன்னும் யாரும் பார்க்கவில்லை';
+
+  @override
+  String get viewedYouEmptyBody =>
+      'உங்கள் சுயவிவரத்தைப் பார்ப்பவர்கள் இங்கே தோன்றுவார்கள்';
+
+  @override
+  String get actionRefresh => 'புதுப்பி';
+
+  @override
+  String get acceptedNoneTitle => 'ஏற்கப்பட்ட இணைப்புகள் இல்லை';
+
+  @override
+  String get acceptedNoneBody => 'ஏற்கப்பட்ட விருப்பங்கள் இங்கே தோன்றும்';
+
+  @override
+  String get matchesLoading => 'வரன்களை ஏற்றுகிறது…';
+
+  @override
+  String get errorTitle => 'ஏதோ தவறு நடந்துவிட்டது';
+
+  @override
+  String get errorLoadMatches =>
+      'உங்கள் வரன்களை ஏற்ற முடியவில்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.';
+
+  @override
+  String interestAcceptedFrom(Object name) {
+    return '$name அவர்களின் விருப்பத்தை ஏற்றுக்கொண்டீர்கள்';
+  }
+
+  @override
+  String interestRejectedFrom(Object name) {
+    return '$name அவர்களின் விருப்பத்தை மறுத்துவிட்டீர்கள்';
+  }
+
+  @override
+  String get restartToSignIn => 'உள்நுழைய, செயலியை மீண்டும் தொடங்கவும்.';
 }
