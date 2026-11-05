@@ -1402,12 +1402,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planPlatinum => 'Platinum';
 
   @override
-  String get upgradeComingSoon => 'Plan upgrades are not available yet.';
-
-  @override
-  String get actionUpgrade => 'Upgrade';
-
-  @override
   String get emailVerificationTitle => 'Email verification required';
 
   @override
@@ -1465,25 +1459,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTitle => 'Settings';
 
   @override
-  String get settingsNotifications => 'Notifications';
-
-  @override
-  String get settingsNotificationsSub => 'Manage notification preferences';
-
-  @override
-  String get settingsPrivacy => 'Privacy & security';
-
-  @override
-  String get settingsPrivacySub => 'Account security settings';
-
-  @override
   String get settingsHelpSub => 'Get help and contact us';
 
   @override
   String get settingsAbout => 'About';
 
   @override
-  String get settingsAboutSub => 'App version and info';
+  String get settingsAboutSub => 'App information and licences';
+
+  @override
+  String get settingsChangePassword => 'Change password';
+
+  @override
+  String get settingsChangePasswordSub =>
+      'Get an email link to set a new password';
+
+  @override
+  String changePasswordConfirm(Object email) {
+    return 'We will send a link to $email so you can set a new password.';
+  }
+
+  @override
+  String get changePasswordSend => 'Send link';
+
+  @override
+  String changePasswordSent(Object email) {
+    return 'Check $email for the link to set a new password.';
+  }
+
+  @override
+  String get changePasswordFailed =>
+      'Could not send the link. Please try again.';
+
+  @override
+  String get aboutDescription =>
+      'A matrimony app for Tamil and Indian families around the world.';
 
   @override
   String get actionSignOut => 'Sign out';
@@ -1563,23 +1573,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signingOut => 'Signing out…';
-
-  @override
-  String get interestsShownHere => 'Your interests are in the Interests tab.';
-
-  @override
-  String get matchesInTab => 'Your matches are in the Matches tab.';
-
-  @override
-  String get notificationSettingsComingSoon =>
-      'Notification settings are not available yet.';
-
-  @override
-  String get securitySettingsComingSoon =>
-      'Security settings are not available yet.';
-
-  @override
-  String get aboutComingSoon => 'The About page is not available yet.';
 
   @override
   String get profileStatusActive => 'Your profile is active';

@@ -2480,18 +2480,6 @@ abstract class AppLocalizations {
   /// **'Platinum'**
   String get planPlatinum;
 
-  /// No description provided for @upgradeComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Plan upgrades are not available yet.'**
-  String get upgradeComingSoon;
-
-  /// No description provided for @actionUpgrade.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade'**
-  String get actionUpgrade;
-
   /// No description provided for @emailVerificationTitle.
   ///
   /// In en, this message translates to:
@@ -2600,30 +2588,6 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsTitle;
 
-  /// No description provided for @settingsNotifications.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications'**
-  String get settingsNotifications;
-
-  /// No description provided for @settingsNotificationsSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage notification preferences'**
-  String get settingsNotificationsSub;
-
-  /// No description provided for @settingsPrivacy.
-  ///
-  /// In en, this message translates to:
-  /// **'Privacy & security'**
-  String get settingsPrivacy;
-
-  /// No description provided for @settingsPrivacySub.
-  ///
-  /// In en, this message translates to:
-  /// **'Account security settings'**
-  String get settingsPrivacySub;
-
   /// No description provided for @settingsHelpSub.
   ///
   /// In en, this message translates to:
@@ -2639,8 +2603,50 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAboutSub.
   ///
   /// In en, this message translates to:
-  /// **'App version and info'**
+  /// **'App information and licences'**
   String get settingsAboutSub;
+
+  /// No description provided for @settingsChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get settingsChangePassword;
+
+  /// No description provided for @settingsChangePasswordSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Get an email link to set a new password'**
+  String get settingsChangePasswordSub;
+
+  /// No description provided for @changePasswordConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send a link to {email} so you can set a new password.'**
+  String changePasswordConfirm(Object email);
+
+  /// No description provided for @changePasswordSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send link'**
+  String get changePasswordSend;
+
+  /// No description provided for @changePasswordSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Check {email} for the link to set a new password.'**
+  String changePasswordSent(Object email);
+
+  /// No description provided for @changePasswordFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the link. Please try again.'**
+  String get changePasswordFailed;
+
+  /// No description provided for @aboutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A matrimony app for Tamil and Indian families around the world.'**
+  String get aboutDescription;
 
   /// No description provided for @actionSignOut.
   ///
@@ -2785,36 +2791,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signing out…'**
   String get signingOut;
-
-  /// No description provided for @interestsShownHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Your interests are in the Interests tab.'**
-  String get interestsShownHere;
-
-  /// No description provided for @matchesInTab.
-  ///
-  /// In en, this message translates to:
-  /// **'Your matches are in the Matches tab.'**
-  String get matchesInTab;
-
-  /// No description provided for @notificationSettingsComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Notification settings are not available yet.'**
-  String get notificationSettingsComingSoon;
-
-  /// No description provided for @securitySettingsComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'Security settings are not available yet.'**
-  String get securitySettingsComingSoon;
-
-  /// No description provided for @aboutComingSoon.
-  ///
-  /// In en, this message translates to:
-  /// **'The About page is not available yet.'**
-  String get aboutComingSoon;
 
   /// No description provided for @profileStatusActive.
   ///

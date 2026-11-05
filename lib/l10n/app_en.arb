@@ -745,8 +745,6 @@
   "planFree": "Free",
   "planGold": "Gold",
   "planPlatinum": "Platinum",
-  "upgradeComingSoon": "Plan upgrades are not available yet.",
-  "actionUpgrade": "Upgrade",
   "emailVerificationTitle": "Email verification required",
   "emailVerificationBody": "Please open the verification link in your email to finish setting up your account.",
   "actionResend": "Resend",
@@ -770,13 +768,26 @@
   "quickRefresh": "Refresh data",
   "quickRefreshSub": "Reload your profile and suggestions",
   "settingsTitle": "Settings",
-  "settingsNotifications": "Notifications",
-  "settingsNotificationsSub": "Manage notification preferences",
-  "settingsPrivacy": "Privacy & security",
-  "settingsPrivacySub": "Account security settings",
   "settingsHelpSub": "Get help and contact us",
   "settingsAbout": "About",
-  "settingsAboutSub": "App version and info",
+  "settingsAboutSub": "App information and licences",
+  "settingsChangePassword": "Change password",
+  "settingsChangePasswordSub": "Get an email link to set a new password",
+  "changePasswordConfirm": "We will send a link to {email} so you can set a new password.",
+  "@changePasswordConfirm": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "changePasswordSend": "Send link",
+  "changePasswordSent": "Check {email} for the link to set a new password.",
+  "@changePasswordSent": {
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "changePasswordFailed": "Could not send the link. Please try again.",
+  "aboutDescription": "A matrimony app for Tamil and Indian families around the world.",
   "actionSignOut": "Sign out",
   "verificationEmailSent": "Verification email sent. Please check your inbox.",
   "verificationEmailFailed": "We couldn't send the verification email. Please try again.",
@@ -801,11 +812,6 @@
   "profileDeleteFailed": "We couldn't delete your profile. Please try again.",
   "signOutConfirm": "Are you sure you want to sign out?",
   "signingOut": "Signing out…",
-  "interestsShownHere": "Your interests are in the Interests tab.",
-  "matchesInTab": "Your matches are in the Matches tab.",
-  "notificationSettingsComingSoon": "Notification settings are not available yet.",
-  "securitySettingsComingSoon": "Security settings are not available yet.",
-  "aboutComingSoon": "The About page is not available yet.",
   "profileStatusActive": "Your profile is active",
   "profileStatusDeactivated": "Your profile is deactivated",
   "profileStatusMissing": "No profile found. Create your profile to get matches.",

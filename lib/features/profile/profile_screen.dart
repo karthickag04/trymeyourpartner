@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../settings/account_settings.dart';
 import '../settings/help_screen.dart';
 import 'package:provider/provider.dart';
+import '../../app/router.dart';
 import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/models/matrimonial_user.dart';
@@ -171,17 +174,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context.l10n.planLabel(tier),
                         style: context.styles.subtitle1,
                       ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(context.l10n.upgradeComingSoon),
-                            ),
-                          );
-                        },
-                        child: Text(context.l10n.actionUpgrade),
-                      ),
                     ],
                   ),
                 );
@@ -217,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: AppDimensions.paddingL),
 
           // App Settings
-          _buildAppSettings(),
+          _buildAppSettings(userEmail),
 
           const SizedBox(height: AppDimensions.paddingXL),
 
@@ -539,7 +531,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildAppSettings() {
+  Widget _buildAppSettings(String email) {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
@@ -554,18 +546,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const DisplaySettings(),
           const SizedBox(height: AppDimensions.paddingM),
           const Divider(),
-          _buildActionItem(
-            context.l10n.settingsNotifications,
-            context.l10n.settingsNotificationsSub,
-            Icons.notifications,
-            () => _navigateToNotifications(),
-          ),
-          _buildActionItem(
-            context.l10n.settingsPrivacy,
-            context.l10n.settingsPrivacySub,
-            Icons.security,
-            () => _navigateToSecurity(),
-          ),
+          if (email.isNotEmpty)
+            ChangePasswordTile(
+              email: email,
+              sendResetLink: sl.authService.resetPassword,
+            ),
           _buildActionItem(
             context.l10n.helpTitle,
             context.l10n.settingsHelpSub,
@@ -576,7 +561,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             context.l10n.settingsAbout,
             context.l10n.settingsAboutSub,
             Icons.info,
-            () => _navigateToAbout(),
+            () => showAppAbout(context),
           ),
         ],
       ),
@@ -1194,20 +1179,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Navigation methods
-  void _navigateToInterests() {
-    // Show interests in a dialog or navigate to interests screen
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(context.l10n.interestsShownHere)));
-  }
+  void _navigateToInterests() => context.go(AppRoutes.interests);
 
-  void _navigateToMatches() {
-    // Navigate to matches screen (using the bottom navigation)
-    // This will be handled by the main screen's bottom navigation
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(context.l10n.matchesInTab)));
-  }
+  void _navigateToMatches() => context.go(AppRoutes.matches);
 
   void _navigateToProfileCompletion() {
     // Navigate to profile edit screen
@@ -1217,28 +1191,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _navigateToNotifications() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.notificationSettingsComingSoon)),
-    );
-  }
-
-  void _navigateToSecurity() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.securitySettingsComingSoon)),
-    );
-  }
-
   void _navigateToHelp() {
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => const HelpScreen()));
-  }
-
-  void _navigateToAbout() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(context.l10n.aboutComingSoon)));
   }
 
   Widget _buildMatrimonialProfileStatus(MatrimonialUser? matrimonialProfile) {

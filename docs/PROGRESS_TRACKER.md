@@ -25,7 +25,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 12 | 4 | 1 | 1 |
+| P1 Foundation & restructure | 13 | 4 | 1 | 1 |
 | P2 Roles, admin console, moderation | 2 | 2 | 5 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
@@ -34,7 +34,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
 **Status:** Phase 0 done (2 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
-**Next up:** replace the remaining "coming soon" Profile items (Upgrade, Notification settings, Security, About, Interests/Matches quick actions); P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
+**Next up:** P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
 **Owner steps:** enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
 ## Phase 0: Stop the bleeding
@@ -72,6 +72,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ✅ | `8904b49`…`8016d7f` (merged `799cf3f`, PR #2) | English + Tamil ARB files; language switcher on sign-in, registration and Profile. Browser: Tamil sign-in screen shown; old "Educational Streaming Platform" tagline replaced |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
+| P1-18 | No decorative Profile items (roadmap §10.1): Interests/Matches quick actions open their tabs; Change password emails a reset link; About opens a real About dialog (name, description, licences); Upgrade and Notification settings hidden until Phase 4 / a preferences backend exist | ✅ | this commit | 4 new widget tests (reset link sent to the member email, cancel sends nothing, failure message, About content); 91/91 Flutter tests, analyze clean, format, vendor guard, web build |
 
 ## Phase 2: Roles, admin console and moderation
 

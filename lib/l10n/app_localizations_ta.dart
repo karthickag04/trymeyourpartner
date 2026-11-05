@@ -1424,12 +1424,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get planPlatinum => 'பிளாட்டினம்';
 
   @override
-  String get upgradeComingSoon => 'திட்ட மேம்படுத்தல் இன்னும் கிடைக்கவில்லை.';
-
-  @override
-  String get actionUpgrade => 'மேம்படுத்து';
-
-  @override
   String get emailVerificationTitle => 'மின்னஞ்சல் சரிபார்ப்பு தேவை';
 
   @override
@@ -1488,26 +1482,41 @@ class AppLocalizationsTa extends AppLocalizations {
   String get settingsTitle => 'அமைப்புகள்';
 
   @override
-  String get settingsNotifications => 'அறிவிப்புகள்';
-
-  @override
-  String get settingsNotificationsSub =>
-      'அறிவிப்பு விருப்பங்களை நிர்வகிக்கவும்';
-
-  @override
-  String get settingsPrivacy => 'தனியுரிமை & பாதுகாப்பு';
-
-  @override
-  String get settingsPrivacySub => 'கணக்குப் பாதுகாப்பு அமைப்புகள்';
-
-  @override
   String get settingsHelpSub => 'உதவி பெறுங்கள், எங்களைத் தொடர்புகொள்ளுங்கள்';
 
   @override
   String get settingsAbout => 'செயலி பற்றி';
 
   @override
-  String get settingsAboutSub => 'செயலியின் பதிப்பு மற்றும் தகவல்';
+  String get settingsAboutSub => 'செயலித் தகவல் மற்றும் உரிமங்கள்';
+
+  @override
+  String get settingsChangePassword => 'கடவுச்சொல்லை மாற்று';
+
+  @override
+  String get settingsChangePasswordSub =>
+      'புதிய கடவுச்சொல் அமைக்க மின்னஞ்சல் இணைப்பைப் பெறுங்கள்';
+
+  @override
+  String changePasswordConfirm(Object email) {
+    return 'புதிய கடவுச்சொல்லை அமைப்பதற்கான இணைப்பை $email முகவரிக்கு அனுப்புவோம்.';
+  }
+
+  @override
+  String get changePasswordSend => 'இணைப்பை அனுப்பு';
+
+  @override
+  String changePasswordSent(Object email) {
+    return 'புதிய கடவுச்சொல் அமைப்பதற்கான இணைப்புக்கு $email மின்னஞ்சலைப் பாருங்கள்.';
+  }
+
+  @override
+  String get changePasswordFailed =>
+      'இணைப்பை அனுப்ப முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get aboutDescription =>
+      'உலகெங்கும் உள்ள தமிழ் மற்றும் இந்தியக் குடும்பங்களுக்கான திருமணச் செயலி.';
 
   @override
   String get actionSignOut => 'வெளியேறு';
@@ -1588,24 +1597,6 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get signingOut => 'வெளியேறுகிறது…';
-
-  @override
-  String get interestsShownHere =>
-      'உங்கள் விருப்பங்கள் \"விருப்பங்கள்\" தாவலில் உள்ளன.';
-
-  @override
-  String get matchesInTab => 'உங்கள் வரன்கள் \"வரன்கள்\" தாவலில் உள்ளன.';
-
-  @override
-  String get notificationSettingsComingSoon =>
-      'அறிவிப்பு அமைப்புகள் இன்னும் கிடைக்கவில்லை.';
-
-  @override
-  String get securitySettingsComingSoon =>
-      'பாதுகாப்பு அமைப்புகள் இன்னும் கிடைக்கவில்லை.';
-
-  @override
-  String get aboutComingSoon => '\"செயலி பற்றி\" பக்கம் இன்னும் கிடைக்கவில்லை.';
 
   @override
   String get profileStatusActive => 'உங்கள் சுயவிவரம் செயலில் உள்ளது';
