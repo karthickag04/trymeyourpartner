@@ -6,25 +6,25 @@ import {
   createParamDecorator,
 } from '@nestjs/common';
 import { createHash } from 'node:crypto';
-import { SupabaseClient, SupabaseUser } from '../supabase/supabase.client';
+import { TokenVerifier, VerifiedUser } from './token-verifier';
 
 export interface AuthedRequest {
   headers: Record<string, string | string[] | undefined>;
-  user?: SupabaseUser;
+  user?: VerifiedUser;
   accessToken?: string;
 }
 
 const CACHE_MS = 60_000;
 
 /**
- * Accepts the member's existing Supabase access token (Authorization: Bearer).
- * The token is checked with Supabase Auth; results are cached briefly.
+ * Accepts the member's access token (Authorization: Bearer), verified by
+ * TokenVerifier (JWKS or the auth provider); results are cached briefly.
  */
 @Injectable()
 export class SupabaseAuthGuard implements CanActivate {
-  private readonly cache = new Map<string, { user: SupabaseUser; until: number }>();
+  private readonly cache = new Map<string, { user: VerifiedUser; until: number }>();
 
-  constructor(private readonly supabase: SupabaseClient) {}
+  constructor(private readonly verifier: TokenVerifier) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<AuthedRequest>();
@@ -37,7 +37,7 @@ export class SupabaseAuthGuard implements CanActivate {
     const cached = this.cache.get(key);
     let user = cached && cached.until > Date.now() ? cached.user : null;
     if (!user) {
-      user = await this.supabase.getUser(token);
+      user = await this.verifier.verify(token);
       if (!user) throw new UnauthorizedException({ code: 'INVALID_TOKEN', message: 'Sign in required' });
       this.cache.set(key, { user, until: Date.now() + CACHE_MS });
       if (this.cache.size > 10_000) this.cache.clear();
@@ -55,4 +55,4 @@ export const Member = createParamDecorator(
     return { user: req.user!, token: req.accessToken! };
   },
 );
-export type MemberContext = { user: SupabaseUser; token: string };
+export type MemberContext = { user: VerifiedUser; token: string };

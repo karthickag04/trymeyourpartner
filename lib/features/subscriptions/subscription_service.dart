@@ -54,6 +54,9 @@ class SubscriptionService {
       if (e.message.contains('CONTACT_LIMIT_REACHED')) {
         throw const ContactLimitReached();
       }
+      if (e.message.contains('FEATURE_DISABLED')) {
+        throw const FeatureUnavailable();
+      }
       if (e.message.contains('PROFILE_NOT_AVAILABLE')) {
         throw const ContactUnavailable();
       }
@@ -81,4 +84,11 @@ class ContactUnavailable implements Exception {
   const ContactUnavailable();
   @override
   String toString() => 'This profile is not available.';
+}
+
+/// An admin has switched the feature off (app_settings.features).
+class FeatureUnavailable implements Exception {
+  const FeatureUnavailable();
+  @override
+  String toString() => 'This feature is not available right now.';
 }

@@ -30,5 +30,11 @@ abstract class RealtimeService {
     RealtimeCallback? onChange,
   });
 
+  /// Subscribe to new notifications for a profile. Returns an opaque handle.
+  Future<Object?> subscribeNotifications(
+    String profileId, {
+    RealtimeCallback? onInsert,
+  });
+
   Future<void> unsubscribe(Object? handle);
 }

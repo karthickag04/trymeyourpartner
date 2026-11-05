@@ -913,6 +913,12 @@ class ProfileDetailScreen extends StatelessWidget {
           backgroundColor: context.palette.warning,
         ),
       );
+    } on FeatureUnavailable {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Contact reveal is not available right now.'),
+        ),
+      );
     } on ContactUnavailable {
       messenger.showSnackBar(
         SnackBar(

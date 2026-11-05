@@ -21,7 +21,7 @@ class UserPreferences extends ChangeNotifier {
       _locale = locale;
 
   /// Reads saved choices. Missing or unknown values fall back to the system
-  /// theme and the device language.
+  /// theme and the default language.
   static Future<UserPreferences> load() async {
     final prefs = await SharedPreferences.getInstance();
     final p = UserPreferences(
@@ -34,8 +34,17 @@ class UserPreferences extends ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
-  /// The chosen language, or null to follow the device language.
+  /// The language the member chose, or null if they have not chosen one.
   Locale? get locale => _locale;
+
+  /// The language to show: the member's choice, else [defaultLanguageCode]
+  /// (the admin-controlled default), else English.
+  Locale effectiveLocale(String defaultLanguageCode) {
+    if (_locale != null) return _locale!;
+    return supportedLanguageCodes.contains(defaultLanguageCode)
+        ? Locale(defaultLanguageCode)
+        : const Locale('en');
+  }
 
   Future<void> setThemeMode(ThemeMode mode) async {
     if (mode == _themeMode) return;

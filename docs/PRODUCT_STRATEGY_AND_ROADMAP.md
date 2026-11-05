@@ -407,7 +407,16 @@ flowchart LR
 | Observability | Structured logs, error tracking (Sentry for Flutter and API), uptime checks, audit log | |
 | CI/CD | GitHub Actions: analyze + test + build (Android/iOS/Web), API tests, migration dry-run; store deployment via fastlane | |
 
-### 8.3 Should the admin console be Flutter or a separate web stack?
+### 8.3 Vendor portability
+
+Supabase is the current provider, not a dependency of the product's design. See
+[ADR 0001](adr/0001-vendor-portability.md): the app reaches the backend only through our API and
+service interfaces (CI-enforced), database rules use our own identity helper
+`app_current_user_id()`, migrations are plain PostgreSQL (CI proves they run on stock Postgres),
+tokens are verified by issuer/JWKS, and files are stored by path. Moving to another provider then
+touches adapters and configuration, not screens.
+
+### 8.4 Should the admin console be Flutter or a separate web stack?
 
 **Recommendation: Flutter Web**, as a separate app in the same monorepo. It shares models, the API client and the design system with the member app, and the team stays on one language. Data-heavy screens (grids, filters, exports) are supported by Flutter packages for data tables. Revisit only if the console needs heavy SEO or third-party embeds (it doesn't).
 
