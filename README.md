@@ -4,6 +4,7 @@ Matrimony platform for the Tamil and wider Indian diaspora. One Flutter codebase
 Android, iOS and Web, on a Supabase backend (Postgres, Auth, Storage, Realtime).
 
 - Product strategy, gap analysis and the phased plan: [`docs/PRODUCT_STRATEGY_AND_ROADMAP.md`](docs/PRODUCT_STRATEGY_AND_ROADMAP.md)
+- **Start here (status, how to run, rules):** [`AGENTS.md`](AGENTS.md)
 - **What's done and what's next:** [`docs/PROGRESS_TRACKER.md`](docs/PROGRESS_TRACKER.md)
 - Backend API: [`backend/README.md`](backend/README.md)
 - Staying portable away from Supabase: [`docs/adr/0001-vendor-portability.md`](docs/adr/0001-vendor-portability.md)

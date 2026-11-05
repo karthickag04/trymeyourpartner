@@ -6,7 +6,8 @@ Every item comes from the phased plan in
 **This file is updated in the same commit as the work it records.**
 
 **Last updated:** 2026-11-05 · **Branch / PR:** `claude/tender-volta-6ujx4z` →
-[karthickag04/trymeyourpartner#1](https://github.com/karthickag04/trymeyourpartner/pull/1)
+[karthickag04/trymeyourpartner#1](https://github.com/karthickag04/trymeyourpartner/pull/1) ·
+**New here?** Start with [`AGENTS.md`](../AGENTS.md).
 
 Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 needs the owner
 
@@ -15,8 +16,9 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | Track | Owner | Branch | Scope |
 |---|---|---|---|
 | A | Coordinator (main session) | `claude/tender-volta-6ujx4z` | P1-12 unified settings, database migrations (only this track applies them to the live project), CI, Android build, reviewing and merging tracks B and C, this tracker |
-| B | Agent: UI foundation | `claude/ui-foundation` | P1-07 design tokens + light/dark/system themes, P1-13 i18n (English + Tamil) |
+| B | Agent: UI foundation | `claude/ui-foundation` | P1-07 design tokens + light/dark/system themes, P1-13 i18n (English + Tamil). **PR #2 open**, built and tested on its branch, waiting for review and merge |
 | C | Agent: admin console | `claude/admin-console` | Phase 2: org and roles tables, admin console app, staff sign-in with MFA, admin API. **Merged** (`fe2c9c4`, PR #3) |
+| C (batch 2) | Agent: admin console | `claude/admin-console-2` | Rest of Phase 2: P2-04 moderation, P2-05 verification maker–checker, Member 360, staff create/disable. Branch created; feature work not started (continuing in a local session) |
 
 Tracks B and C start from track A's branch; the coordinator merges them back after review and tests.
 
@@ -33,7 +35,8 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** Track A: integrating track B when ready; next P1-06 Riverpod (after track B lands). Track C merged. Track B: P1-07 + P1-13. Track C: Phase 2.
+**Now working on:** Track A: integrating track B (PR #2) when ready; next P1-06 Riverpod. Track B: P1-07 + P1-13 ready for review (PR #2). Track C: batch 1 merged; batch 2 (P2-04, P2-05, Member 360, staff create/disable) next on `claude/admin-console-2`.
+**Waiting on the owner:** enable the access-token hook; create the first two system_admin accounts (`docs/ADMIN_CONSOLE.md`); move to asymmetric JWT signing keys (P1-17); P0-08, P0-09.
 **Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
@@ -68,7 +71,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-15 | Database identity helper `app_current_user_id()`; rewrite the 83 `auth.uid()` uses in policies/functions to it | ✅ | `5ec49c2`, `5470fbd` | Live: 0 uses of `auth.uid()` left; 51 policies use the helper; 12/12 live member checks and the browser contact flow unchanged; full local DB suite passes |
 | P1-16 | Realtime behind `RealtimeService` (move `notifications_service.dart`) | ✅ | `7ddf5be` | `subscribeNotifications` added to the interface (Supabase channels; HTTP polling); notifications code no longer imports Supabase (allowlist 5 → 4). Live browser: a notification inserted in the database showed as a toast within seconds |
 | P1-17 | API verifies tokens by issuer/JWKS (any OIDC provider), not by calling Supabase | 🙋 | `e44595e` | Built: `TokenVerifier` (auto/jwks/provider), 7 new tests (valid token; wrong key, issuer, audience; expired; garbage). Live: real token 200, tampered 401 (provider fallback, because the project has no public keys yet). **Owner:** in Supabase → Settings → JWT Keys, migrate to asymmetric signing keys; the API then switches to JWKS automatically. |
-| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
+| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Editing from the admin console done (Track C, `5b2a16d`: Settings section for system_admin, every change audited). Left: minimum app version, user preferences (Track B). |
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
@@ -79,8 +82,8 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P2-01 | Org tables (`branches`, `teams`, `staff_accounts`, `agents`, `role_permissions`, `audit_log`); custom JWT claims | ✅ | `4d6cb1c`, `facd62f` (merged `fe2c9c4`) | Live: 20 permissions, 69 role grants, staff/branch/team/agent/audit tables with row-level security. Local suite: members see no staff data; branch manager limited to own branch and only after MFA; nobody creates an account at or above their own rank; audit log append-only. Access-token hook built and tested (members' tokens unchanged); **owner to enable it** (see below) |
 | P2-02 | Admin console (Flutter Web): MFA login, role-aware navigation, Member 360, staff management | 🟡 | `d4a7d74`, `5b2a16d` (merged `fe2c9c4`) | Admin console (Flutter Web, `apps/admin_console`): email sign-in + TOTP MFA, role-aware navigation, Dashboard, Staff list, Roles matrix, Settings editor. 17 tests; CI job. Left: Member 360, creating/disabling staff in the console. Live sign-in test waits for the first system_admin (owner) |
 | P2-03 | Seed roles `system_admin` … `agent`; permission editor for `system_admin` | ✅ | `4d6cb1c` | Roles system_admin … agent seeded from the §6.2 matrix; editable by system_admin only; system_admin's own grants cannot be changed |
-| P2-04 | Moderation queues: reports, profiles, photos; actions with reasons | ⬜ | — | |
-| P2-05 | Verification queue with maker–checker | ⬜ | — | |
+| P2-04 | Moderation queues: reports, profiles, photos; actions with reasons | ⬜ | — | Track C batch 2 (`claude/admin-console-2`) |
+| P2-05 | Verification queue with maker–checker | ⬜ | — | Track C batch 2 (`claude/admin-console-2`) |
 | P2-06 | Admin API (`/admin/v1`) with scope checks; PII views audited | 🟡 | `5f88004`, `facd62f` | `/admin/v1/me`, `/admin/v1/staff`: valid token + MFA (aal2) + active staff; PII reads audited. 31 API tests incl. JWKS-signed tokens. More endpoints follow with the console sections |
 | P2-08 | Move the app's data access from direct Supabase calls (`matrimonial_service.dart`, ~75 calls) to the backend API; shrink the vendor allowlist to zero | ⬜ | — | Track A, after P1-06 |
 | P2-09 | Exit runbook: steps and checks to move database, auth, storage and realtime to another provider | ⬜ | — | |
