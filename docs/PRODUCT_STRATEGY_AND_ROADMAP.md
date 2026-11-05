@@ -4,6 +4,7 @@
 >
 > This document has two inputs:
 > 1. **A code-level audit** of this repository (`lib/`, `sql/`, `supabase_*.sql`) as of commit `fa22a92`.
+>    File paths in sections 3 and 10 refer to the layout at that commit; Phase 1 moved the app to a feature-first layout (see `README.md`).
 > 2. **A market review** of leading Indian matrimony platforms (BharatMatrimony/TamilMatrimony, Shaadi.com, Jeevansathi, Betterhalf, Elite Matrimony) and matrimony-bureau software.
 >
 > Competitor facts come from public sources (app-store listings, help centres, press and coupon sites). They are indicative and **must be re-checked on the official sites before you rely on prices or quotas**. Sources are listed at the end.

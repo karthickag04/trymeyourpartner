@@ -1,4 +1,4 @@
-import '../../models/contact_request.dart';
+import '../../shared/models/contact_request.dart';
 
 /// Contact exchange handshake service abstracts backend differences.
 /// Contract:

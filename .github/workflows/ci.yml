@@ -26,12 +26,8 @@ jobs:
       - name: Install packages (exactly as locked)
         run: flutter pub get --enforce-lockfile
 
-      - name: Check formatting of changed Dart files
-        if: github.event_name == 'pull_request'
-        run: |
-          git fetch --depth=1 origin "${{ github.base_ref }}"
-          files=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}" -- '*.dart' || true)
-          if [ -n "$files" ]; then dart format --output=none --set-exit-if-changed $files; fi
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test
 
       - name: Analyze
         run: flutter analyze

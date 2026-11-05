@@ -1,4 +1,4 @@
-import '../../models/presence_status.dart';
+import '../../shared/models/presence_status.dart';
 import 'http_client.dart';
 import '../../core/services/presence_service.dart';
 

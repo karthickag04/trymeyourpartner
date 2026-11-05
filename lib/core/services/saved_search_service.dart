@@ -1,4 +1,4 @@
-import '../../models/saved_search.dart';
+import '../../shared/models/saved_search.dart';
 
 abstract class SavedSearchService {
   Future<SavedSearch> create(

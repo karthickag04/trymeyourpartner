@@ -1,5 +1,5 @@
 import '../../core/services/contact_exchange_service.dart';
-import '../../models/contact_request.dart';
+import '../../shared/models/contact_request.dart';
 import 'http_client.dart';
 
 class HttpContactExchangeService implements ContactExchangeService {

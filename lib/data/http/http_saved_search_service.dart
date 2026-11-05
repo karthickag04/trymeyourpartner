@@ -1,5 +1,5 @@
 import '../../core/services/saved_search_service.dart';
-import '../../models/saved_search.dart';
+import '../../shared/models/saved_search.dart';
 import 'http_client.dart';
 
 class HttpSavedSearchService implements SavedSearchService {

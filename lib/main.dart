@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'providers/auth_provider.dart';
-import 'providers/matrimonial_provider.dart';
-import 'screens/auth_screen.dart';
-import 'screens/splash_screen.dart';
-import 'screens/profile_completion_gate.dart';
-import 'utils/theme.dart';
-import 'utils/constants.dart';
-import 'config/supabase_config.dart';
-import 'di/service_locator.dart';
+import 'features/auth/auth_provider.dart';
+import 'shared/state/matrimonial_provider.dart';
+import 'features/auth/auth_screen.dart';
+import 'features/auth/splash_screen.dart';
+import 'features/onboarding/profile_completion_gate.dart';
+import 'shared/theme/theme.dart';
+import 'shared/theme/constants.dart';
+import 'app/config/supabase_config.dart';
+import 'app/di/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

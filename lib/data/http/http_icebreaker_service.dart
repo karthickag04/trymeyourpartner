@@ -1,5 +1,5 @@
 import '../../core/services/icebreaker_service.dart';
-import '../../models/icebreaker.dart';
+import '../../shared/models/icebreaker.dart';
 import 'http_client.dart';
 
 class HttpIcebreakerService implements IcebreakerService {

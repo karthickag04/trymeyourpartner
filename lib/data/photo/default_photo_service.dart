@@ -5,7 +5,7 @@ import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:image/image.dart' as img;
 import '../../core/services/photo_service.dart';
 import '../../core/services/storage_service.dart';
-import '../../di/service_locator.dart';
+import '../../app/di/service_locator.dart';
 import 'dart:math';
 import 'dart:io' show Platform;
 import 'package:permission_handler/permission_handler.dart';

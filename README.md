@@ -44,7 +44,11 @@ flutter build web --dart-define-from-file=.env
 
 | Path | What it holds |
 |---|---|
-| `lib/` | The Flutter app (being reorganised by feature in Phase 1) |
+| `lib/app/` | App setup: Supabase config, dependency injection |
+| `lib/features/<feature>/` | Screens, state and widgets per feature: `auth`, `onboarding`, `home`, `profile`, `discovery`, `interests`, `chat`, `notifications`, `subscriptions` |
+| `lib/shared/` | Code used by several features: models, theme, shared state and services, widgets |
+| `lib/core/services/` | Backend-neutral service interfaces |
+| `lib/data/supabase/`, `lib/data/http/` | Supabase and HTTP implementations of those interfaces (see `docs/BACKEND_SWITCH.md`) |
 | `supabase/migrations/` | Versioned database changes, applied in order |
 | `supabase/tests/` | SQL checks of the access rules |
 | `sql/`, `archive/sql/`, `supabase_*.sql` | How the current schema was first built; replaced by a baseline migration in Phase 1 |

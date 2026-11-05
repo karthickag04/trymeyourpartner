@@ -1,7 +1,7 @@
 import '../../core/services/matrimonial_domain_service.dart';
-import '../../models/matrimonial_user.dart';
-import '../../models/location_data.dart';
-import '../../models/caste_data.dart' as caste_model;
+import '../../shared/models/matrimonial_user.dart';
+import '../../shared/models/location_data.dart';
+import '../../shared/models/caste_data.dart' as caste_model;
 import 'http_client.dart';
 
 class HttpMatrimonialDomainService implements MatrimonialDomainService {
