@@ -85,8 +85,7 @@ class _PresenceIndicatorState extends State<PresenceIndicator> {
         const SizedBox(width: AppDimensions.paddingXS),
         Text(
           text,
-          style: context.styles.overline.copyWith(
-            fontSize: 10,
+          style: context.styles.micro.copyWith(
             color: widget.textColor ?? palette.onImage.withValues(alpha: 0.9),
           ),
         ),

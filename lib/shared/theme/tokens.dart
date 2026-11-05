@@ -300,4 +300,7 @@ class AppTextStyles {
   TextStyle get button => _t.labelLarge!;
   TextStyle get label => _t.labelMedium!;
   TextStyle get overline => _t.labelSmall!;
+
+  /// 10px text for badges and dense cards only.
+  TextStyle get micro => _t.labelSmall!.copyWith(fontSize: 10);
 }

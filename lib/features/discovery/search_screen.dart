@@ -477,7 +477,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Text(
               context.l10n.searchLocationPrefs,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: context.styles.body1.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
@@ -533,7 +533,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Text(
               context.l10n.searchBasicPrefs,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: context.styles.body1.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
@@ -674,7 +674,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Text(
               context.l10n.searchRangePrefs,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: context.styles.body1.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
@@ -846,7 +846,9 @@ class _SearchScreenState extends State<SearchScreen> {
               )
             : Text(
                 context.l10n.searchTitle,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: context.styles.body1.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
       ),
     );
@@ -881,7 +883,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         child: Text(
           context.l10n.quickSearch,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: context.styles.body1.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -921,8 +923,7 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 16),
             Text(
               context.l10n.searchEmptyTitle,
-              style: TextStyle(
-                fontSize: 18,
+              style: context.styles.title.copyWith(
                 color: context.palette.textSecondary,
                 fontWeight: FontWeight.w500,
               ),
@@ -930,8 +931,7 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 8),
             Text(
               context.l10n.searchEmptyBody,
-              style: TextStyle(
-                fontSize: 14,
+              style: context.styles.body2.copyWith(
                 color: context.palette.textTertiary,
               ),
               textAlign: TextAlign.center,
@@ -965,8 +965,7 @@ class _SearchScreenState extends State<SearchScreen> {
               resultsSource == 'matches'
                   ? context.l10n.profilesRecommended(profilesToShow.length)
                   : context.l10n.profilesFound(profilesToShow.length),
-              style: TextStyle(
-                fontSize: 16,
+              style: context.styles.body1.copyWith(
                 fontWeight: FontWeight.bold,
                 color: context.colors.primary,
               ),
@@ -1822,8 +1821,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       profile.name.isNotEmpty
                                           ? profile.name[0].toUpperCase()
                                           : '?',
-                                      style: const TextStyle(
-                                        fontSize: 24,
+                                      style: context.styles.heading2.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -1833,8 +1831,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       profile.name.isNotEmpty
                                           ? profile.name[0].toUpperCase()
                                           : '?',
-                                      style: const TextStyle(
-                                        fontSize: 24,
+                                      style: context.styles.heading2.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -1845,8 +1842,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     profile.name.isNotEmpty
                                         ? profile.name[0].toUpperCase()
                                         : '?',
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                    style: context.styles.heading2.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1861,8 +1857,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: [
                           Text(
                             profile.name,
-                            style: const TextStyle(
-                              fontSize: 24,
+                            style: context.styles.heading2.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -1871,8 +1866,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               profile.age,
                               profile.city,
                             ),
-                            style: TextStyle(
-                              fontSize: 16,
+                            style: context.styles.body1.copyWith(
                               color: context.palette.textTertiary,
                             ),
                           ),
@@ -1975,14 +1969,13 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
+            style: context.styles.body1.copyWith(
               fontWeight: FontWeight.bold,
               color: context.colors.primary,
             ),
           ),
           const SizedBox(height: 4),
-          Text(content, style: const TextStyle(fontSize: 15)),
+          Text(content, style: context.styles.body1),
           const Divider(),
         ],
       ),

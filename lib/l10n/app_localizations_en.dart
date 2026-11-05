@@ -27,31 +27,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonClose => 'Close';
 
   @override
-  String get commonBack => 'Back';
-
-  @override
-  String get commonNext => 'Next';
-
-  @override
   String get commonDone => 'Done';
-
-  @override
-  String get commonApply => 'Apply';
-
-  @override
-  String get commonClear => 'Clear';
-
-  @override
-  String get commonReset => 'Reset';
-
-  @override
-  String get commonView => 'View';
-
-  @override
-  String get commonSearch => 'Search';
-
-  @override
-  String get commonLoading => 'Loading…';
 
   @override
   String get commonNotSpecified => 'Not specified';
@@ -73,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageChooseTooltip => 'Change language';
 
   @override
-  String get authTagline => 'Find your life partner with trust';
+  String get authTagline => 'Find your life partner, the trusted way';
 
   @override
   String get authSignIn => 'Sign In';
@@ -314,10 +290,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNotAvailable => 'This profile is not available.';
 
   @override
-  String get contactLimitReached =>
-      'You have used all contact views in your plan.';
-
-  @override
   String get notificationsTitle => 'Notifications';
 
   @override
@@ -526,11 +498,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String profileAgePlace(int age, String place) {
     return '$age yrs · $place';
-  }
-
-  @override
-  String ageYears(int age) {
-    return '$age yrs';
   }
 
   @override
@@ -1465,9 +1432,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionManagePhotos => 'Manage photos';
 
   @override
-  String get statProfile => 'Profile';
-
-  @override
   String get statComplete => 'Complete';
 
   @override
@@ -1786,9 +1750,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveSearchHint => 'e.g. Chennai IT, 25-30, Hindu';
 
   @override
-  String get savedSearchesTitle => 'Saved searches';
-
-  @override
   String get savedSearchesEmpty => 'No saved searches yet.';
 
   @override
@@ -1924,11 +1885,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get toggleFailed =>
       'We couldn\'t change this setting. Please try again.';
-
-  @override
-  String heightCmOrUnknown(String value) {
-    return '$value cm';
-  }
 
   @override
   String get langTamil => 'Tamil';
@@ -2182,4 +2138,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusRich => 'Affluent';
+
+  @override
+  String get toastInterestsUpdated => 'Your interests were updated';
+
+  @override
+  String get toastInterestWithdrawn => 'An interest was withdrawn';
 }

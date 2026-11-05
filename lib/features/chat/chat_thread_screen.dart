@@ -479,8 +479,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                                   children: [
                                     Text(
                                       _formatTimestamp(m.at),
-                                      style: context.styles.overline.copyWith(
-                                        fontSize: 10,
+                                      style: context.styles.micro.copyWith(
                                         color: context.palette.textTertiary,
                                       ),
                                     ),

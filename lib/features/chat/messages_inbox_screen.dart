@@ -129,9 +129,8 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
                                       unread > 99
                                           ? context.l10n.countOverflow(99)
                                           : context.formatNumber(unread),
-                                      style: context.styles.overline.copyWith(
+                                      style: context.styles.micro.copyWith(
                                         color: context.colors.onError,
-                                        fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

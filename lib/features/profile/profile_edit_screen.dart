@@ -1119,7 +1119,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           color: context.palette.warning.withValues(alpha: 0.3),
         ),
       ),
-      child: Text(context.l10n.mandatoryBanner, style: TextStyle(fontSize: 12)),
+      child: Text(context.l10n.mandatoryBanner, style: context.styles.caption),
     );
   }
 
@@ -1844,7 +1844,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(context.l10n.photosGuidance, style: TextStyle(fontSize: 12)),
+        Text(context.l10n.photosGuidance, style: context.styles.caption),
         const SizedBox(height: 12),
         GridView.count(
           crossAxisCount: 3,
@@ -1923,9 +1923,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                 ),
                 child: Text(
                   context.l10n.photoSlot(slot + 1),
-                  style: context.styles.overline.copyWith(
+                  style: context.styles.micro.copyWith(
                     color: context.palette.onImage,
-                    fontSize: 10,
                   ),
                 ),
               ),

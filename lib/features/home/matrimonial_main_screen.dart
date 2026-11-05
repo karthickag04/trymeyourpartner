@@ -99,7 +99,7 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
               final messenger = ScaffoldMessenger.maybeOf(context);
               messenger?.showSnackBar(
                 SnackBar(
-                  content: Text(msg),
+                  content: Text(_toastText(context, msg)),
                   behavior: SnackBarBehavior.floating,
                   duration: const Duration(seconds: 2),
                 ),
@@ -127,19 +127,30 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
             initialLocation: index == widget.shell.currentIndex,
           ),
           type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: const TextStyle(
+          selectedLabelStyle: context.styles.caption.copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 12,
           ),
-          unselectedLabelStyle: const TextStyle(
+          unselectedLabelStyle: context.styles.overline.copyWith(
             fontWeight: FontWeight.w500,
-            fontSize: 11,
           ),
           items: _buildNavItems(context),
         ),
       ),
     );
   }
+}
+
+/// The provider reports realtime events with fixed English messages; show
+/// them in the member's language.
+String _toastText(BuildContext context, String message) {
+  final l = context.l10n;
+  return switch (message) {
+    'You have a new interest' => l.toastInterestReceived,
+    'Interests updated' => l.toastInterestsUpdated,
+    'Your interest was accepted' => l.toastInterestAccepted,
+    'An interest was withdrawn' => l.toastInterestWithdrawn,
+    _ => message,
+  };
 }
 
 class _InterestsIcon extends StatelessWidget {
@@ -177,9 +188,8 @@ class _InterestsBadge extends StatelessWidget {
             excludeSemantics: true,
             child: Text(
               context.formatNumber(c),
-              style: context.styles.overline.copyWith(
+              style: context.styles.micro.copyWith(
                 color: context.colors.onError,
-                fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,

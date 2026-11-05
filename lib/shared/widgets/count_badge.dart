@@ -35,9 +35,8 @@ class CountBadge extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: context.styles.overline.copyWith(
+          style: context.styles.micro.copyWith(
             color: context.colors.onError,
-            fontSize: 10,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -27,31 +27,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get commonClose => 'மூடு';
 
   @override
-  String get commonBack => 'பின்செல்';
-
-  @override
-  String get commonNext => 'அடுத்து';
-
-  @override
   String get commonDone => 'முடிந்தது';
-
-  @override
-  String get commonApply => 'பயன்படுத்து';
-
-  @override
-  String get commonClear => 'அழி';
-
-  @override
-  String get commonReset => 'மீட்டமை';
-
-  @override
-  String get commonView => 'பார்';
-
-  @override
-  String get commonSearch => 'தேடு';
-
-  @override
-  String get commonLoading => 'ஏற்றுகிறது…';
 
   @override
   String get commonNotSpecified => 'குறிப்பிடப்படவில்லை';
@@ -319,10 +295,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get profileNotAvailable => 'இந்தச் சுயவிவரம் தற்போது கிடைக்கவில்லை.';
 
   @override
-  String get contactLimitReached =>
-      'உங்கள் திட்டத்தில் உள்ள அனைத்துத் தொடர்பு விவரப் பார்வைகளையும் பயன்படுத்திவிட்டீர்கள்.';
-
-  @override
   String get notificationsTitle => 'அறிவிப்புகள்';
 
   @override
@@ -533,11 +505,6 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String profileAgePlace(int age, String place) {
     return '$age வயது · $place';
-  }
-
-  @override
-  String ageYears(int age) {
-    return '$age வயது';
   }
 
   @override
@@ -1487,9 +1454,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get actionManagePhotos => 'புகைப்படங்களை நிர்வகி';
 
   @override
-  String get statProfile => 'சுயவிவரம்';
-
-  @override
   String get statComplete => 'நிறைவு';
 
   @override
@@ -1817,9 +1781,6 @@ class AppLocalizationsTa extends AppLocalizations {
   String get saveSearchHint => 'எ.கா. சென்னை IT, 25-30, இந்து';
 
   @override
-  String get savedSearchesTitle => 'சேமித்த தேடல்கள்';
-
-  @override
   String get savedSearchesEmpty => 'இதுவரை சேமித்த தேடல்கள் இல்லை.';
 
   @override
@@ -1955,11 +1916,6 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get toggleFailed =>
       'இந்த அமைப்பை மாற்ற முடியவில்லை. மீண்டும் முயலவும்.';
-
-  @override
-  String heightCmOrUnknown(String value) {
-    return '$value செ.மீ.';
-  }
 
   @override
   String get langTamil => 'தமிழ்';
@@ -2217,4 +2173,10 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get statusRich => 'வசதியானவர்';
+
+  @override
+  String get toastInterestsUpdated => 'உங்கள் விருப்பங்கள் புதுப்பிக்கப்பட்டன';
+
+  @override
+  String get toastInterestWithdrawn => 'ஒரு விருப்பம் திரும்பப் பெறப்பட்டது';
 }

@@ -191,7 +191,7 @@ class ProfileCard extends StatelessWidget {
                           profile.age,
                           profile.heightInFeetInches,
                         ),
-                        style: context.styles.caption.copyWith(fontSize: 10),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -201,7 +201,7 @@ class ProfileCard extends StatelessWidget {
                       // Education
                       Text(
                         profile.education,
-                        style: context.styles.caption.copyWith(fontSize: 10),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -211,7 +211,7 @@ class ProfileCard extends StatelessWidget {
                       // Occupation
                       Text(
                         profile.occupation,
-                        style: context.styles.caption.copyWith(fontSize: 10),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -255,9 +255,8 @@ class ProfileCard extends StatelessWidget {
                                         profile.district,
                                         profile.state,
                                       ),
-                                      style: context.styles.caption.copyWith(
+                                      style: context.styles.micro.copyWith(
                                         color: context.palette.accent,
-                                        fontSize: 10,
                                         fontWeight: FontWeight.w600,
                                       ),
                                       maxLines: 1,
@@ -396,8 +395,7 @@ class ProfileCard extends StatelessWidget {
       child: Center(
         child: Text(
           profile.name.isNotEmpty ? profile.name[0].toUpperCase() : '?',
-          style: TextStyle(
-            fontSize: 32,
+          style: context.styles.heading1.copyWith(
             fontWeight: FontWeight.bold,
             color: context.palette.accent,
           ),

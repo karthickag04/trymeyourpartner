@@ -86,6 +86,14 @@ void main() {
     expect(second.locale, const Locale('ta'));
   });
 
+  test('without a choice, the admin default language is used', () async {
+    final prefs = UserPreferences();
+    expect(prefs.effectiveLocale('ta'), const Locale('ta'));
+    expect(prefs.effectiveLocale('fr'), const Locale('en'));
+    await prefs.setLocale(const Locale('en'));
+    expect(prefs.effectiveLocale('ta'), const Locale('en'));
+  });
+
   test('unsupported languages are ignored', () async {
     final prefs = await UserPreferences.load();
     await prefs.setLocale(const Locale('fr'));

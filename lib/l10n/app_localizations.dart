@@ -134,59 +134,11 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get commonClose;
 
-  /// No description provided for @commonBack.
-  ///
-  /// In en, this message translates to:
-  /// **'Back'**
-  String get commonBack;
-
-  /// No description provided for @commonNext.
-  ///
-  /// In en, this message translates to:
-  /// **'Next'**
-  String get commonNext;
-
   /// No description provided for @commonDone.
   ///
   /// In en, this message translates to:
   /// **'Done'**
   String get commonDone;
-
-  /// No description provided for @commonApply.
-  ///
-  /// In en, this message translates to:
-  /// **'Apply'**
-  String get commonApply;
-
-  /// No description provided for @commonClear.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear'**
-  String get commonClear;
-
-  /// No description provided for @commonReset.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get commonReset;
-
-  /// No description provided for @commonView.
-  ///
-  /// In en, this message translates to:
-  /// **'View'**
-  String get commonView;
-
-  /// No description provided for @commonSearch.
-  ///
-  /// In en, this message translates to:
-  /// **'Search'**
-  String get commonSearch;
-
-  /// No description provided for @commonLoading.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading…'**
-  String get commonLoading;
 
   /// No description provided for @commonNotSpecified.
   ///
@@ -227,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @authTagline.
   ///
   /// In en, this message translates to:
-  /// **'Find your life partner with trust'**
+  /// **'Find your life partner, the trusted way'**
   String get authTagline;
 
   /// No description provided for @authSignIn.
@@ -571,12 +523,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This profile is not available.'**
   String get profileNotAvailable;
-
-  /// No description provided for @contactLimitReached.
-  ///
-  /// In en, this message translates to:
-  /// **'You have used all contact views in your plan.'**
-  String get contactLimitReached;
 
   /// No description provided for @notificationsTitle.
   ///
@@ -925,12 +871,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{age} yrs · {place}'**
   String profileAgePlace(int age, String place);
-
-  /// No description provided for @ageYears.
-  ///
-  /// In en, this message translates to:
-  /// **'{age} yrs'**
-  String ageYears(int age);
 
   /// No description provided for @interestsTitle.
   ///
@@ -2594,12 +2534,6 @@ abstract class AppLocalizations {
   /// **'Manage photos'**
   String get actionManagePhotos;
 
-  /// No description provided for @statProfile.
-  ///
-  /// In en, this message translates to:
-  /// **'Profile'**
-  String get statProfile;
-
   /// No description provided for @statComplete.
   ///
   /// In en, this message translates to:
@@ -3206,12 +3140,6 @@ abstract class AppLocalizations {
   /// **'e.g. Chennai IT, 25-30, Hindu'**
   String get saveSearchHint;
 
-  /// No description provided for @savedSearchesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved searches'**
-  String get savedSearchesTitle;
-
   /// No description provided for @savedSearchesEmpty.
   ///
   /// In en, this message translates to:
@@ -3373,12 +3301,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t change this setting. Please try again.'**
   String get toggleFailed;
-
-  /// No description provided for @heightCmOrUnknown.
-  ///
-  /// In en, this message translates to:
-  /// **'{value} cm'**
-  String heightCmOrUnknown(String value);
 
   /// No description provided for @langTamil.
   ///
@@ -3859,6 +3781,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Affluent'**
   String get statusRich;
+
+  /// No description provided for @toastInterestsUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your interests were updated'**
+  String get toastInterestsUpdated;
+
+  /// No description provided for @toastInterestWithdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'An interest was withdrawn'**
+  String get toastInterestWithdrawn;
 }
 
 class _AppLocalizationsDelegate

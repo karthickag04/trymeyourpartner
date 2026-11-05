@@ -605,7 +605,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // But just in case, we can show a message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Please restart the app to sign in.'),
+        content: Text(context.l10n.restartToSignIn),
         backgroundColor: context.palette.warning,
       ),
     );
@@ -944,10 +944,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ),
     child: Text(
       text,
-      style: context.styles.overline.copyWith(
-        color: context.palette.onImage,
-        fontSize: 10,
-      ),
+      style: context.styles.micro.copyWith(color: context.palette.onImage),
     ),
   );
 

@@ -9,22 +9,14 @@
   "commonSave": "Save",
   "commonRetry": "Try again",
   "commonClose": "Close",
-  "commonBack": "Back",
-  "commonNext": "Next",
   "commonDone": "Done",
-  "commonApply": "Apply",
-  "commonClear": "Clear",
-  "commonReset": "Reset",
-  "commonView": "View",
-  "commonSearch": "Search",
-  "commonLoading": "Loading…",
   "commonNotSpecified": "Not specified",
   "commonSomethingWentWrong": "Something went wrong. Please try again.",
   "languageEnglish": "English",
   "languageTamil": "தமிழ்",
   "languageLabel": "Language",
   "languageChooseTooltip": "Change language",
-  "authTagline": "Find your life partner with trust",
+  "authTagline": "Find your life partner, the trusted way",
   "authSignIn": "Sign In",
   "authSignUp": "Sign Up",
   "authEmailLabel": "Email",
@@ -159,7 +151,6 @@
   "presenceOnline": "Online",
   "presenceOffline": "Offline",
   "profileNotAvailable": "This profile is not available.",
-  "contactLimitReached": "You have used all contact views in your plan.",
   "notificationsTitle": "Notifications",
   "notificationsMarkAllRead": "Mark all as read",
   "notificationsMarkRead": "Mark read",
@@ -276,14 +267,6 @@
       },
       "place": {
         "type": "String"
-      }
-    }
-  },
-  "ageYears": "{age} yrs",
-  "@ageYears": {
-    "placeholders": {
-      "age": {
-        "type": "int"
       }
     }
   },
@@ -776,7 +759,6 @@
   },
   "actionEditProfile": "Edit profile",
   "actionManagePhotos": "Manage photos",
-  "statProfile": "Profile",
   "statComplete": "Complete",
   "statIncomplete": "Incomplete",
   "quickActionsTitle": "Quick actions",
@@ -878,7 +860,6 @@
   "completeRegistrationFirst": "Please complete registration first.",
   "saveSearchTitle": "Save this search",
   "saveSearchHint": "e.g. Chennai IT, 25-30, Hindu",
-  "savedSearchesTitle": "Saved searches",
   "savedSearchesEmpty": "No saved searches yet.",
   "deleteSavedSearchTitle": "Delete saved search?",
   "runSearch": "Run search",
@@ -1032,14 +1013,6 @@
     }
   },
   "toggleFailed": "We couldn't change this setting. Please try again.",
-  "heightCmOrUnknown": "{value} cm",
-  "@heightCmOrUnknown": {
-    "placeholders": {
-      "value": {
-        "type": "String"
-      }
-    }
-  },
   "langTamil": "Tamil",
   "langEnglish": "English",
   "langTelugu": "Telugu",
@@ -1136,5 +1109,7 @@
   "valuesModerate": "Moderate",
   "statusMiddleClass": "Middle class",
   "statusUpperMiddleClass": "Upper middle class",
-  "statusRich": "Affluent"
+  "statusRich": "Affluent",
+  "toastInterestsUpdated": "Your interests were updated",
+  "toastInterestWithdrawn": "An interest was withdrawn"
 }

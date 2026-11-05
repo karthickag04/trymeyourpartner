@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trymeyourpartner/app/settings/app_settings.dart';
 import 'package:trymeyourpartner/app/settings/maintenance_gate.dart';
 import 'package:trymeyourpartner/features/settings/help_screen.dart';
+import 'package:trymeyourpartner/l10n/app_localizations.dart';
 
 class _FakeSource implements AppSettingsSource {
   Map<String, dynamic> values;
@@ -21,7 +22,11 @@ Future<AppSettings> _settings(Map<String, dynamic> values) async {
 
 Widget _host(AppSettings s, Widget child) => ChangeNotifierProvider.value(
   value: s,
-  child: MaterialApp(home: child),
+  child: MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: child,
+  ),
 );
 
 void main() {

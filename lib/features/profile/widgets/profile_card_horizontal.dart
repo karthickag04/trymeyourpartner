@@ -216,9 +216,8 @@ class ProfileCardHorizontal extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 context.l10n.ageYearsLong(profile.age),
-                style: context.styles.body2.copyWith(
+                style: context.styles.caption.copyWith(
                   color: context.palette.textSecondary,
-                  fontSize: 12, // Smaller text
                 ),
               ),
               const SizedBox(width: AppDimensions.paddingS),
@@ -230,9 +229,8 @@ class ProfileCardHorizontal extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 profile.heightInFeetInches,
-                style: context.styles.body2.copyWith(
+                style: context.styles.caption.copyWith(
                   color: context.palette.textSecondary,
-                  fontSize: 12, // Smaller text
                 ),
               ),
             ],
@@ -247,10 +245,9 @@ class ProfileCardHorizontal extends StatelessWidget {
               Expanded(
                 child: Text(
                   profile.education,
-                  style: context.styles.body2.copyWith(
+                  style: context.styles.caption.copyWith(
                     color: context.palette.textPrimary,
                     fontWeight: FontWeight.w500,
-                    fontSize: 12, // Smaller text
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -268,10 +265,9 @@ class ProfileCardHorizontal extends StatelessWidget {
               Expanded(
                 child: Text(
                   profile.occupation,
-                  style: context.styles.body2.copyWith(
+                  style: context.styles.caption.copyWith(
                     color: context.palette.textPrimary,
                     fontWeight: FontWeight.w500,
-                    fontSize: 12, // Smaller text
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -307,10 +303,9 @@ class ProfileCardHorizontal extends StatelessWidget {
                       profile.district,
                       profile.state,
                     ),
-                    style: context.styles.body2.copyWith(
+                    style: context.styles.overline.copyWith(
                       color: context.palette.textSecondary,
                       fontWeight: FontWeight.w500,
-                      fontSize: 11,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -346,10 +341,9 @@ class ProfileCardHorizontal extends StatelessWidget {
                   const SizedBox(width: 6),
                   Text(
                     statusLabel!,
-                    style: context.styles.body2.copyWith(
+                    style: context.styles.overline.copyWith(
                       color: statusColor ?? context.palette.accent,
                       fontWeight: FontWeight.w600,
-                      fontSize: 11,
                     ),
                   ),
                 ],
@@ -513,8 +507,7 @@ class ProfileCardHorizontal extends StatelessWidget {
       child: Center(
         child: Text(
           profile.name.isNotEmpty ? profile.name[0].toUpperCase() : '?',
-          style: TextStyle(
-            fontSize: 32,
+          style: context.styles.heading1.copyWith(
             fontWeight: FontWeight.bold,
             color: context.palette.accent,
           ),
