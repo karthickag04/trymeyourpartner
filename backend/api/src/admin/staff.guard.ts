@@ -9,7 +9,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthedRequest, SupabaseAuthGuard } from '../auth/auth.guard';
-import { SupabaseClient } from '../supabase/supabase.client';
+import { VerifiedUser } from '../auth/token-verifier';
+import { Database } from '../db/database';
 
 /** What public.current_staff_profile() returns for an active staff member. */
 export interface StaffProfile {
@@ -46,7 +47,7 @@ export const RequirePermission = (permission: string) => SetMetadata(PERMISSION_
 export class StaffGuard implements CanActivate {
   constructor(
     private readonly auth: SupabaseAuthGuard,
-    private readonly supabase: SupabaseClient,
+    private readonly db: Database,
     private readonly reflector: Reflector,
   ) {}
 
@@ -66,7 +67,10 @@ export class StaffGuard implements CanActivate {
       });
     }
 
-    const staff = await this.supabase.rpc<StaffProfile | null>(token, 'current_staff_profile', {});
+    const [row] = await this.db.asUser(req.user, (q) =>
+      q.query<{ p: StaffProfile | null }>('select public.current_staff_profile() as p'),
+    );
+    const staff = row?.p ?? null;
     if (!staff?.role) {
       throw new ForbiddenException({ code: 'NOT_STAFF', message: 'This account has no staff access' });
     }
@@ -90,7 +94,7 @@ export const Staff = createParamDecorator((_: unknown, ctx: ExecutionContext) =>
 });
 export type StaffContext = {
   staff: StaffProfile;
-  user: { id: string; email?: string };
+  user: VerifiedUser;
   token: string;
   ip: string | null;
 };

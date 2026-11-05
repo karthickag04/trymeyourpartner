@@ -4,11 +4,14 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { ApiConfig, loadConfig } from '../src/config';
+import { Database, DatabaseError } from '../src/db/database';
 import { configureApp } from '../src/setup';
+import { FakeDatabase } from './helpers/fake-database';
 
 const config: ApiConfig = loadConfig({
   SUPABASE_URL: 'https://example.supabase.co/',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test',
+  DATABASE_URL: 'postgres://api_service@localhost:5432/unused',
 });
 
 /** An unsigned token with the given claims; the stand-in below decides which tokens are valid. */
@@ -73,20 +76,28 @@ function json(status: number, body: unknown) {
   return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 }
 
-type Rest = (url: string, init: RequestInit, user: { id: string }) => Response;
-let rest: Rest;
-let auditResponse: () => Response;
+let staffRows: () => unknown[];
+let auditFails: boolean;
 const calls: { url: string; init: RequestInit }[] = [];
+const db = new FakeDatabase();
 
-/** Supabase stand-in: Auth accepts the tokens in VALID; REST answers as that user. */
+/** Supabase Auth stand-in: accepts the tokens in VALID. */
 function supabase(url: string, init: RequestInit): Response {
   const auth = (init.headers as Record<string, string>).Authorization ?? '';
   const user = VALID.get(auth.replace('Bearer ', ''));
   if (url.endsWith('/auth/v1/user')) return user ? json(200, user) : json(401, { msg: 'bad token' });
-  if (!user) return json(401, { message: 'JWT invalid' });
-  if (url.endsWith('/rest/v1/rpc/current_staff_profile')) return json(200, PROFILES[user.id] ?? null);
-  if (url.endsWith('/rest/v1/rpc/log_audit')) return auditResponse();
-  return rest(url, init, user);
+  return json(500, { message: 'no Supabase REST calls expected' });
+}
+
+/** Database stand-in: answers as the user each query runs as. */
+function answer(sql: string, _params: unknown[], user: { id: string }): unknown[] {
+  if (sql.includes('public.current_staff_profile()')) return [{ p: PROFILES[user.id] ?? null }];
+  if (sql.includes('public.log_audit(')) {
+    if (auditFails) throw new DatabaseError('MFA_REQUIRED', '42501');
+    return [{ log_audit: 1 }];
+  }
+  if (sql.includes('from public.staff_accounts')) return staffRows();
+  throw new Error(`unexpected query: ${sql}`);
 }
 
 describe('Admin API', () => {
@@ -102,7 +113,10 @@ describe('Admin API', () => {
       calls.push({ url, init: init ?? {} });
       return supabase(url, init ?? {});
     }) as typeof fetch;
-    const mod = await Test.createTestingModule({ imports: [AppModule.forRoot(config)] }).compile();
+    const mod = await Test.createTestingModule({ imports: [AppModule.forRoot(config)] })
+      .overrideProvider(Database)
+      .useValue(db)
+      .compile();
     app = mod.createNestApplication();
     configureApp(app, config);
     await app.init();
@@ -110,8 +124,12 @@ describe('Admin API', () => {
   afterAll(() => app.close());
   beforeEach(() => {
     calls.length = 0;
-    rest = () => json(500, { message: 'unexpected call' });
-    auditResponse = () => json(200, 1);
+    db.reset();
+    db.handler = answer;
+    staffRows = () => {
+      throw new Error('unexpected staff query');
+    };
+    auditFails = false;
   });
 
   it('rejects requests without a token', async () => {
@@ -127,7 +145,7 @@ describe('Admin API', () => {
   it('requires an MFA-verified session (aal2) before looking up staff status', async () => {
     const res = await get('/admin/v1/me', TOKENS.managerAal1).expect(403);
     expect(res.body.code).toBe('MFA_REQUIRED');
-    expect(calls.some((c) => c.url.includes('/rest/v1/'))).toBe(false);
+    expect(db.calls).toEqual([]);
   });
 
   it('refuses members (no staff account)', async () => {
@@ -146,24 +164,20 @@ describe('Admin API', () => {
       team: null,
       permissions: ['org.view', 'staff.view', 'staff.manage', 'member_pii.view'],
     });
-    const rpc = calls.find((c) => c.url.endsWith('/rpc/current_staff_profile'))!;
-    const headers = rpc.init.headers as Record<string, string>;
-    expect(headers.Authorization).toBe(`Bearer ${TOKENS.managerAal2}`); // row-level security applies
-    expect(headers.apikey).toBe('sb_publishable_test'); // never a secret key
+    const q = db.calls.find((c) => c.sql.includes('current_staff_profile'))!;
+    expect(q.user.id).toBe(USERS.manager.id); // row-level security applies to this staff member
+    expect(q.user.aal).toBe('aal2'); // the MFA claim reaches the database
+    expect(calls.some((c) => c.url.includes('/rest/v1/'))).toBe(false);
   });
 
   it('GET /admin/v1/staff needs the staff.view permission', async () => {
     const res = await get('/admin/v1/staff', TOKENS.staffAal2).expect(403);
     expect(res.body.code).toBe('FORBIDDEN');
-    expect(calls.some((c) => c.url.includes('/rest/v1/staff_accounts'))).toBe(false);
+    expect(db.calls.some((c) => c.sql.includes('staff_accounts'))).toBe(false);
   });
 
   it('GET /admin/v1/staff lists staff in scope and writes an audit entry', async () => {
-    rest = (url, init) => {
-      expect(url).toContain('/rest/v1/staff_accounts?select=');
-      expect((init.headers as Record<string, string>).Authorization).toBe(`Bearer ${TOKENS.managerAal2}`);
-      return json(200, STAFF_ROWS);
-    };
+    staffRows = () => STAFF_ROWS;
     const res = await get('/admin/v1/staff', TOKENS.managerAal2).expect(200);
     expect(res.body).toEqual([
       {
@@ -178,16 +192,18 @@ describe('Admin API', () => {
         team: null,
       },
     ]);
-    const audit = calls.find((c) => c.url.endsWith('/rpc/log_audit'))!;
+    const list = db.calls.find((c) => c.sql.includes('from public.staff_accounts'))!;
+    expect(list.user.id).toBe(USERS.manager.id);
+    const audit = db.calls.find((c) => c.sql.includes('public.log_audit('))!;
     expect(audit).toBeDefined();
-    const body = JSON.parse(String(audit.init.body));
-    expect(body).toMatchObject({ p_action: 'staff.list', p_entity: 'staff_accounts', p_after: { via: 'admin-api', count: 1 } });
-    expect((audit.init.headers as Record<string, string>).Authorization).toBe(`Bearer ${TOKENS.managerAal2}`);
+    expect(audit.user.id).toBe(USERS.manager.id);
+    expect(audit.params.slice(0, 2)).toEqual(['staff.list', 'staff_accounts']);
+    expect(JSON.parse(String(audit.params[4]))).toMatchObject({ via: 'admin-api', count: 1 });
   });
 
   it('returns nothing when the audit entry cannot be written', async () => {
-    rest = () => json(200, STAFF_ROWS);
-    auditResponse = () => json(403, { code: '42501', message: 'MFA_REQUIRED' });
+    staffRows = () => STAFF_ROWS;
+    auditFails = true;
     const res = await get('/admin/v1/staff', TOKENS.managerAal2).expect(503);
     expect(res.body.code).toBe('AUDIT_UNAVAILABLE');
     expect(JSON.stringify(res.body)).not.toContain('BM X');

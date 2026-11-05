@@ -3,7 +3,7 @@
 - **Status:** Accepted (2026-11-05). Revised 2026-11-05: re-measured, added the gaps found
   (API through PostgREST, `auth.users` links, storage not in code, table-change realtime),
   the database-engine decision, rules for future integrations and items P2-10 to P2-14.
-  P2-14 done: CI guards for the API and for migrations.
+  P2-14 done: CI guards for the API and for migrations. P2-10 done: the API talks to PostgreSQL.
 - **Decision owner:** product owner; enforced by CI and code review
 - **Related:** roadmap §8 (target architecture), [`PROGRESS_TRACKER.md`](../PROGRESS_TRACKER.md) items P1-14 to P1-17, P2-08 to P2-14
 
@@ -93,7 +93,7 @@ screens or business rules:
 |---|---|---|---|---|
 | **Database** | Plain PostgreSQL (CI rebuilds it on stock Postgres 16). `auth.uid()` replaced by `app_current_user_id()` in every live policy and function (P1-15). Still Supabase-specific: links to `auth.users` (18 places), the `anon`/`authenticated`/`service_role` roles, the `supabase_realtime` publication, the access-token hook | Easy for data (`pg_dump`/restore); medium for identity links | P2-11 own `app_users` table; marked blocks | Easy: hours |
 | **App data access** | 4 files still import Supabase (was 5). `matrimonial_service.dart` alone makes about 85 direct calls; `subscription_service.dart` 5; `app_settings.dart` 4; `main.dart` start-up | Hard: every screen's data path | P2-08 move to the API | Easy: no app change |
-| **Backend API** | Verifies tokens by JWKS (P1-17), but reads and writes data **through PostgREST** (`backend/api/src/supabase/supabase.client.ts`); 8 files use that client directly (CI list, may only shrink) | Medium | P2-10 direct Postgres connection | Easy |
+| **Backend API** | Data through PostgreSQL directly (`pg`, role `api_service`, row-level security per request; P2-10). Supabase is used only to confirm tokens while the project signs them with a shared secret (3 files, CI list) | Easy | Owner: asymmetric JWT keys, then JWKS only | Easy |
 | **Auth** | Supabase Auth: email/password (bcrypt hashes, exportable), Google sign-in, staff TOTP MFA, a Supabase-only access-token hook for staff claims | Medium | P2-11 identity table, roles from our tables; P2-09 export/import steps | Medium (inherent): 1–3 days, staff re-enrol MFA, no app change |
 | **Storage** | Bucket `profiles` and its access rules exist only in the dashboard; the app stores paths, not URLs | Easy to copy, but the rules would be lost | P2-12 buckets and rules as code; signed URLs from one place | Easy |
 | **Realtime** | Behind `RealtimeService` (P1-16), but 24 subscriptions listen to Supabase **table changes**; presence and typing use Supabase channels | Medium–hard: needs a change feed | P2-13 outbox events + our gateway | Easy: swap the adapter |

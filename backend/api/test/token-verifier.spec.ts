@@ -20,6 +20,7 @@ describe('TokenVerifier with JWKS (provider-neutral)', () => {
     const config = loadConfig({
       SUPABASE_URL: 'https://example.supabase.co',
       SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test',
+      DATABASE_URL: 'postgres://u@localhost/unused',
       TOKEN_VERIFICATION: 'jwks',
     });
     verifier = new TokenVerifier(config, supabase, createLocalJWKSet({ keys: [jwk] }));
@@ -64,7 +65,11 @@ describe('TokenVerifier with JWKS (provider-neutral)', () => {
 
 describe('config', () => {
   it('defaults the issuer and key URL to Supabase Auth, overridable for another provider', () => {
-    const base = { SUPABASE_URL: 'https://x.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'k' };
+    const base = {
+      SUPABASE_URL: 'https://x.supabase.co',
+      SUPABASE_PUBLISHABLE_KEY: 'k',
+      DATABASE_URL: 'postgres://u@localhost/unused',
+    };
     expect(loadConfig(base)).toMatchObject({
       tokenVerification: 'auto',
       jwtIssuer: 'https://x.supabase.co/auth/v1',

@@ -116,7 +116,6 @@ CI (app, Android, database, API, admin console) is green.
 **Next (in order):**
 1. P1-06 Riverpod (feature by feature, auth and profile first).
 2. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)), in this order:
-   - P2-10 the API talks to PostgreSQL directly, not through PostgREST
    - P2-08 move app data access to the API
    - P2-11 own `app_users` identity table, P2-12 storage as code, P2-13 realtime as our own events
    - P2-09 exit runbook and restore drill
@@ -133,6 +132,10 @@ CI (app, Android, database, API, admin console) is green.
 2. Create the first two `system_admin` accounts (SQL in `docs/ADMIN_CONSOLE.md`).
 3. Settings → JWT Keys → migrate to asymmetric keys (the API then uses JWKS automatically).
 4. Create a separate production project before real members join.
+5. Set the backend API's database password (SQL in `backend/README.md`, "Database role") and its `DATABASE_URL`.
+6. Fixes the Supabase security advisor reports (2026-11-05): Authentication → turn on leaked-password
+   protection; set email OTP expiry under one hour; Settings → Infrastructure → upgrade Postgres
+   (security patches pending).
 
 ## 5. Test data on the test project
 

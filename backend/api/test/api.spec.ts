@@ -4,11 +4,14 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { ApiConfig, loadConfig } from '../src/config';
+import { Database, DatabaseError } from '../src/db/database';
 import { configureApp } from '../src/setup';
+import { FakeDatabase } from './helpers/fake-database';
 
 const config: ApiConfig = loadConfig({
   SUPABASE_URL: 'https://example.supabase.co/',
   SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test',
+  DATABASE_URL: 'postgres://api_service@localhost:5432/unused',
 });
 
 const MEMBER = { id: '11111111-1111-1111-1111-111111111111', email: 'a@example.com' };
@@ -38,6 +41,7 @@ function supabase(rest: (url: string, init: RequestInit) => Response): Handler {
 
 describe('API', () => {
   let app: INestApplication;
+  const db = new FakeDatabase();
 
   beforeAll(async () => {
     global.fetch = jest.fn(async (input: string | URL | Request, init?: RequestInit) => {
@@ -45,7 +49,10 @@ describe('API', () => {
       calls.push({ url, init: init ?? {} });
       return handler(url, init ?? {});
     }) as typeof fetch;
-    const mod = await Test.createTestingModule({ imports: [AppModule.forRoot(config)] }).compile();
+    const mod = await Test.createTestingModule({ imports: [AppModule.forRoot(config)] })
+      .overrideProvider(Database)
+      .useValue(db)
+      .compile();
     app = mod.createNestApplication();
     configureApp(app, config);
     await app.init();
@@ -53,6 +60,7 @@ describe('API', () => {
   afterAll(() => app.close());
   beforeEach(() => {
     calls.length = 0;
+    db.reset();
     handler = supabase(() => json(500, { message: 'unexpected call' }));
   });
 
@@ -73,24 +81,21 @@ describe('API', () => {
     expect(res.body.code).toBe('INVALID_TOKEN');
   });
 
-  it("GET /v1/me returns the member's profile, queried with the member's own token", async () => {
-    handler = supabase((url) =>
-      url.includes('/rest/v1/matrimonial_profiles') ? json(200, [{ id: 'p1', name: 'A' }]) : json(500, {}),
-    );
+  it("GET /v1/me returns the member's profile, queried as the member", async () => {
+    db.handler = (sql) => (sql.includes('from public.matrimonial_profiles') ? [{ id: 'p1', name: 'A' }] : []);
     const res = await request(app.getHttpServer())
       .get('/v1/me')
       .set('Authorization', 'Bearer good-token')
       .expect(200);
     expect(res.body).toEqual({ email: 'a@example.com', profile: { id: 'p1', name: 'A' } });
-    const rest = calls.find((c) => c.url.includes('/rest/v1/'))!;
-    expect(rest.url).toContain(`auth_user_id=eq.${MEMBER.id}`);
-    const headers = rest.init.headers as Record<string, string>;
-    expect(headers.Authorization).toBe('Bearer good-token'); // row-level security applies
-    expect(headers.apikey).toBe('sb_publishable_test'); // never a secret key
+    expect(db.calls).toHaveLength(1);
+    expect(db.calls[0].params).toEqual([MEMBER.id]);
+    expect(db.calls[0].user.id).toBe(MEMBER.id); // row-level security applies to this member
+    expect(calls.some((c) => c.url.includes('/rest/v1/'))).toBe(false); // no Supabase REST
   });
 
   it('GET /v1/me says when there is no profile yet', async () => {
-    handler = supabase(() => json(200, []));
+    db.handler = () => [];
     const res = await request(app.getHttpServer())
       .get('/v1/me')
       .set('Authorization', 'Bearer good-token')
@@ -99,11 +104,11 @@ describe('API', () => {
   });
 
   it('contact reveal returns the numbers from the reveal_contact function', async () => {
-    handler = supabase((url, init) => {
-      expect(url).toMatch(/\/rest\/v1\/rpc\/reveal_contact$/);
-      expect(JSON.parse(String(init.body))).toEqual({ p_target_profile_id: TARGET });
-      return json(200, { phone_number: '900', whatsapp_number: '901' });
-    });
+    db.handler = (sql, params) => {
+      expect(sql).toContain('public.reveal_contact($1::uuid)');
+      expect(params).toEqual([TARGET]);
+      return [{ r: { phone_number: '900', whatsapp_number: '901' } }];
+    };
     const res = await request(app.getHttpServer())
       .post(`/v1/profiles/${TARGET}/contact-reveal`)
       .set('Authorization', 'Bearer good-token')
@@ -116,7 +121,9 @@ describe('API', () => {
     ['PROFILE_NOT_AVAILABLE', 404],
     ['CANNOT_REVEAL_SELF', 400],
   ])('contact reveal maps %s to HTTP %i', async (code, status) => {
-    handler = supabase(() => json(400, { code: 'P0001', message: code }));
+    db.handler = () => {
+      throw new DatabaseError(code, 'P0001');
+    };
     const res = await request(app.getHttpServer())
       .post(`/v1/profiles/${TARGET}/contact-reveal`)
       .set('Authorization', 'Bearer good-token')
@@ -124,12 +131,12 @@ describe('API', () => {
     expect(res.body.code).toBe(code);
   });
 
-  it('contact reveal rejects a malformed profile id before calling Supabase', async () => {
+  it('contact reveal rejects a malformed profile id before calling the database', async () => {
     await request(app.getHttpServer())
       .post('/v1/profiles/not-a-uuid/contact-reveal')
       .set('Authorization', 'Bearer good-token')
       .expect(400);
-    expect(calls.some((c) => c.url.includes('/rpc/'))).toBe(false);
+    expect(db.calls).toEqual([]);
   });
 
   it('serves the OpenAPI description', async () => {
@@ -143,5 +150,14 @@ describe('API', () => {
 describe('config', () => {
   it('requires the Supabase URL and publishable key', () => {
     expect(() => loadConfig({})).toThrow(/SUPABASE_URL/);
+  });
+
+  it('requires a database connection and a plain member role name', () => {
+    const base = { SUPABASE_URL: 'https://x.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'k' };
+    expect(() => loadConfig(base)).toThrow(/DATABASE_URL/);
+    const withDb = { ...base, DATABASE_URL: 'postgres://u@h/db' };
+    expect(loadConfig(withDb).databaseMemberRole).toBe('authenticated');
+    expect(() => loadConfig({ ...withDb, DATABASE_MEMBER_ROLE: 'x; drop table y' })).toThrow(/plain role name/);
+    expect(() => loadConfig({ ...withDb, DATABASE_POOL_SIZE: '0' })).toThrow(/POOL_SIZE/);
   });
 });

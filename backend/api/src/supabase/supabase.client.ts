@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { API_CONFIG, ApiConfig } from '../config';
 
-/** An error returned by Supabase (PostgREST or Auth). */
+/** An error returned by Supabase Auth. */
 export class SupabaseError extends Error {
   constructor(
     readonly status: number,
@@ -17,9 +17,9 @@ export interface SupabaseUser {
 }
 
 /**
- * Calls Supabase on behalf of the signed-in member, with their own access
- * token. Row-level security therefore applies exactly as in the app; the API
- * never bypasses it.
+ * Supabase Auth, used only to confirm access tokens while the project still
+ * signs them with a shared secret (TokenVerifier "provider" mode). Data goes
+ * through Database (src/db), never through Supabase's REST API.
  */
 @Injectable()
 export class SupabaseClient {
@@ -32,26 +32,6 @@ export class SupabaseClient {
     if (!res.ok) throw new SupabaseError(res.status, await this.body(res));
     const user = (await res.json()) as SupabaseUser;
     return user?.id ? user : null;
-  }
-
-  /** GET /rest/v1/<path> as the member. */
-  async select<T>(accessToken: string, path: string): Promise<T> {
-    const res = await this.request('GET', `/rest/v1/${path}`, accessToken);
-    if (!res.ok) throw new SupabaseError(res.status, await this.body(res));
-    return (await res.json()) as T;
-  }
-
-  /** POST /rest/v1/rpc/<fn> as the member. */
-  async rpc<T>(accessToken: string, fn: string, args: object): Promise<T> {
-    const res = await this.request(
-      'POST',
-      `/rest/v1/rpc/${fn}`,
-      accessToken,
-      args,
-    );
-    if (!res.ok) throw new SupabaseError(res.status, await this.body(res));
-    const text = await res.text();
-    return (text ? JSON.parse(text) : null) as T;
   }
 
   private request(

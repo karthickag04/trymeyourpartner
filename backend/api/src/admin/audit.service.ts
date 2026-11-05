@@ -1,5 +1,5 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { SupabaseClient } from '../supabase/supabase.client';
+import { Database } from '../db/database';
 import { StaffContext } from './staff.guard';
 
 export interface AuditEntry {
@@ -17,18 +17,20 @@ export interface AuditEntry {
  */
 @Injectable()
 export class AuditService {
-  constructor(private readonly supabase: SupabaseClient) {}
+  constructor(private readonly db: Database) {}
 
   async log(ctx: StaffContext, entry: AuditEntry): Promise<void> {
     try {
-      await this.supabase.rpc<number>(ctx.token, 'log_audit', {
-        p_action: entry.action,
-        p_entity: entry.entity,
-        p_entity_id: entry.entityId ?? null,
-        p_before: null,
-        p_after: { via: 'admin-api', client_ip: ctx.ip, ...(entry.details ?? {}) },
-        p_reason: entry.reason ?? null,
-      });
+      await this.db.asUser(ctx.user, (q) =>
+        q.query('select public.log_audit($1, $2, $3, $4::jsonb, $5::jsonb, $6)', [
+          entry.action,
+          entry.entity,
+          entry.entityId ?? null,
+          null,
+          JSON.stringify({ via: 'admin-api', client_ip: ctx.ip, ...(entry.details ?? {}) }),
+          entry.reason ?? null,
+        ]),
+      );
     } catch {
       throw new ServiceUnavailableException({
         code: 'AUDIT_UNAVAILABLE',

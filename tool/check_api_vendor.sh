@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 # Enforces docs/adr/0001-vendor-portability.md rules 1 and 2 for backend/api:
 # provider code lives in src/supabase/ only. Files listed below are legacy
-# exceptions that P2-10 moves behind our own database and auth interfaces;
+# exceptions; P2-10 moved data access to src/db, and the rest goes when
+# tokens are verified by JWKS only (owner step: asymmetric JWT keys);
 # these lists must only shrink.
 set -euo pipefail
 cd "$(dirname "$0")/../backend/api"
 
-# Files outside src/supabase/ that use the Supabase client directly.
+# Files outside src/supabase/ that use the Supabase client directly. Data goes
+# through src/db (P2-10); only token checks in "provider" mode remain.
 CLIENT_USERS=(
-  src/admin/admin.controller.ts
-  src/admin/admin.module.ts
-  src/admin/audit.service.ts
-  src/admin/staff.guard.ts
-  src/app.module.ts
-  src/auth/token-verifier.ts
-  src/contacts/contacts.controller.ts
-  src/members/me.controller.ts
+  src/admin/admin.module.ts  # provides SupabaseClient to TokenVerifier
+  src/app.module.ts          # provides SupabaseClient to TokenVerifier
+  src/auth/token-verifier.ts # "provider" mode until the project has asymmetric JWT keys
 )
 # Files outside src/supabase/ that name Supabase endpoints (/rest/v1, /auth/v1 …).
 ENDPOINT_USERS=(

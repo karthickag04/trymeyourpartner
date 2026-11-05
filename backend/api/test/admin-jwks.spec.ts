@@ -9,14 +9,16 @@ import { StaffGuard } from '../src/admin/staff.guard';
 import { SupabaseAuthGuard } from '../src/auth/auth.guard';
 import { JWKS_KEY_SET, TokenVerifier } from '../src/auth/token-verifier';
 import { API_CONFIG, loadConfig } from '../src/config';
+import { Database } from '../src/db/database';
 import { SupabaseClient } from '../src/supabase/supabase.client';
+import { FakeDatabase } from './helpers/fake-database';
 
 /** The staff guard with provider-neutral token verification (signed JWTs, JWKS). */
 describe('Admin API with JWKS-verified tokens', () => {
   const STAFF_ID = '44444444-4444-4444-4444-444444444444';
   let app: INestApplication;
   let key: KeyLike;
-  const rpcCalls: string[] = [];
+  const db = new FakeDatabase();
 
   const sign = (aal: string) =>
     new SignJWT({ aal, email: 'bm.x@example.com', role: 'authenticated' })
@@ -36,24 +38,28 @@ describe('Admin API with JWKS-verified tokens', () => {
       SUPABASE_URL: 'https://example.supabase.co',
       SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test',
       TOKEN_VERIFICATION: 'jwks',
+      DATABASE_URL: 'postgres://api_service@localhost:5432/unused',
     });
     global.fetch = jest.fn(async (input: string | URL | Request) => {
-      const url = String(input);
-      if (url.includes('/auth/v1/')) throw new Error('the provider must not be called in JWKS mode');
-      rpcCalls.push(url);
-      return new Response(
-        JSON.stringify({
-          user_id: STAFF_ID, role: 'admin', display_name: 'Admin', branch_id: null, branch_name: null,
-          team_id: null, team_name: null, mfa_verified: true, permissions: ['staff.view'],
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } },
-      );
+      throw new Error(`no network calls expected in JWKS mode: ${String(input)}`);
     }) as typeof fetch;
+    db.handler = (sql) => {
+      expect(sql).toContain('public.current_staff_profile()');
+      return [
+        {
+          p: {
+            user_id: STAFF_ID, role: 'admin', display_name: 'Admin', branch_id: null, branch_name: null,
+            team_id: null, team_name: null, mfa_verified: true, permissions: ['staff.view'],
+          },
+        },
+      ];
+    };
     const mod = await Test.createTestingModule({
       controllers: [AdminController],
       providers: [
         { provide: API_CONFIG, useValue: config },
         { provide: JWKS_KEY_SET, useValue: createLocalJWKSet({ keys: [jwk] }) },
+        { provide: Database, useValue: db },
         SupabaseClient,
         TokenVerifier,
         SupabaseAuthGuard,
@@ -65,7 +71,7 @@ describe('Admin API with JWKS-verified tokens', () => {
     await app.init();
   });
   afterAll(() => app.close());
-  beforeEach(() => (rpcCalls.length = 0));
+  beforeEach(() => (db.calls.length = 0));
 
   it('reads aal from the verified token: aal1 is refused before any database call', async () => {
     const res = await request(app.getHttpServer())
@@ -73,7 +79,7 @@ describe('Admin API with JWKS-verified tokens', () => {
       .set('Authorization', `Bearer ${await sign('aal1')}`)
       .expect(403);
     expect(res.body.code).toBe('MFA_REQUIRED');
-    expect(rpcCalls).toEqual([]);
+    expect(db.calls).toEqual([]);
   });
 
   it('accepts an aal2 token and returns the staff profile', async () => {

@@ -54,6 +54,7 @@ and "Claude Test B"). They are test data; delete them before real members join.
 | `20261105000000_baseline.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | — | Not needed: generated from this project |
 | `20261105120000_phase0_security_hardening.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 15/15 member checks and all anonymous checks pass |
 | `20261106095000_app_identity_helper.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; equals `auth.uid()` for a signed-in member |
+| `20261107090000_api_service_role.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; `api_service` can log in, inherits nothing, cannot bypass row-level security, only member of `authenticated` (set, no inherit), timeouts 15 s / 30 s. No password yet (owner step). The API's statements run as `authenticated` with the test member's claims: own profile visible, 0 other contact rows, not staff |
 | `20261106100000_phase2_org_and_roles.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 20 permissions, 69 role grants; hook callable only by `supabase_auth_admin`. Hook not yet enabled (owner) |
 | `20261106096000_use_app_identity_helper.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 0 `auth.uid()` uses left, 51 policies use the helper; 12/12 live member checks pass |
 | `20261106090000_app_settings.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; anonymous read OK, anonymous write 401; maintenance mode toggled live and seen in the app |

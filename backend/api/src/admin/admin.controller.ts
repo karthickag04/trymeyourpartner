@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SupabaseClient } from '../supabase/supabase.client';
+import { Database } from '../db/database';
 import { AuditService } from './audit.service';
 import { RequirePermission, Staff, StaffContext, StaffGuard } from './staff.guard';
 
@@ -11,16 +11,22 @@ interface StaffRow {
   display_name: string;
   work_email: string | null;
   status: string;
-  created_at: string;
+  created_at: Date | string;
   branch_id: string | null;
   team_id: string | null;
   branch: { code: string; name: string } | null;
   team: { name: string } | null;
 }
 
-const STAFF_SELECT =
-  'id,user_id,role,display_name,work_email,status,created_at,branch_id,team_id,' +
-  'branch:branches(code,name),team:teams(name)';
+// Joined rows the caller may not see (row-level security) come back as null.
+const STAFF_SQL = `select s.id, s.user_id, s.role, s.display_name, s.work_email, s.status,
+       s.created_at, s.branch_id, s.team_id,
+       case when b.id is null then null else json_build_object('code', b.code, 'name', b.name) end as branch,
+       case when t.id is null then null else json_build_object('name', t.name) end as team
+  from public.staff_accounts s
+  left join public.branches b on b.id = s.branch_id
+  left join public.teams t on t.id = s.team_id
+  order by s.display_name asc`;
 
 @ApiTags('admin')
 @ApiBearerAuth()
@@ -29,7 +35,7 @@ const STAFF_SELECT =
 @Controller('admin/v1')
 export class AdminController {
   constructor(
-    private readonly supabase: SupabaseClient,
+    private readonly db: Database,
     private readonly audit: AuditService,
   ) {}
 
@@ -56,10 +62,7 @@ export class AdminController {
   @RequirePermission('staff.view')
   @ApiOkResponse({ description: 'Staff accounts in scope' })
   async staff(@Staff() s: StaffContext) {
-    const rows = await this.supabase.select<StaffRow[]>(
-      s.token,
-      `staff_accounts?select=${STAFF_SELECT}&order=display_name.asc`,
-    );
+    const rows = await this.db.asUser(s.user, (q) => q.query<StaffRow>(STAFF_SQL));
     await this.audit.log(s, {
       action: 'staff.list',
       entity: 'staff_accounts',

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Member, MemberContext, SupabaseAuthGuard } from '../auth/auth.guard';
-import { SupabaseClient, SupabaseError } from '../supabase/supabase.client';
+import { Database, DatabaseError } from '../db/database';
 
 interface RevealedContact {
   phone_number: string | null;
@@ -23,7 +23,7 @@ interface RevealedContact {
 @UseGuards(SupabaseAuthGuard)
 @Controller('v1/profiles')
 export class ContactsController {
-  constructor(private readonly supabase: SupabaseClient) {}
+  constructor(private readonly db: Database) {}
 
   /**
    * Reveals another member's phone numbers. The database decides: plan quota,
@@ -37,15 +37,16 @@ export class ContactsController {
     @Param('profileId', new ParseUUIDPipe()) profileId: string,
   ) {
     try {
-      const r = await this.supabase.rpc<RevealedContact>(m.token, 'reveal_contact', {
-        p_target_profile_id: profileId,
-      });
+      const [row] = await this.db.asUser(m.user, (q) =>
+        q.query<{ r: RevealedContact | null }>('select public.reveal_contact($1::uuid) as r', [profileId]),
+      );
+      const r = row?.r ?? null;
       return {
         phoneNumber: r?.phone_number ?? null,
         whatsappNumber: r?.whatsapp_number ?? null,
       };
     } catch (e) {
-      const code = e instanceof SupabaseError ? e.message : '';
+      const code = e instanceof DatabaseError ? e.message : '';
       if (code.includes('CONTACT_LIMIT_REACHED'))
         throw new ForbiddenException({ code: 'CONTACT_LIMIT_REACHED', message: 'Contact reveal limit reached for your plan' });
       if (code.includes('PROFILE_NOT_AVAILABLE'))
