@@ -24,17 +24,18 @@ Tracks B and C started from track A's branch and are merged back after review an
 
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
-| P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 13 | 4 | 1 | 1 |
+| P0 Stop the bleeding | 7 | 0 | 0 | 3 |
+| P1 Foundation & restructure | 13 | 4 | 4 | 1 |
 | P2 Roles, admin console, moderation | 4 | 2 | 8 | 0 |
-| P3 Trust & safety | 0 | 0 | 6 | 0 |
-| P4 Plans & payments | 0 | 0 | 7 | 0 |
+| P3 Trust & safety | 0 | 0 | 9 | 0 |
+| P4 Plans & payments | 0 | 0 | 8 | 0 |
 | P5 Market-parity features | 0 | 0 | 9 | 0 |
-| P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
-| P7 Scale & growth | 0 | 0 | 7 | 0 |
+| P6 Assisted service, branches, agents | 0 | 0 | 7 | 0 |
+| P7 Scale & growth | 0 | 0 | 8 | 0 |
 
 **Status:** Phase 0 done (2 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
 **Next up:** P1-06 Riverpod; P2-08 app data via the API; P2-11–P2-13 identity, storage and realtime portability ([ADR 0001](adr/0001-vendor-portability.md)); rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
+**Launch gate:** the 7 conditions in roadmap §14.4 (verification, matrimony-site rules, moderation SLAs, support and refunds, monitoring and backups, store pipeline, test data removed).
 **Owner steps:** set the `api_service` password and the API's `DATABASE_URL`; enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
 ## Phase 0: Stop the bleeding
@@ -50,6 +51,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P0-07 | Row-level security on `deleted_users` and `auth_user_profile`; views run with caller rights (C8) | ✅ | `bc79f96` | Live: members get 403 on `deleted_users`, see only their own mapping row |
 | P0-08 | Separate staging project (C5) | 🙋 | — | Owner decided the current project is test-only and serves as staging until launch. Create a separate production project before real members join. |
 | P0-09 | Rotate keys if a secret key was ever shipped; review Auth settings (email confirmation, redirect URLs) | 🙋 | — | Owner to review in the Supabase dashboard |
+| P0-10 | Supabase security advisor (2026-11-05): leaked-password protection on; email OTP expiry under 1 hour; Postgres upgrade for pending security patches | 🙋 | — | Owner, in the Supabase dashboard (roadmap §14.4) |
 
 ## Phase 1: Foundation & restructure
 
@@ -73,6 +75,9 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ✅ | `8904b49`…`8016d7f` (merged `799cf3f`, PR #2) | English + Tamil ARB files; language switcher on sign-in, registration and Profile. Browser: Tamil sign-in screen shown; old "Educational Streaming Platform" tagline replaced |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 | P1-18 | No decorative Profile items (roadmap §10.1): Interests/Matches quick actions open their tabs; Change password emails a reset link; About opens a real About dialog (name, description, licences); Upgrade and Notification settings hidden until Phase 4 / a preferences backend exist | ✅ | this commit | 4 new widget tests (reset link sent to the member email, cancel sends nothing, failure message, About content); 91/91 Flutter tests, analyze clean, format, vendor guard, web build |
+| P1-19 | Store releases through CI: iOS build alongside Android; signed builds; staged rollout (5 % → 100 %); crash-free ≥ 99.5 % before widening | ⬜ | — | Roadmap §14.3 |
+| P1-20 | Reliability: targets (API 99.9 %, p95 < 500 ms), uptime checks and alerts, public status page, incident runbook | ⬜ | — | Roadmap §14.3 |
+| P1-21 | Security hygiene: dependency and secret scanning in CI; fixed `search_path` on the 10 flagged functions; members cannot execute trigger/internal functions; drop unused GraphQL exposure and the 3 empty public buckets | ⬜ | — | Supabase advisor 2026-11-05; roadmap §14.3 |
 
 ## Phase 2: Roles, admin console and moderation
 
@@ -103,6 +108,9 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P3-04 | Photo and contact privacy settings | ⬜ | — | |
 | P3-05 | Rate limits and anti-scam heuristics | ⬜ | — | |
 | P3-06 | Safety centre and help (replaces "coming soon" snackbars) | ⬜ | — | |
+| P3-07 | Matrimony-site rules: intent-to-marry declaration at sign-up; ID and address proof flow; profile creator IP kept while the account exists + 1 year; grievance officer page; "not a dating service" in terms (confirm with counsel) | ⬜ | — | Roadmap §14.2 |
+| P3-08 | Live, real profiles and scam-aware chat: contact only after phone + selfie check; inactive 60 days → out of search; "Found my match" closure; duplicate phone/device signals; report outcome to reporter; money/off-platform warnings and masked numbers in chat until mutual interest | ⬜ | — | Roadmap §14.1 |
+| P3-09 | Support desk: tickets with SLAs in the console, bilingual FAQ managed by staff, grievance and refund queues | ⬜ | — | Roadmap §14.2–14.3 |
 
 ## Phase 4: Admin-controlled plans and payments
 
@@ -115,6 +123,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P4-05 | Offline/branch payments with maker–checker | ⬜ | — | |
 | P4-06 | GST invoices, refunds, manual grants, revenue reports | ⬜ | — | |
 | P4-07 | Add-ons: boost / spotlight | ⬜ | — | |
+| P4-08 | Fair billing: refund and cancellation terms before payment; self-service cancel and auto-renew off; cooling-off refund rule per plan; refund SLA | ⬜ | — | Roadmap §14.1 |
 
 ## Phase 5: Market-parity member features
 
@@ -140,6 +149,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P6-04 | Agent portal and commission ledger | ⬜ | — | |
 | P6-05 | Branch dashboards | ⬜ | — | |
 | P6-06 | Commission rules and payouts export | ⬜ | — | |
+| P6-07 | No-spam assisted service: RM calls only on member request (consent logged); RM actions visible to the member; escalation to team lead within an SLA | ⬜ | — | Roadmap §14.1 |
 
 ## Phase 7: Scale, intelligence and growth
 
@@ -152,6 +162,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P7-05 | Performance: cursor pagination, indexes, media CDN | ⬜ | — | |
 | P7-06 | White-label / multi-tenant readiness | ⬜ | — | |
 | P7-07 | Pen-test, DPDP audit, disaster-recovery drills | ⬜ | — | |
+| P7-08 | Acquisition: community and city pages for search engines (no member data without consent), referral rewards, attribution, app-store listing | ⬜ | — | Roadmap §14.3 |
 
 ## Bugs found and fixed along the way
 

@@ -26,7 +26,8 @@
 11. [Compliance, privacy and policy](#11-compliance-privacy-and-policy)
 12. [Phased implementation plan](#12-phased-implementation-plan)
 13. [Open decisions](#13-open-decisions)
-14. [Sources](#14-sources)
+14. [Running it as a professional platform, and beating the incumbents](#14-running-it-as-a-professional-platform-and-beating-the-incumbents)
+15. [Sources](#15-sources)
 
 ---
 
@@ -694,7 +695,76 @@ gantt
 
 ---
 
-## 14. Sources
+## 14. Running it as a professional platform, and beating the incumbents
+
+Sections 4–12 cover **what members see**. Market leaders are also good at **how the service is
+run**: acquisition, verification operations, support, billing, releases and reliability. This
+section adds those, and turns the incumbents' best-known weaknesses into our promises. New
+tracker items are marked **(new)**.
+
+### 14.1 Where incumbents lose trust, and our promise instead
+
+Public complaints about the large platforms cluster around four themes (consumer-complaint
+sites and app reviews; individually unverified, but consistent):
+
+| Complaint at incumbents | Our promise | How it is enforced | Tracker |
+|---|---|---|---|
+| Fake, inactive or already-married profiles in results | **Live, real profiles only** | Phone + selfie check before a member can contact anyone; profiles inactive for 60 days leave search automatically; "Found my match" closes a profile in one tap; duplicate phone/device signals; every report gets an outcome back to the reporter | P3-08 **(new)**, P3-01, P2-04 |
+| Pushy relationship-manager sales calls | **No unsolicited sales calls** | RMs call only after the member asks (consent logged); every RM action is visible to the member; members rate their RM; escalation to a team lead within an SLA | P6-07 **(new)**, P6-03 |
+| Refunds refused or partial after pressure | **Fair, written billing** | Refund and cancellation terms shown before payment; self-service cancel and auto-renew off; a cooling-off refund rule configured per plan in Plan Studio; refund requests tracked to an SLA | P4-08 **(new)**, P4-06 |
+| Money scams that start in chat | **Scam-aware chat** | Warnings when a chat asks for money, gift cards or moving off-platform early; phone numbers in chat masked until mutual interest; one-tap report from the message | P3-08 **(new)**, P3-05 |
+
+On top of parity (horoscope, verification, video, family mode, assisted service), these four are
+the reasons to choose us. They are also the cheapest to copy badly and the hardest to fake, so
+the tracker treats them as launch work, not polish.
+
+### 14.2 Rules that apply to matrimony sites in India
+
+Beyond DPDP (section 11), the government's **2016 advisory for matrimonial websites** (issued
+under the IT Act; matrimony sites are intermediaries) expects:
+
+- a declaration at sign-up that the member intends to marry (not dating), and checks that what
+  members enter is accurate;
+- identity and address proof from members, from a list of legally verifiable documents, plus
+  phone verification;
+- the IP address of whoever created a profile kept while the account exists and for a year
+  after deletion;
+- a strong privacy policy and data protection aligned with IS/ISO/IEC 27001;
+- a prominently shown grievance mechanism with a named grievance officer and contact details.
+
+Also apply: the IT (Intermediary Guidelines) Rules 2021 grievance timelines (acknowledge quickly,
+resolve within the set period), and the Consumer Protection (E-Commerce) Rules 2020 (refund and
+cancellation terms and a grievance contact shown to buyers). **Confirm the current texts with
+counsel before launch**; the 2016 advisory is reported in the press, and whether it has since been
+replaced is not confirmed. Tracker: P3-07 **(new)**, P3-09 **(new)**.
+
+### 14.3 Operations a professional platform runs
+
+| Area | What "professional" means here | Tracker |
+|---|---|---|
+| **Reliability** | Targets: member API 99.9 % monthly availability, p95 under 500 ms; uptime checks and alerts; a public status page; an incident runbook with severity levels; backups with point-in-time restore, and a tested restore | P1-20 **(new)**, P2-09, P7-07 |
+| **Security hygiene** | Dependency and secret scanning in CI; every database function with a fixed `search_path`; members cannot call internal or trigger functions; unused exposed surfaces (GraphQL, empty public buckets) removed; staff MFA (done); PII access audited (done); yearly pen-test | P1-21 **(new)**, P7-07 |
+| **Releases** | Android and iOS built in CI; signed store builds; staged rollouts (5 % → 100 %); crash-free sessions ≥ 99.5 % before widening; forced update when the minimum version changes (P1-12) | P1-19 **(new)**, P1-10 |
+| **Support desk** | Tickets in the admin console with SLAs; bilingual (Tamil/English) FAQ managed by staff; grievance officer page; refund and complaint queues; replies in the member's language | P3-09 **(new)** |
+| **Trust & safety operations** | Queues with targets: new photos reviewed within 4 hours, reports within 24 hours, ID checks within 1 working day; maker–checker for verification; ban evasion checks | P2-04, P2-05, P3-08 |
+| **Growth** | Public community and city pages for search engines (no member data without consent); referral rewards; campaign attribution; app-store listing work; lifecycle messages (welcome, incomplete profile, new matches, win-back) | P7-08 **(new)**, P5-03 |
+| **Measurement** | One north-star metric, **accepted interests per active member per week**, plus activation (profile complete and verified within 7 days), paid conversion, churn, refund rate, support SLA, report resolution time and fake-profile rate, on one dashboard per role | P7-02 |
+
+### 14.4 Launch gate: before real members join
+
+All of these must be ✅ (or explicitly waived by the owner) before the first real member:
+
+1. Phase 0 owner steps, a separate production project, and the security-advisor fixes (P0-10).
+2. Verification at sign-up (phone, selfie), intent-to-marry declaration and grievance officer (P3-01, P3-07).
+3. Moderation queues working with the SLA targets above (P2-04, P2-05).
+4. Support desk and the refund policy live (P3-09, P4-08).
+5. Monitoring, alerts, status page, backups with a tested restore (P1-20, P2-09).
+6. Store builds through CI with staged rollout (P1-19).
+7. Test data removed (`tmyp.test.*` members, `private.profile_email_backup` reviewed).
+
+---
+
+## 15. Sources
 
 Competitor and market facts are indicative; verify on official sites before using prices or quotas.
 
@@ -705,4 +775,5 @@ Competitor and market facts are indicative; verify on official sites before usin
 - Elite / market overviews: [Top matrimonial apps 2026, Techanic](https://www.techanicinfotech.com/blogs/top-matrimonial-apps) · [Digittrix 2026 playbook](https://digittrix.com/blogs/best-matchmaking-and-matrimony-services-in-india-2026-expert-playbook) · [Privacy in elite matrimony, Tribune](https://www.tribuneindia.com/news/business/privacy-is-the-new-luxury-why-indias-elite-matrimony-market-demands-discretion-above-all)
 - UX & privacy trends: [Hans India](https://www.thehansindia.com/life-style/relationship/how-digital-matrimony-platform-is-blending-faith-safety-and-technology-all-at-once-1012946) · [SiliconIndia](https://www.siliconindia.com/news/general/how-to-choose-a-telugu-marriage-matching-app-that-prioritises-safety-and-compatibility-nid-237453-cid-1.html) · [Mindster user flow](https://mindster.com/mindster-blogs/?p=11408)
 - Bureau software: [Rishta Desk](https://slashdot.org/software/p/Rishta-Desk/) · [Avancezone](https://avancezone.com/matrimony/features) · [Logicspice](https://www.logicspice.com/matrimonial-software)
+- Matrimony-site rules and member complaints (section 14): [2016 advisory, Moneylife](https://www.moneylife.in/article/government-lays-down-advisory-for-matrimonial-websites/47092.html) · [IDs and phone verification, India TV](https://www.indiatvnews.com/news/india-user-verification-with-valid-ids-must-on-matrimonial-sites-govt-advisory-332427) · [The News Minute](https://www.thenewsminute.com/news/govt-police-online-matrimony-ids-compulsory-ensure-no-con-men-and-hook-ups-44274) · [Governance Now](https://www.governancenow.com/news/regular-story/identity-address-proofs-mandatory-using-matrimonial-websites) · [Complaints, consumercomplaints.in](https://www.consumercomplaints.in/bharat-matrimony-b100120) · [Fake-profile backlash, Perigon](https://perigon.io/news/business/2024/11/06/bharatmatrimony-faces-backlash-fake-profiles) · [Scams on matrimonial apps, OneIndia](https://www.oneindia.com/india/from-match-to-money-trap-how-matrimonial-apps-are-being-misused-by-scammers-7946410.html) · [Truecaller partnership, Impact](https://www.impactonnet.com/more-from-impact/matrimonycom-teams-up-with-truecaller-to-ensure-safer-matchmaking-11328.html)
 - DPDP: [Mondaq: Rules notified](https://www.mondaq.com/india/data-protection/1708164/digital-personal-data-protection-rules-2025-notified) · [Mondaq: phased rollout](https://webiis08.mondaq.com/india/data-protection/1706878/indias-digital-personal-data-protection-act-phased-rollout-and-key-compliance-milestones) · [Conventus Law overview](https://conventuslaw.com/featured-content/building-indias-digital-privacy-framework-an-overview-of-the-dpdp-rules-2025/)

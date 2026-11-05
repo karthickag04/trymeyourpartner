@@ -119,13 +119,15 @@ CI (app, Android, database, API, admin console) is green.
    - P2-08 move app data access to the API
    - P2-11 own `app_users` identity table, P2-12 storage as code, P2-13 realtime as our own events
    - P2-09 exit runbook and restore drill
-3. The rest of Phase 2:
+3. Launch work from roadmap §14 (how we beat the incumbents): P1-21 security hygiene, P1-20 reliability,
+   P1-19 store releases, then P3-07/P3-08/P3-09 and P4-08 before the launch gate in §14.4.
+4. The rest of Phase 2:
    - moderation queues (P2-04)
    - maker–checker verification (P2-05)
    - Member 360
    - creating and disabling staff in the console
-4. Phases 3–7 per the tracker.
-5. Later: bring back Upgrade with the paywall (Phase 4) and Notification settings once preferences are stored (both hidden by P1-18).
+5. Phases 3–7 per the tracker.
+6. Later: bring back Upgrade with the paywall (Phase 4) and Notification settings once preferences are stored (both hidden by P1-18).
 
 **Owner steps (Supabase dashboard):**
 1. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
