@@ -1397,4 +1397,293 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get registrationLanguageHint =>
       'Choose the language you are most comfortable with';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get themeSystem => 'System';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get profileLoading => 'Loading profile…';
+
+  @override
+  String get profileSignInBody =>
+      'Sign in to see your profile, favourites and personalised recommendations';
+
+  @override
+  String planLabel(Object plan) {
+    return 'Plan: $plan';
+  }
+
+  @override
+  String get planFree => 'Free';
+
+  @override
+  String get planGold => 'Gold';
+
+  @override
+  String get planPlatinum => 'Platinum';
+
+  @override
+  String get upgradeComingSoon => 'Plan upgrades are not available yet.';
+
+  @override
+  String get actionUpgrade => 'Upgrade';
+
+  @override
+  String get emailVerificationTitle => 'Email verification required';
+
+  @override
+  String get emailVerificationBody =>
+      'Please open the verification link in your email to finish setting up your account.';
+
+  @override
+  String get actionResend => 'Resend';
+
+  @override
+  String get changePhoto => 'Change profile photo';
+
+  @override
+  String memberSince(Object date) {
+    return 'Member since $date';
+  }
+
+  @override
+  String get actionEditProfile => 'Edit profile';
+
+  @override
+  String get actionManagePhotos => 'Manage photos';
+
+  @override
+  String get statProfile => 'Profile';
+
+  @override
+  String get statComplete => 'Complete';
+
+  @override
+  String get statIncomplete => 'Incomplete';
+
+  @override
+  String get quickActionsTitle => 'Quick actions';
+
+  @override
+  String get quickFavorites => 'My favourites';
+
+  @override
+  String get quickFavoritesSub => 'View your interests';
+
+  @override
+  String get quickMatchesSub => 'See your matches';
+
+  @override
+  String get quickCompletion => 'Profile completion';
+
+  @override
+  String get quickCompletionSub => 'Complete your profile';
+
+  @override
+  String get quickRefresh => 'Refresh data';
+
+  @override
+  String get quickRefreshSub => 'Reload your profile and suggestions';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsNotifications => 'Notifications';
+
+  @override
+  String get settingsNotificationsSub => 'Manage notification preferences';
+
+  @override
+  String get settingsPrivacy => 'Privacy & security';
+
+  @override
+  String get settingsPrivacySub => 'Account security settings';
+
+  @override
+  String get settingsHelpSub => 'Get help and contact us';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String get settingsAboutSub => 'App version and info';
+
+  @override
+  String get actionSignOut => 'Sign out';
+
+  @override
+  String get verificationEmailSent =>
+      'Verification email sent. Please check your inbox.';
+
+  @override
+  String get verificationEmailFailed =>
+      'We couldn\'t send the verification email. Please try again.';
+
+  @override
+  String get photoTake => 'Take photo';
+
+  @override
+  String get photoGallery => 'Choose from gallery';
+
+  @override
+  String get photoAdd => 'Add photo';
+
+  @override
+  String get photoRemove => 'Remove photo';
+
+  @override
+  String get photoPrimary => 'Primary';
+
+  @override
+  String get photoMakePrimary => 'Make primary';
+
+  @override
+  String get accountActions => 'Account actions';
+
+  @override
+  String get actionReactivateProfile => 'Reactivate profile';
+
+  @override
+  String get actionDeactivateProfile => 'Deactivate profile';
+
+  @override
+  String get actionDeleteProfile => 'Delete profile';
+
+  @override
+  String get profileNotLoaded =>
+      'Your profile hasn\'t loaded yet. Please try again.';
+
+  @override
+  String get deactivateBody =>
+      'Deactivating hides your profile from searches and turns off incoming messages. You can reactivate it any time by editing your profile.';
+
+  @override
+  String get actionDeactivate => 'Deactivate';
+
+  @override
+  String get profileDeactivated => 'Profile deactivated';
+
+  @override
+  String get profileDeactivateFailed =>
+      'We couldn\'t deactivate your profile. Please try again.';
+
+  @override
+  String get deleteBody =>
+      'Deleting your profile permanently removes your profile records. A minimal archive is kept so support can restore it if needed. This cannot be undone.';
+
+  @override
+  String get actionDelete => 'Delete';
+
+  @override
+  String get profileDeleted => 'Profile deleted. Signing you out…';
+
+  @override
+  String get profileDeleteFailed =>
+      'We couldn\'t delete your profile. Please try again.';
+
+  @override
+  String get signOutConfirm => 'Are you sure you want to sign out?';
+
+  @override
+  String get signingOut => 'Signing out…';
+
+  @override
+  String get interestsShownHere => 'Your interests are in the Interests tab.';
+
+  @override
+  String get matchesInTab => 'Your matches are in the Matches tab.';
+
+  @override
+  String get notificationSettingsComingSoon =>
+      'Notification settings are not available yet.';
+
+  @override
+  String get securitySettingsComingSoon =>
+      'Security settings are not available yet.';
+
+  @override
+  String get aboutComingSoon => 'The About page is not available yet.';
+
+  @override
+  String get profileStatusActive => 'Your profile is active';
+
+  @override
+  String get profileStatusDeactivated => 'Your profile is deactivated';
+
+  @override
+  String get profileStatusMissing =>
+      'No profile found. Create your profile to get matches.';
+
+  @override
+  String get noProfileTitle => 'No profile found';
+
+  @override
+  String get noProfileBody =>
+      'We couldn\'t find a profile linked to your account. You can still browse, but to get personalised matches, please create your profile.';
+
+  @override
+  String get createProfileFailed =>
+      'We couldn\'t create your profile. Please try again.';
+
+  @override
+  String get actionCreateProfile => 'Create my profile';
+
+  @override
+  String get profileRestored => 'Profile restored from archive.';
+
+  @override
+  String get noArchivedProfile => 'No archived profile found to restore.';
+
+  @override
+  String get restoreFailed =>
+      'We couldn\'t restore your profile. Please try again.';
+
+  @override
+  String get actionRestoreProfile => 'Restore my profile';
+
+  @override
+  String get diagnosticsPrinted => 'Diagnostics written to the console';
+
+  @override
+  String get actionPrintDiagnostics => 'Print diagnostics';
+
+  @override
+  String get myProfileTitle => 'My profile';
+
+  @override
+  String get fieldName => 'Name';
+
+  @override
+  String get fieldAge => 'Age';
+
+  @override
+  String get fieldLocation => 'Location';
+
+  @override
+  String get actionEditMyProfile => 'Edit my profile';
+
+  @override
+  String get refreshSuccess => 'Profile data refreshed';
+
+  @override
+  String get refreshNotSignedIn => 'Couldn\'t refresh: you\'re not signed in';
+
+  @override
+  String get defaultUserName => 'Member';
+
+  @override
+  String get statInterests => 'Interests';
 }

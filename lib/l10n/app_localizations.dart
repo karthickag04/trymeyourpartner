@@ -2473,6 +2473,546 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose the language you are most comfortable with'**
   String get registrationLanguageHint;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @profileLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading profile…'**
+  String get profileLoading;
+
+  /// No description provided for @profileSignInBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your profile, favourites and personalised recommendations'**
+  String get profileSignInBody;
+
+  /// No description provided for @planLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan: {plan}'**
+  String planLabel(Object plan);
+
+  /// No description provided for @planFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get planFree;
+
+  /// No description provided for @planGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get planGold;
+
+  /// No description provided for @planPlatinum.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum'**
+  String get planPlatinum;
+
+  /// No description provided for @upgradeComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan upgrades are not available yet.'**
+  String get upgradeComingSoon;
+
+  /// No description provided for @actionUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get actionUpgrade;
+
+  /// No description provided for @emailVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification required'**
+  String get emailVerificationTitle;
+
+  /// No description provided for @emailVerificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please open the verification link in your email to finish setting up your account.'**
+  String get emailVerificationBody;
+
+  /// No description provided for @actionResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get actionResend;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile photo'**
+  String get changePhoto;
+
+  /// No description provided for @memberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since {date}'**
+  String memberSince(Object date);
+
+  /// No description provided for @actionEditProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get actionEditProfile;
+
+  /// No description provided for @actionManagePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage photos'**
+  String get actionManagePhotos;
+
+  /// No description provided for @statProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get statProfile;
+
+  /// No description provided for @statComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get statComplete;
+
+  /// No description provided for @statIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomplete'**
+  String get statIncomplete;
+
+  /// No description provided for @quickActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get quickActionsTitle;
+
+  /// No description provided for @quickFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'My favourites'**
+  String get quickFavorites;
+
+  /// No description provided for @quickFavoritesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'View your interests'**
+  String get quickFavoritesSub;
+
+  /// No description provided for @quickMatchesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See your matches'**
+  String get quickMatchesSub;
+
+  /// No description provided for @quickCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile completion'**
+  String get quickCompletion;
+
+  /// No description provided for @quickCompletionSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your profile'**
+  String get quickCompletionSub;
+
+  /// No description provided for @quickRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh data'**
+  String get quickRefresh;
+
+  /// No description provided for @quickRefreshSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload your profile and suggestions'**
+  String get quickRefreshSub;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotifications;
+
+  /// No description provided for @settingsNotificationsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage notification preferences'**
+  String get settingsNotificationsSub;
+
+  /// No description provided for @settingsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & security'**
+  String get settingsPrivacy;
+
+  /// No description provided for @settingsPrivacySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Account security settings'**
+  String get settingsPrivacySub;
+
+  /// No description provided for @settingsHelpSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Get help and contact us'**
+  String get settingsHelpSub;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAbout;
+
+  /// No description provided for @settingsAboutSub.
+  ///
+  /// In en, this message translates to:
+  /// **'App version and info'**
+  String get settingsAboutSub;
+
+  /// No description provided for @actionSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get actionSignOut;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent. Please check your inbox.'**
+  String get verificationEmailSent;
+
+  /// No description provided for @verificationEmailFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t send the verification email. Please try again.'**
+  String get verificationEmailFailed;
+
+  /// No description provided for @photoTake.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get photoTake;
+
+  /// No description provided for @photoGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get photoGallery;
+
+  /// No description provided for @photoAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get photoAdd;
+
+  /// No description provided for @photoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get photoRemove;
+
+  /// No description provided for @photoPrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get photoPrimary;
+
+  /// No description provided for @photoMakePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Make primary'**
+  String get photoMakePrimary;
+
+  /// No description provided for @accountActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Account actions'**
+  String get accountActions;
+
+  /// No description provided for @actionReactivateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Reactivate profile'**
+  String get actionReactivateProfile;
+
+  /// No description provided for @actionDeactivateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate profile'**
+  String get actionDeactivateProfile;
+
+  /// No description provided for @actionDeleteProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete profile'**
+  String get actionDeleteProfile;
+
+  /// No description provided for @profileNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile hasn\'t loaded yet. Please try again.'**
+  String get profileNotLoaded;
+
+  /// No description provided for @deactivateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivating hides your profile from searches and turns off incoming messages. You can reactivate it any time by editing your profile.'**
+  String get deactivateBody;
+
+  /// No description provided for @actionDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate'**
+  String get actionDeactivate;
+
+  /// No description provided for @profileDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile deactivated'**
+  String get profileDeactivated;
+
+  /// No description provided for @profileDeactivateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t deactivate your profile. Please try again.'**
+  String get profileDeactivateFailed;
+
+  /// No description provided for @deleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your profile permanently removes your profile records. A minimal archive is kept so support can restore it if needed. This cannot be undone.'**
+  String get deleteBody;
+
+  /// No description provided for @actionDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get actionDelete;
+
+  /// No description provided for @profileDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile deleted. Signing you out…'**
+  String get profileDeleted;
+
+  /// No description provided for @profileDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t delete your profile. Please try again.'**
+  String get profileDeleteFailed;
+
+  /// No description provided for @signOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out?'**
+  String get signOutConfirm;
+
+  /// No description provided for @signingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out…'**
+  String get signingOut;
+
+  /// No description provided for @interestsShownHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Your interests are in the Interests tab.'**
+  String get interestsShownHere;
+
+  /// No description provided for @matchesInTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Your matches are in the Matches tab.'**
+  String get matchesInTab;
+
+  /// No description provided for @notificationSettingsComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification settings are not available yet.'**
+  String get notificationSettingsComingSoon;
+
+  /// No description provided for @securitySettingsComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Security settings are not available yet.'**
+  String get securitySettingsComingSoon;
+
+  /// No description provided for @aboutComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'The About page is not available yet.'**
+  String get aboutComingSoon;
+
+  /// No description provided for @profileStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is active'**
+  String get profileStatusActive;
+
+  /// No description provided for @profileStatusDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is deactivated'**
+  String get profileStatusDeactivated;
+
+  /// No description provided for @profileStatusMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile found. Create your profile to get matches.'**
+  String get profileStatusMissing;
+
+  /// No description provided for @noProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No profile found'**
+  String get noProfileTitle;
+
+  /// No description provided for @noProfileBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find a profile linked to your account. You can still browse, but to get personalised matches, please create your profile.'**
+  String get noProfileBody;
+
+  /// No description provided for @createProfileFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t create your profile. Please try again.'**
+  String get createProfileFailed;
+
+  /// No description provided for @actionCreateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create my profile'**
+  String get actionCreateProfile;
+
+  /// No description provided for @profileRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile restored from archive.'**
+  String get profileRestored;
+
+  /// No description provided for @noArchivedProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'No archived profile found to restore.'**
+  String get noArchivedProfile;
+
+  /// No description provided for @restoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t restore your profile. Please try again.'**
+  String get restoreFailed;
+
+  /// No description provided for @actionRestoreProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore my profile'**
+  String get actionRestoreProfile;
+
+  /// No description provided for @diagnosticsPrinted.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostics written to the console'**
+  String get diagnosticsPrinted;
+
+  /// No description provided for @actionPrintDiagnostics.
+  ///
+  /// In en, this message translates to:
+  /// **'Print diagnostics'**
+  String get actionPrintDiagnostics;
+
+  /// No description provided for @myProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My profile'**
+  String get myProfileTitle;
+
+  /// No description provided for @fieldName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get fieldName;
+
+  /// No description provided for @fieldAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get fieldAge;
+
+  /// No description provided for @fieldLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get fieldLocation;
+
+  /// No description provided for @actionEditMyProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my profile'**
+  String get actionEditMyProfile;
+
+  /// No description provided for @refreshSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile data refreshed'**
+  String get refreshSuccess;
+
+  /// No description provided for @refreshNotSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t refresh: you\'re not signed in'**
+  String get refreshNotSignedIn;
+
+  /// No description provided for @defaultUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get defaultUserName;
+
+  /// No description provided for @statInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get statInterests;
 }
 
 class _AppLocalizationsDelegate

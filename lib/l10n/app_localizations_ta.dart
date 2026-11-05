@@ -1419,4 +1419,302 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get registrationLanguageHint =>
       'உங்களுக்கு வசதியான மொழியைத் தேர்ந்தெடுங்கள்';
+
+  @override
+  String get settingsAppearance => 'தோற்றம்';
+
+  @override
+  String get themeSystem => 'சாதன அமைப்பு';
+
+  @override
+  String get themeLight => 'வெளிர்';
+
+  @override
+  String get themeDark => 'இருள்';
+
+  @override
+  String get profileTitle => 'சுயவிவரம்';
+
+  @override
+  String get profileLoading => 'சுயவிவரத்தை ஏற்றுகிறது…';
+
+  @override
+  String get profileSignInBody =>
+      'உங்கள் சுயவிவரம், விருப்பங்கள் மற்றும் உங்களுக்கான பரிந்துரைகளைப் பார்க்க உள்நுழையவும்';
+
+  @override
+  String planLabel(Object plan) {
+    return 'திட்டம்: $plan';
+  }
+
+  @override
+  String get planFree => 'இலவசம்';
+
+  @override
+  String get planGold => 'கோல்டு';
+
+  @override
+  String get planPlatinum => 'பிளாட்டினம்';
+
+  @override
+  String get upgradeComingSoon => 'திட்ட மேம்படுத்தல் இன்னும் கிடைக்கவில்லை.';
+
+  @override
+  String get actionUpgrade => 'மேம்படுத்து';
+
+  @override
+  String get emailVerificationTitle => 'மின்னஞ்சல் சரிபார்ப்பு தேவை';
+
+  @override
+  String get emailVerificationBody =>
+      'உங்கள் கணக்கு அமைப்பை நிறைவு செய்ய, மின்னஞ்சலில் உள்ள சரிபார்ப்பு இணைப்பைத் திறக்கவும்.';
+
+  @override
+  String get actionResend => 'மீண்டும் அனுப்பு';
+
+  @override
+  String get changePhoto => 'சுயவிவரப் புகைப்படத்தை மாற்று';
+
+  @override
+  String memberSince(Object date) {
+    return '$date முதல் உறுப்பினர்';
+  }
+
+  @override
+  String get actionEditProfile => 'சுயவிவரத்தைத் திருத்து';
+
+  @override
+  String get actionManagePhotos => 'புகைப்படங்களை நிர்வகி';
+
+  @override
+  String get statProfile => 'சுயவிவரம்';
+
+  @override
+  String get statComplete => 'நிறைவு';
+
+  @override
+  String get statIncomplete => 'முழுமையில்லை';
+
+  @override
+  String get quickActionsTitle => 'விரைவுச் செயல்கள்';
+
+  @override
+  String get quickFavorites => 'எனது விருப்பங்கள்';
+
+  @override
+  String get quickFavoritesSub => 'உங்கள் விருப்பங்களைப் பாருங்கள்';
+
+  @override
+  String get quickMatchesSub => 'உங்கள் வரன்களைப் பாருங்கள்';
+
+  @override
+  String get quickCompletion => 'சுயவிவர நிறைவு';
+
+  @override
+  String get quickCompletionSub => 'உங்கள் சுயவிவரத்தை நிறைவு செய்யுங்கள்';
+
+  @override
+  String get quickRefresh => 'தரவைப் புதுப்பி';
+
+  @override
+  String get quickRefreshSub =>
+      'உங்கள் சுயவிவரத்தையும் பரிந்துரைகளையும் மீண்டும் ஏற்று';
+
+  @override
+  String get settingsTitle => 'அமைப்புகள்';
+
+  @override
+  String get settingsNotifications => 'அறிவிப்புகள்';
+
+  @override
+  String get settingsNotificationsSub =>
+      'அறிவிப்பு விருப்பங்களை நிர்வகிக்கவும்';
+
+  @override
+  String get settingsPrivacy => 'தனியுரிமை & பாதுகாப்பு';
+
+  @override
+  String get settingsPrivacySub => 'கணக்குப் பாதுகாப்பு அமைப்புகள்';
+
+  @override
+  String get settingsHelpSub => 'உதவி பெறுங்கள், எங்களைத் தொடர்புகொள்ளுங்கள்';
+
+  @override
+  String get settingsAbout => 'செயலி பற்றி';
+
+  @override
+  String get settingsAboutSub => 'செயலியின் பதிப்பு மற்றும் தகவல்';
+
+  @override
+  String get actionSignOut => 'வெளியேறு';
+
+  @override
+  String get verificationEmailSent =>
+      'சரிபார்ப்பு மின்னஞ்சல் அனுப்பப்பட்டது. உங்கள் இன்பாக்ஸைப் பாருங்கள்.';
+
+  @override
+  String get verificationEmailFailed =>
+      'சரிபார்ப்பு மின்னஞ்சலை அனுப்ப முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get photoTake => 'புகைப்படம் எடு';
+
+  @override
+  String get photoGallery => 'கேலரியிலிருந்து தேர்ந்தெடு';
+
+  @override
+  String get photoAdd => 'புகைப்படம் சேர்';
+
+  @override
+  String get photoRemove => 'புகைப்படத்தை நீக்கு';
+
+  @override
+  String get photoPrimary => 'முதன்மை';
+
+  @override
+  String get photoMakePrimary => 'முதன்மையாக்கு';
+
+  @override
+  String get accountActions => 'கணக்குச் செயல்கள்';
+
+  @override
+  String get actionReactivateProfile => 'சுயவிவரத்தை மீண்டும் செயல்படுத்து';
+
+  @override
+  String get actionDeactivateProfile => 'சுயவிவரத்தைச் செயலிழக்கச் செய்';
+
+  @override
+  String get actionDeleteProfile => 'சுயவிவரத்தை நீக்கு';
+
+  @override
+  String get profileNotLoaded =>
+      'உங்கள் சுயவிவரம் இன்னும் ஏற்றப்படவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get deactivateBody =>
+      'செயலிழக்கச் செய்தால் உங்கள் சுயவிவரம் தேடல்களில் தெரியாது; உங்களுக்குச் செய்திகளும் வராது. சுயவிவரத்தைத் திருத்துவதன் மூலம் எப்போது வேண்டுமானாலும் மீண்டும் செயல்படுத்தலாம்.';
+
+  @override
+  String get actionDeactivate => 'செயலிழக்கச் செய்';
+
+  @override
+  String get profileDeactivated => 'சுயவிவரம் செயலிழக்கப்பட்டது';
+
+  @override
+  String get profileDeactivateFailed =>
+      'உங்கள் சுயவிவரத்தைச் செயலிழக்கச் செய்ய முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get deleteBody =>
+      'சுயவிவரத்தை நீக்கினால் உங்கள் சுயவிவரப் பதிவுகள் நிரந்தரமாக அகற்றப்படும். தேவைப்பட்டால் ஆதரவுக் குழு மீட்டெடுக்க, குறைந்தபட்சக் காப்பகம் மட்டும் வைக்கப்படும். இதைத் திரும்பப் பெற இயலாது.';
+
+  @override
+  String get actionDelete => 'நீக்கு';
+
+  @override
+  String get profileDeleted =>
+      'சுயவிவரம் நீக்கப்பட்டது. உங்களை வெளியேற்றுகிறோம்…';
+
+  @override
+  String get profileDeleteFailed =>
+      'உங்கள் சுயவிவரத்தை நீக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get signOutConfirm => 'நிச்சயமாக வெளியேற விரும்புகிறீர்களா?';
+
+  @override
+  String get signingOut => 'வெளியேறுகிறது…';
+
+  @override
+  String get interestsShownHere =>
+      'உங்கள் விருப்பங்கள் \"விருப்பங்கள்\" தாவலில் உள்ளன.';
+
+  @override
+  String get matchesInTab => 'உங்கள் வரன்கள் \"வரன்கள்\" தாவலில் உள்ளன.';
+
+  @override
+  String get notificationSettingsComingSoon =>
+      'அறிவிப்பு அமைப்புகள் இன்னும் கிடைக்கவில்லை.';
+
+  @override
+  String get securitySettingsComingSoon =>
+      'பாதுகாப்பு அமைப்புகள் இன்னும் கிடைக்கவில்லை.';
+
+  @override
+  String get aboutComingSoon => '\"செயலி பற்றி\" பக்கம் இன்னும் கிடைக்கவில்லை.';
+
+  @override
+  String get profileStatusActive => 'உங்கள் சுயவிவரம் செயலில் உள்ளது';
+
+  @override
+  String get profileStatusDeactivated =>
+      'உங்கள் சுயவிவரம் செயலிழக்கப்பட்டுள்ளது';
+
+  @override
+  String get profileStatusMissing =>
+      'சுயவிவரம் இல்லை. வரன்களைப் பெற உங்கள் சுயவிவரத்தை உருவாக்குங்கள்.';
+
+  @override
+  String get noProfileTitle => 'சுயவிவரம் இல்லை';
+
+  @override
+  String get noProfileBody =>
+      'உங்கள் கணக்குடன் இணைந்த சுயவிவரம் இல்லை. நீங்கள் பார்வையிடலாம்; ஆனால் உங்களுக்கான வரன்களைப் பெற, உங்கள் சுயவிவரத்தை உருவாக்குங்கள்.';
+
+  @override
+  String get createProfileFailed =>
+      'உங்கள் சுயவிவரத்தை உருவாக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get actionCreateProfile => 'எனது சுயவிவரத்தை உருவாக்கு';
+
+  @override
+  String get profileRestored =>
+      'காப்பகத்திலிருந்து சுயவிவரம் மீட்டெடுக்கப்பட்டது.';
+
+  @override
+  String get noArchivedProfile =>
+      'மீட்டெடுக்கக் காப்பகச் சுயவிவரம் எதுவும் இல்லை.';
+
+  @override
+  String get restoreFailed =>
+      'உங்கள் சுயவிவரத்தை மீட்டெடுக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get actionRestoreProfile => 'எனது சுயவிவரத்தை மீட்டெடு';
+
+  @override
+  String get diagnosticsPrinted =>
+      'கண்டறிதல் விவரங்கள் console-இல் எழுதப்பட்டன';
+
+  @override
+  String get actionPrintDiagnostics => 'கண்டறிதல் விவரங்களை அச்சிடு';
+
+  @override
+  String get myProfileTitle => 'எனது சுயவிவரம்';
+
+  @override
+  String get fieldName => 'பெயர்';
+
+  @override
+  String get fieldAge => 'வயது';
+
+  @override
+  String get fieldLocation => 'இருப்பிடம்';
+
+  @override
+  String get actionEditMyProfile => 'எனது சுயவிவரத்தைத் திருத்து';
+
+  @override
+  String get refreshSuccess => 'சுயவிவரத் தரவு புதுப்பிக்கப்பட்டது';
+
+  @override
+  String get refreshNotSignedIn =>
+      'புதுப்பிக்க இயலவில்லை: நீங்கள் உள்நுழையவில்லை';
+
+  @override
+  String get defaultUserName => 'உறுப்பினர்';
+
+  @override
+  String get statInterests => 'விருப்பங்கள்';
 }
