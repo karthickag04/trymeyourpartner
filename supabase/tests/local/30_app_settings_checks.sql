@@ -52,3 +52,11 @@ select 'identity helper', public.app_current_user_id() = auth.uid();
 select set_config('request.jwt.claim.sub','',false);
 select 'identity helper signed out', public.app_current_user_id() is null;
 reset role;
+
+-- P1-15: nothing in our schemas depends on auth.uid() any more.
+select 'auth.uid remaining',
+  (select count(*) from pg_policies where schemaname in ('public','private')
+     and (coalesce(qual,'') like '%auth.uid()%' or coalesce(with_check,'') like '%auth.uid()%'))
+  + (select count(*) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+     where n.nspname in ('public','private') and p.prokind = 'f'
+       and pg_get_functiondef(p.oid) like '%auth.uid()%');

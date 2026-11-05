@@ -57,5 +57,6 @@ expect2 "raised quota|1 more, then CONTACT_LIMIT_REACHED"
 expect2 "feature off|FEATURE_DISABLED"
 expect2 "identity helper|t"
 expect2 "identity helper signed out|t"
+expect2 "auth.uid remaining|0"
 
 echo "All database checks passed."

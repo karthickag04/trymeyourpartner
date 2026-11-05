@@ -25,7 +25,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 8 | 5 | 4 | 1 |
+| P1 Foundation & restructure | 9 | 4 | 4 | 1 |
 | P2 Roles, admin console, moderation | 0 | 0 | 9 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
@@ -33,7 +33,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** Track A: P1-15 rewrite access rules to `app_current_user_id()`. Track B: P1-07 + P1-13. Track C: Phase 2.
+**Now working on:** Track A: P1-16 realtime behind `RealtimeService`; integrating tracks B and C when ready. Track B: P1-07 + P1-13. Track C: Phase 2.
 **Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
@@ -65,9 +65,9 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
 | P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f`, `8fd3174` | Widget tests for splash and signed-out → sign-in added. Android debug APK builds green in CI (run 8) and is attached to each run for 7 days. Sentry not yet. |
 | P1-14 | Portability guard: no `supabase_flutter` imports outside `lib/data/supabase/` (CI check; legacy list may only shrink) | ✅ | `5ec49c2` | `tool/check_vendor_imports.sh` in CI; 5 legacy exceptions listed ([ADR 0001](adr/0001-vendor-portability.md)) |
-| P1-15 | Database identity helper `app_current_user_id()`; rewrite the 83 `auth.uid()` uses in policies/functions to it | 🟡 | `5ec49c2` | Helper live; equals `auth.uid()` for a member, null when signed out (local + live). Rewrite of existing policies not yet. |
+| P1-15 | Database identity helper `app_current_user_id()`; rewrite the 83 `auth.uid()` uses in policies/functions to it | ✅ | `5ec49c2`, *(this commit)* | Live: 0 uses of `auth.uid()` left; 51 policies use the helper; 12/12 live member checks and the browser contact flow unchanged; full local DB suite passes |
 | P1-16 | Realtime behind `RealtimeService` (move `notifications_service.dart`) | ⬜ | — | Track A |
-| P1-17 | API verifies tokens by issuer/JWKS (any OIDC provider), not by calling Supabase | 🙋 | *(this commit)* | Built: `TokenVerifier` (auto/jwks/provider), 7 new tests (valid token; wrong key, issuer, audience; expired; garbage). Live: real token 200, tampered 401 (provider fallback, because the project has no public keys yet). **Owner:** in Supabase → Settings → JWT Keys, migrate to asymmetric signing keys; the API then switches to JWKS automatically. |
+| P1-17 | API verifies tokens by issuer/JWKS (any OIDC provider), not by calling Supabase | 🙋 | `e44595e` | Built: `TokenVerifier` (auto/jwks/provider), 7 new tests (valid token; wrong key, issuer, audience; expired; garbage). Live: real token 200, tampered 401 (provider fallback, because the project has no public keys yet). **Owner:** in Supabase → Settings → JWT Keys, migrate to asymmetric signing keys; the API then switches to JWKS automatically. |
 | P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
