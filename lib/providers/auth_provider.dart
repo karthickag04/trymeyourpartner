@@ -53,7 +53,9 @@ class AuthProvider with ChangeNotifier {
         try {
           // Fetch email/full name from a user profile table if available (best-effort)
           final profile = await UserService.getUserProfile(_userId!);
-          _userEmail = profile?['email'] as String?;
+          // The login itself is the source of truth for the email.
+          _userEmail =
+              await _auth.currentUserEmail() ?? profile?['email'] as String?;
           _fullName = profile?['full_name'] as String?;
           _avatarUrl = profile?['avatar_url'] as String?;
           await UserService.upsertUserProfile(

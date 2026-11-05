@@ -16,6 +16,9 @@ class SupabaseAuthService implements AuthService {
   Future<String?> currentUserId() async => _client.auth.currentUser?.id;
 
   @override
+  Future<String?> currentUserEmail() async => _client.auth.currentUser?.email;
+
+  @override
   Future<String?> currentAccessToken() async =>
       _client.auth.currentSession?.accessToken;
 

@@ -117,6 +117,12 @@ class HttpAuthService implements AuthService {
   }
 
   @override
+  Future<String?> currentUserEmail() async {
+    await _ensureLoaded();
+    return _email;
+  }
+
+  @override
   Future<String?> currentUserId() async {
     await _ensureLoaded();
     return _userId;

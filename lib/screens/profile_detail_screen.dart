@@ -845,21 +845,25 @@ class ProfileDetailScreen extends StatelessWidget {
       if (!nav.mounted) return;
       showModalBottomSheet(
         context: nav.context,
-        builder: (_) => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Contact details', style: AppTextStyles.subtitle1),
-              const SizedBox(height: 8),
-              if (contact.isEmpty)
-                const Text('This member has not added a phone number yet.'),
-              if ((contact.phoneNumber ?? '').isNotEmpty)
-                Text('Phone: ${contact.phoneNumber}'),
-              if ((contact.whatsappNumber ?? '').isNotEmpty)
-                Text('WhatsApp: ${contact.whatsappNumber}'),
-            ],
+        isScrollControlled: true,
+        builder: (_) => SafeArea(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Contact details', style: AppTextStyles.subtitle1),
+                const SizedBox(height: 8),
+                if (contact.isEmpty)
+                  const Text('This member has not added a phone number yet.'),
+                if ((contact.phoneNumber ?? '').isNotEmpty)
+                  Text('Phone: ${contact.phoneNumber}'),
+                if ((contact.whatsappNumber ?? '').isNotEmpty)
+                  Text('WhatsApp: ${contact.whatsappNumber}'),
+              ],
+            ),
           ),
         ),
       );

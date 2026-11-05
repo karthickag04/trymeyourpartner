@@ -1,6 +1,6 @@
 -- Phase 0 access checks, run as the test members (see supabase/README.md).
 -- Run in the SQL editor or via the management API; returns one row per check.
--- Creates the two test profiles on first run; test logins must exist first.
+-- Runs inside one transaction that is never committed, so it leaves no data behind.
 begin;
 create temp table r (n serial, name text, ok boolean, detail text) on commit drop;
 grant all on r to authenticated; grant all on sequence r_n_seq to authenticated;

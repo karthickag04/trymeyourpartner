@@ -1,6 +1,7 @@
 abstract class AuthService {
   Stream<String?> authStateChanges();
   Future<String?> currentUserId();
+  Future<String?> currentUserEmail();
   Future<String?> currentAccessToken();
 
   Future<bool> signUp({
