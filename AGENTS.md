@@ -35,7 +35,7 @@ Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
    The publishable key is in Supabase → Settings → API Keys. **Never** use the secret key in an app.
 3. Admin console: same in `apps/admin_console/` with its own `.env` (`SUPABASE_URL`, `SUPABASE_KEY`, `API_BASE_URL`).
 4. Backend API: `cd backend/api && cp .env.example .env && npm ci && npm test`.
-5. Database tests need a local PostgreSQL 16: `PGHOST=localhost PGUSER=postgres supabase/tests/local/run.sh`.
+5. Database tests need a local PostgreSQL 17 (same as CI and the live project): `PGHOST=localhost PGUSER=postgres supabase/tests/local/run.sh`.
 
 ## 3. Rules for every change
 
@@ -103,6 +103,9 @@ CI (app, Android, database, API, admin console) is green.
   - Admin API (`/admin/v1/me`, `/admin/v1/staff`).
 - **Bugs fixed along the way:** see the "Bugs" table in the tracker (e.g. blank login email, 404s on every login, "mark as read" always failing, contact reveal never showing numbers).
 
+- **API on plain PostgreSQL (P2-10):** the API connects as `api_service` and runs each request as the member, so row-level security applies; end-to-end tests run in CI.
+- **Vendor guards (P2-14):** CI blocks new Supabase-specific code in the app, API and migrations.
+- **Onboarding fixes (2026-11-05):** duplicate castes merged (live), caste saves reliably; registration only for new or incomplete members, pre-filled with saved details; a failed load shows a retry, never an empty form.
 - **No decorative Profile items (P1-18):** Interests/Matches shortcuts work, Change password, About dialog; Upgrade and Notification settings hidden.
 - **Themes and languages (P1-07, P1-13, merged from PR #2):**
   - design tokens, and light/dark/system themes with an Appearance setting
@@ -114,30 +117,34 @@ CI (app, Android, database, API, admin console) is green.
 - `claude/admin-console-2` (draft PR #4) holds only an older draft of this file; close it.
 
 **Next (in order):**
-1. P1-06 Riverpod (feature by feature, auth and profile first).
-2. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)), in this order:
-   - P2-08 move app data access to the API
-   - P2-11 own `app_users` identity table, P2-12 storage as code, P2-13 realtime as our own events
-   - P2-09 exit runbook and restore drill
-3. Launch work from roadmap §14 (how we beat the incumbents): P1-21 security hygiene, P1-20 reliability,
-   P1-19 store releases, then P3-07/P3-08/P3-09 and P4-08 before the launch gate in §14.4.
-4. The rest of Phase 2:
-   - moderation queues (P2-04)
-   - maker–checker verification (P2-05)
-   - Member 360
-   - creating and disabling staff in the console
-5. Phases 3–7 per the tracker.
-6. Later: bring back Upgrade with the paywall (Phase 4) and Notification settings once preferences are stored (both hidden by P1-18).
+1. Quick safety fixes:
+   - P1-22 no silent failures (55 empty `catch` blocks; save paths first)
+   - P1-21 security hygiene (Supabase advisor warnings, dependency and secret scanning)
+2. Put the API to work:
+   - deploy it (P1-11; owner picks the host and sets the `api_service` password)
+   - P2-08 move app data access to the API, feature by feature, doing P1-06 Riverpod for each feature as it moves
+3. Test against a safe copy:
+   - P0-08 separate staging project (today one project holds test and real members)
+   - P1-23 browser tests in CI, including the onboarding flows
+4. Launch-gate work (roadmap §14.4):
+   - P2-04 moderation queues, P2-05 maker–checker verification
+   - P3-01 phone OTP, P3-07 matrimony-site rules, P3-08 live profiles and scam-aware chat
+   - P3-09 support desk, P4-08 fair billing, P1-20 reliability, P1-19 store releases
+5. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)): P2-11 own identity table, P2-12 storage as code,
+   P2-13 realtime as our own events, P2-09 exit runbook and restore drill.
+6. The rest of Phase 2 (Member 360, creating and disabling staff), then Phases 3–7 per the tracker.
+7. Later: bring back Upgrade with the paywall (Phase 4) and Notification settings once preferences are stored (both hidden by P1-18).
 
-**Owner steps (Supabase dashboard):**
-1. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
-2. Create the first two `system_admin` accounts (SQL in `docs/ADMIN_CONSOLE.md`).
-3. Settings → JWT Keys → migrate to asymmetric keys (the API then uses JWKS automatically).
-4. Create a separate production project before real members join.
-5. Set the backend API's database password (SQL in `backend/README.md`, "Database role") and its `DATABASE_URL`.
-6. Fixes the Supabase security advisor reports (2026-11-05): Authentication → turn on leaked-password
+**Owner steps (Supabase dashboard and hosting):**
+1. Choose where the backend API runs (a host in the Singapore region, next to the database).
+2. Set the backend API's database password (SQL in `backend/README.md`, "Database role") and its `DATABASE_URL`.
+3. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
+4. Create the first two `system_admin` accounts (SQL in `docs/ADMIN_CONSOLE.md`).
+5. Settings → JWT Keys → migrate to asymmetric keys (the API then uses JWKS automatically).
+6. Fix the Supabase security advisor reports (2026-11-05): Authentication → turn on leaked-password
    protection; set email OTP expiry under one hour; Settings → Infrastructure → upgrade Postgres
    (security patches pending).
+7. Create a separate staging/production project before real members join (P0-08).
 
 ## 5. Test data on the test project
 
