@@ -8,7 +8,6 @@ ALLOWED=(
   lib/main.dart                                      # Supabase.initialize at start-up
   lib/app/settings/app_settings.dart                 # SupabaseAppSettingsSource (move to lib/data, P1-14)
   lib/shared/services/matrimonial_service.dart       # legacy data access (move to the API, P2-08)
-  lib/features/notifications/notifications_service.dart  # realtime (move behind RealtimeService, P1-16)
   lib/features/subscriptions/subscription_service.dart   # contact reveal (move to the API, P2-08)
 )
 bad=0

@@ -20,7 +20,7 @@ vendor risk.
 | **Data access from the app** | 5 Dart files call Supabase directly (about 90 calls; 75 in `matrimonial_service.dart`) | Hard: every screen's data path changes | Easy: the app talks only to our API |
 | **Auth** | Supabase Auth: email/password (bcrypt hashes), Google sign-in, TOTP MFA for staff | Medium: users and password hashes export; MFA must be re-enrolled | Medium (inherent), but no app changes |
 | **Storage** | Supabase Storage buckets; the app stores object **paths**, not provider URLs | Easy: S3-compatible copy | Easy |
-| **Realtime** | Supabase channels for chat, presence, notifications | Medium: replace the transport | Easy: one adapter behind `RealtimeService` |
+| **Realtime** | Supabase channels for chat, presence, notifications (all behind `RealtimeService` since P1-16) | Medium: replace the transport | Easy: one adapter behind `RealtimeService` |
 | **Backend API** | Verifies tokens by calling Supabase Auth | Easy | Easy: standard JWT/JWKS verification by issuer |
 
 **The database is already proven portable:** CI rebuilds the whole schema from
