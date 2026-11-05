@@ -168,3 +168,34 @@ class MfaStatus {
   /// A verified TOTP factor, if the user has enrolled one.
   final String? verifiedFactorId;
 }
+
+/// One admin-controlled app setting (`app_settings`).
+class AppSetting {
+  const AppSetting({
+    required this.key,
+    required this.value,
+    required this.description,
+    required this.isPublic,
+    this.updatedAt,
+  });
+
+  factory AppSetting.fromJson(Map<String, dynamic> json) => AppSetting(
+    key: json['key'] as String,
+    value: json['value'],
+    description: (json['description'] as String?) ?? '',
+    isPublic: json['is_public'] != false,
+    updatedAt: json['updated_at'] == null
+        ? null
+        : DateTime.parse(json['updated_at'] as String),
+  );
+
+  final String key;
+
+  /// Any JSON value.
+  final Object? value;
+  final String description;
+
+  /// Readable before sign-in by the apps.
+  final bool isPublic;
+  final DateTime? updatedAt;
+}

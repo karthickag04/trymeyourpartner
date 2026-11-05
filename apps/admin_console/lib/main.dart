@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'data/supabase/supabase_bootstrap.dart';
 import 'src/app.dart';
-import 'src/backend/supabase_console_backend.dart';
 import 'src/config.dart';
 import 'src/screens/config_error_screen.dart';
 import 'src/session/session_controller.dart';
@@ -14,12 +13,7 @@ Future<void> main() async {
     runApp(const ConfigErrorApp());
     return;
   }
-  await Supabase.initialize(
-    url: config.supabaseUrl,
-    anonKey: config.supabaseKey,
-  );
-  final controller = SessionController(
-    SupabaseConsoleBackend(Supabase.instance.client),
-  )..start();
+  final (auth, data) = await connectSupabase(config);
+  final controller = SessionController(auth: auth, data: data)..start();
   runApp(AdminApp(controller: controller));
 }

@@ -3,6 +3,11 @@
 Phase 2 items P2-01, P2-02, P2-03 and P2-06 of
 [`PRODUCT_STRATEGY_AND_ROADMAP.md`](PRODUCT_STRATEGY_AND_ROADMAP.md) (§6, §8, §10.3).
 
+Follows [ADR 0001](adr/0001-vendor-portability.md) (vendor portability): the SQL uses
+`app_current_user_id()`, not `auth.uid()`; Supabase-only objects are in one marked block;
+the console's provider code lives only in `apps/admin_console/lib/data/`; the API reads
+claims from the verified token (`TokenVerifier`).
+
 | Part | Where |
 |---|---|
 | Tables, permissions, row-level security, audit log, token hook | `supabase/migrations/20261106100000_phase2_org_and_roles.sql` |
@@ -78,6 +83,8 @@ was removed in the console: default grants are only seeded when a permission is 
 | `role_permissions` | Which role holds which permission |
 | `audit_log` | Append-only: actor, actor role, action, entity, entity id, before, after, reason, IP, time |
 
+| `app_settings` (P1-12) | Holders of `platform.settings` read every setting and change **values** (not keys) in the console; `updated_by` is stamped and each change is audited |
+
 Helper functions (callable by signed-in users; they return nothing useful to members):
 `current_staff_role()`, `current_staff_branch()`, `current_staff_team()`,
 `staff_has_permission(p)`, `staff_in_scope(branch, team)`, `session_is_mfa_verified()`,
@@ -100,11 +107,13 @@ MFA (TOTP) is mandatory for staff (§6.3). It is enforced in three places:
 2. **Database.** Every staff-data policy and `log_audit` requires the JWT claim
    `aal = aal2`. Before MFA a staff member can read only their own `staff_accounts` row
    (that is how the console decides whether to ask for MFA).
-3. **Admin API.** `/admin/v1/*` checks the Supabase token, then `aal = aal2`, then an active
+3. **Admin API.** `/admin/v1/*` checks the access token (`TokenVerifier`: JWKS or the auth
+   provider), then the verified token's `aal = aal2`, then an active
    staff account, then the endpoint's permission.
 
 Navigation is built from the permissions: **Dashboard** (everyone), **Staff**
-(`staff.view`) and **Roles & permissions** (`roles.view`; editable with `roles.manage`).
+(`staff.view`), **Roles & permissions** (`roles.view`; editable with `roles.manage`) and
+**Settings** (`platform.settings`: edit `app_settings` values as JSON).
 Sections that are not built yet are not shown.
 
 ## Audit log
@@ -114,8 +123,9 @@ Sections that are not built yet are not shown.
 - `log_audit(...)` (active, MFA-verified staff only) is the way in for actions that do not
   change a table, such as viewing member personal data. The admin API and the console
   write the entry **before** returning data; if it cannot be written, nothing is returned.
-- Changes to `branches`, `teams`, `staff_accounts`, `agents` and `role_permissions`
-  are logged automatically with before/after values.
+- Changes to `branches`, `teams`, `staff_accounts`, `agents`, `role_permissions` and
+  `app_settings` are logged automatically with before/after values (database trigger, so
+  no client can skip it).
 - `ip` is the first `X-Forwarded-For` address Supabase sees. For calls made through the
   admin API that is the API server, so the API also records the client IP in `after.client_ip`.
 - Readable by holders of `audit.view`.
@@ -133,6 +143,7 @@ The API calls Supabase as the staff member with the publishable key; it holds no
 
 ## Access token hook
 
+Supabase-specific (in the migration's marked block, with the foreign keys to `auth.users`).
 `public.custom_access_token_hook(event)` adds `staff_role`, `branch_id` and `team_id`
 claims to the tokens of active staff and returns members' tokens unchanged. Only
 `supabase_auth_admin` may run it. The console, API and policies do not depend on these
@@ -163,8 +174,9 @@ insert into public.branches (code, name, city) values ('CHN', 'Chennai', 'Chenna
 ## What the coordinator must do on the live project
 
 1. **Apply the migration** `supabase/migrations/20261106100000_phase2_org_and_roles.sql`
-   in the SQL editor (after the baseline and Phase 0; it is re-runnable). It adds tables
-   and functions only; no member data changes.
+   in the SQL editor, after `20261106090000_app_settings.sql` and
+   `20261106095000_app_identity_helper.sql` (it uses both; it is re-runnable). It adds
+   tables, functions and the `app_settings` staff policies; no member data changes.
 2. **Check TOTP MFA is enabled**: Authentication → Multi-Factor → *TOTP (App
    Authenticator)* enabled (it is by default).
 3. **Enable the hook**: Authentication → Hooks → *Customize Access Token (JWT) Claims* →
@@ -175,8 +187,9 @@ insert into public.branches (code, name, city) values ('CHN', 'Chennai', 'Chenna
 5. Record the migration in `supabase/README.md` and `docs/PROGRESS_TRACKER.md`.
 
 If `20261105120000_phase0_security_hardening.sql` is ever re-run on its own, it grants
-execute on every public function to `authenticated`, including the hook; re-run this
-migration afterwards to revoke it again.
+execute on every public function to `authenticated`, including the hook; likewise
+re-running `20261106090000_app_settings.sql` on its own removes the staff update grant on
+`app_settings`. Re-run this migration afterwards in both cases.
 
 ## Not built yet
 

@@ -18,7 +18,7 @@ class _StaffScreenState extends State<StaffScreen> {
   late Future<List<StaffMember>> _staff = _load();
 
   Future<List<StaffMember>> _load() =>
-      context.read<SessionController>().backend.listStaff();
+      context.read<SessionController>().data.listStaff();
 
   @override
   Widget build(BuildContext context) {

@@ -19,6 +19,7 @@ flutter run -d chrome --dart-define-from-file=.env
 ## Check
 
 ```bash
+tool/check_vendor_imports.sh
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
@@ -29,8 +30,9 @@ flutter build web --dart-define-from-file=.env --no-web-resources-cdn
 
 | Path | What it holds |
 |---|---|
-| `lib/src/backend/` | `ConsoleBackend` interface and its Supabase implementation (always as the signed-in user, publishable key) |
+| `lib/src/services/` | `ConsoleAuth` (sign-in, MFA) and `ConsoleData` interfaces; the rest of the app depends only on these |
+| `lib/data/supabase/` | Their Supabase implementations: the only place that imports `supabase_flutter` (ADR 0001, checked by `tool/check_vendor_imports.sh` in CI) |
 | `lib/src/session/` | Sign-in flow: password → staff check → TOTP enrol/verify |
 | `lib/src/navigation.dart` | Console sections and the permission each needs |
-| `lib/src/screens/` | Sign-in, MFA, refusal, dashboard, staff list, roles & permissions |
+| `lib/src/screens/` | Sign-in, MFA, refusal, dashboard, staff list, roles & permissions, settings |
 | `test/` | Widget tests with an in-memory backend (no network) |

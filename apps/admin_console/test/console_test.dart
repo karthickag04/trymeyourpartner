@@ -15,7 +15,7 @@ Future<SessionController> pumpConsole(
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
-  final controller = SessionController(backend);
+  final controller = SessionController(auth: backend, data: backend);
   addTearDown(controller.dispose);
   await controller.start();
   await tester.pumpWidget(AdminApp(controller: controller));
@@ -128,7 +128,7 @@ void main() {
       expect(find.text('Branch X'), findsOneWidget);
     });
 
-    testWidgets('admin: dashboard, staff, roles', (tester) async {
+    testWidgets('admin: dashboard, staff, roles; no settings', (tester) async {
       await signedInAs(
         tester,
         staffProfile('admin', {'staff.view', 'roles.view'}),
@@ -136,6 +136,19 @@ void main() {
       expect(navLabel('Dashboard'), findsOneWidget);
       expect(navLabel('Staff'), findsOneWidget);
       expect(navLabel('Roles & permissions'), findsOneWidget);
+      expect(navLabel('Settings'), findsNothing);
+    });
+
+    testWidgets('system admin: every section', (tester) async {
+      await signedInAs(tester, staffProfile('system_admin', {}));
+      for (final label in [
+        'Dashboard',
+        'Staff',
+        'Roles & permissions',
+        'Settings',
+      ]) {
+        expect(navLabel(label), findsOneWidget, reason: label);
+      }
     });
 
     testWidgets('staff: dashboard only, no navigation bar', (tester) async {
@@ -249,5 +262,73 @@ void main() {
     await tester.tap(find.byKey(const Key('grant-team_lead-staff.view')));
     await tester.pumpAndSettle();
     expect(backend.grants, contains('team_lead|staff.view'));
+  });
+
+  group('settings', () {
+    Future<FakeBackend> openSettings(WidgetTester tester) async {
+      final backend = FakeBackend(
+        staff: staffProfile('system_admin', {'platform.settings'}),
+        signedIn: true,
+        sessionVerified: true,
+      );
+      await pumpConsole(tester, backend);
+      await tester.tap(navLabel('Settings'));
+      await tester.pumpAndSettle();
+      return backend;
+    }
+
+    testWidgets('system admin changes a setting', (tester) async {
+      final backend = await openSettings(tester);
+      final field = find.byKey(const Key('setting-maintenance'));
+      expect(field, findsOneWidget);
+      await tester.enterText(
+        field,
+        '{"enabled": true, "message": "Back soon"}',
+      );
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('save-maintenance')));
+      await tester.pumpAndSettle();
+      expect(backend.settings['maintenance'], {
+        'enabled': true,
+        'message': 'Back soon',
+      });
+      expect(find.text('Saved maintenance'), findsOneWidget);
+    });
+
+    testWidgets('invalid JSON cannot be saved', (tester) async {
+      final backend = await openSettings(tester);
+      await tester.enterText(
+        find.byKey(const Key('setting-maintenance')),
+        '{"enabled": tru',
+      );
+      await tester.pump();
+      expect(find.text('Not valid JSON'), findsOneWidget);
+      final save = tester.widget<FilledButton>(
+        find.byKey(const Key('save-maintenance')),
+      );
+      expect(save.onPressed, isNull);
+      expect(backend.settings['maintenance'], {
+        'enabled': false,
+        'message': '',
+      });
+    });
+
+    testWidgets('a refused change is reported, not shown as saved', (
+      tester,
+    ) async {
+      final backend = await openSettings(tester);
+      backend.settingsWritable = false;
+      await tester.enterText(
+        find.byKey(const Key('setting-maintenance')),
+        '{"enabled": true}',
+      );
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('save-maintenance')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Not saved: Not allowed to change this setting'),
+        findsOneWidget,
+      );
+    });
   });
 }

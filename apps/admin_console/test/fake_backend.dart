@@ -1,10 +1,12 @@
 import 'dart:async';
 
-import 'package:tmyp_admin_console/src/backend/console_backend.dart';
 import 'package:tmyp_admin_console/src/models.dart';
+import 'package:tmyp_admin_console/src/services/console_auth.dart';
+import 'package:tmyp_admin_console/src/services/console_data.dart';
+import 'package:tmyp_admin_console/src/services/console_exception.dart';
 
-/// In-memory [ConsoleBackend]: no network.
-class FakeBackend implements ConsoleBackend {
+/// In-memory [ConsoleAuth] and [ConsoleData]: no network.
+class FakeBackend implements ConsoleAuth, ConsoleData {
   FakeBackend({
     this.staff,
     this.signedIn = false,
@@ -21,6 +23,10 @@ class FakeBackend implements ConsoleBackend {
   final List<StaffMember> staffList;
   final grants = <String>{};
   int signOutCalls = 0;
+  final settings = <String, Object?>{
+    'maintenance': {'enabled': false, 'message': ''},
+  };
+  bool settingsWritable = true;
   String? verifiedCode;
 
   final _signedOut = StreamController<void>.broadcast();
@@ -114,6 +120,25 @@ class FakeBackend implements ConsoleBackend {
   }) async {
     final k = RoleMatrix.grantKey(role, permission);
     granted ? grants.add(k) : grants.remove(k);
+  }
+
+  @override
+  Future<List<AppSetting>> listSettings() async => [
+    for (final e in settings.entries)
+      AppSetting(
+        key: e.key,
+        value: e.value,
+        description: 'Maintenance mode',
+        isPublic: true,
+      ),
+  ];
+
+  @override
+  Future<void> updateSetting(String key, Object? value) async {
+    if (!settingsWritable) {
+      throw const ConsoleException('Not allowed to change this setting');
+    }
+    settings[key] = value;
   }
 }
 

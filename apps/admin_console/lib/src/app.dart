@@ -8,6 +8,7 @@ import 'screens/dashboard_screen.dart';
 import 'screens/mfa_screen.dart';
 import 'screens/refused_screen.dart';
 import 'screens/roles_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/staff_screen.dart';
 import 'session/session_controller.dart';
@@ -66,6 +67,7 @@ GoRouter buildRouter(SessionController session) {
           ),
           GoRoute(path: '/staff', builder: (_, _) => const StaffScreen()),
           GoRoute(path: '/roles', builder: (_, _) => const RolesScreen()),
+          GoRoute(path: '/settings', builder: (_, _) => const SettingsScreen()),
         ],
       ),
     ],

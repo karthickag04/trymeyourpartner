@@ -61,6 +61,9 @@ jobs:
       - name: Install packages (exactly as locked)
         run: flutter pub get --enforce-lockfile
 
+      - name: Provider code only in lib/data (ADR 0001)
+        run: tool/check_vendor_imports.sh
+
       - name: Check formatting
         run: dart format --output=none --set-exit-if-changed lib test
 

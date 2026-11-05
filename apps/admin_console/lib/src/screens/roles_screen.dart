@@ -20,7 +20,7 @@ class _RolesScreenState extends State<RolesScreen> {
 
   SessionController get _session => context.read<SessionController>();
 
-  Future<RoleMatrix> _load() => _session.backend.loadRoleMatrix();
+  Future<RoleMatrix> _load() => _session.data.loadRoleMatrix();
 
   Future<void> _toggle(RoleMatrix m, String role, String key, bool on) async {
     final id = RoleMatrix.grantKey(role, key);
@@ -29,7 +29,7 @@ class _RolesScreenState extends State<RolesScreen> {
       m.set(role, key, on);
     });
     try {
-      await _session.backend.setGrant(role: role, permission: key, granted: on);
+      await _session.data.setGrant(role: role, permission: key, granted: on);
     } catch (e) {
       if (!mounted) return;
       setState(() => m.set(role, key, !on));

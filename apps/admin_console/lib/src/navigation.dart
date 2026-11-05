@@ -36,6 +36,12 @@ const consoleSections = <ConsoleSection>[
     icon: Icons.admin_panel_settings_outlined,
     permission: 'roles.view',
   ),
+  ConsoleSection(
+    path: '/settings',
+    label: 'Settings',
+    icon: Icons.tune,
+    permission: 'platform.settings',
+  ),
 ];
 
 /// The sections the signed-in staff member may open.
