@@ -1,0 +1,1115 @@
+{
+  "@@locale": "en",
+  "appName": "TryMeYourPartner",
+  "@appName": {
+    "description": "Brand name; not translated."
+  },
+  "commonOk": "OK",
+  "commonCancel": "Cancel",
+  "commonSave": "Save",
+  "commonRetry": "Try again",
+  "commonClose": "Close",
+  "commonDone": "Done",
+  "commonNotSpecified": "Not specified",
+  "commonSomethingWentWrong": "Something went wrong. Please try again.",
+  "languageEnglish": "English",
+  "languageTamil": "தமிழ்",
+  "languageLabel": "Language",
+  "languageChooseTooltip": "Change language",
+  "authTagline": "Find your life partner, the trusted way",
+  "authSignIn": "Sign In",
+  "authSignUp": "Sign Up",
+  "authEmailLabel": "Email",
+  "authEmailRequired": "Please enter your email",
+  "authEmailInvalid": "Please enter a valid email",
+  "authPasswordLabel": "Password",
+  "authPasswordRequired": "Please enter your password",
+  "authPasswordTooShort": "Password must be at least {min} characters",
+  "@authPasswordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "authShowPassword": "Show password",
+  "authHidePassword": "Hide password",
+  "authForgotPassword": "Forgot password?",
+  "authFullNameLabel": "Full name",
+  "authFullNameRequired": "Please enter your full name",
+  "authOrContinueWith": "Or continue with",
+  "authContinueWithGoogle": "Continue with Google",
+  "authWelcomeBack": "Welcome back!",
+  "authAccountCreated": "Account created successfully! Welcome to TryMeYourPartner!",
+  "authCheckEmailTitle": "Check your email",
+  "authVerificationSent": "We've sent a verification link to {email}",
+  "@authVerificationSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authVerificationInstruction": "Please open the link in your email to verify your account.",
+  "authSignedInWithGoogle": "Signed in with Google!",
+  "authGoogleUnavailableTitle": "Google sign-in unavailable",
+  "authGoogleUnavailableBody": "Google sign-in is not set up for this app yet. Please sign in with your email instead.",
+  "authEnterEmailFirst": "Please enter your email first",
+  "authPasswordResetSent": "Password reset email sent!",
+  "authErrorInvalidCredentials": "The email or password is incorrect.",
+  "authErrorAlreadyRegistered": "An account with this email already exists. Please sign in.",
+  "authErrorEmailNotConfirmed": "Please verify your email before signing in.",
+  "authErrorSignUpFailed": "We couldn't create your account. Please try again.",
+  "authErrorGoogleFailed": "Google sign-in didn't work. Please try again.",
+  "authErrorNetwork": "Can't reach the server. Check your internet connection and try again.",
+  "splashTagline": "Where families find the right match",
+  "splashLoading": "Loading your experience...",
+  "navHome": "Home",
+  "navMatches": "Matches",
+  "navSearch": "Search",
+  "navInterests": "Interests",
+  "navProfile": "Profile",
+  "toastNewMessage": "New message",
+  "toastInterestReceived": "You received a new interest",
+  "toastInterestAccepted": "Your interest was accepted",
+  "toastInterestRejected": "Your interest was declined",
+  "toastNewNotification": "New notification",
+  "interestsBadgeLabel": "{count, plural, =1{1 new interest} other{{count} new interests}}",
+  "@interestsBadgeLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeJustNow": "Just now",
+  "timeMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count, plural, =1{An hour ago} other{{count} hours ago}}",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeYesterday": "Yesterday",
+  "timeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeWeeksAgo": "{count, plural, =1{A week ago} other{{count} weeks ago}}",
+  "@timeWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMonthsAgo": "{count, plural, =1{A month ago} other{{count} months ago}}",
+  "@timeMonthsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeMinutesShort": "{count}m",
+  "@timeMinutesShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursShort": "{count}h",
+  "@timeHoursShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysShort": "{count}d",
+  "@timeDaysShort": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "presenceOnline": "Online",
+  "presenceOffline": "Offline",
+  "profileNotAvailable": "This profile is not available.",
+  "notificationsTitle": "Notifications",
+  "notificationsMarkAllRead": "Mark all as read",
+  "notificationsMarkRead": "Mark read",
+  "notificationNewMessage": "New message",
+  "notificationNewInterest": "New interest",
+  "notificationInterestAccepted": "Interest accepted",
+  "notificationGeneric": "Notification",
+  "contactRequestsTitle": "Contact requests",
+  "contactRequestsReceived": "Received",
+  "contactRequestsSent": "Sent",
+  "contactRequestsEmpty": "No requests yet",
+  "contactRequestStatus": "Status: {status}",
+  "@contactRequestStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "contactStatusPending": "Pending",
+  "contactStatusAccepted": "Accepted",
+  "contactStatusDeclined": "Declined",
+  "contactStatusCancelled": "Cancelled",
+  "actionAccept": "Accept",
+  "actionDecline": "Decline",
+  "messagesTitle": "Messages",
+  "messagesSignInRequired": "Please sign in to see your messages",
+  "messagesLoadFailed": "We couldn't load your messages.",
+  "messagesEmpty": "No messages yet",
+  "profileNotActive": "Profile not active",
+  "profileNotActiveNow": "This profile is not active at the moment",
+  "unreadCountLabel": "{count, plural, =1{1 unread message} other{{count} unread messages}}",
+  "@unreadCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countOverflow": "{max}+",
+  "@countOverflow": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "chatLoadFailed": "We couldn't load this conversation.",
+  "chatSendFailed": "Your message wasn't sent. Please try again.",
+  "chatMyProfileInactive": "Your profile is deactivated. Reactivate it to send messages.",
+  "chatOtherProfileInactive": "This profile is not active at the moment. You can read earlier messages but can't send new ones.",
+  "chatTyping": "Typing…",
+  "chatSuggestPrompt": "Suggest a conversation starter",
+  "chatMessageHint": "Type a message",
+  "chatSend": "Send",
+  "chatLastSeen": "Last seen {time}",
+  "@chatLastSeen": {
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "5 minutes ago"
+      }
+    }
+  },
+  "chatStarterPassion": "What's something you're passionate about outside of work?",
+  "chatStarterWeekend": "Weekend plans: relaxing at home or going out?",
+  "chatStarterSmallJoy": "What's a small joy that made your day recently?",
+  "chatTickSent": "Sent",
+  "chatTickDelivered": "Delivered",
+  "chatTickRead": "Read",
+  "notificationsTabAccepted": "Accepted",
+  "notificationsTabInterests": "Interests",
+  "notificationsTabContactRequests": "Contact requests",
+  "newItemsLabel": "{count, plural, =1{1 new} other{{count} new}}",
+  "@newItemsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "acceptedEmptyTitle": "No accepted connections yet",
+  "acceptedEmptySubtitle": "When interests are accepted, they will appear here.",
+  "interestsEmptyTitle": "No new interests",
+  "interestsEmptySubtitle": "Interests you receive will appear here.",
+  "contactReceivedHeader": "Received (approve or decline)",
+  "contactFrom": "From: {name}",
+  "@contactFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "contactRequestedAt": "Requested on {date}",
+  "@contactRequestedAt": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "actionApprove": "Approve",
+  "contactNoReceived": "No requests received.",
+  "contactSentHeader": "Sent (awaiting reply)",
+  "contactTo": "To: {name}",
+  "@contactTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "contactNoSent": "No requests sent.",
+  "profileAgePlace": "{age} yrs · {place}",
+  "@profileAgePlace": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "interestsTitle": "Interests",
+  "interestsTabReceived": "Received",
+  "interestsTabSent": "Sent",
+  "interestsLoadingReceived": "Loading interests you received…",
+  "interestsLoadingSent": "Loading interests you sent…",
+  "interestsReceivedEmptyTitle": "No interests received yet",
+  "interestsReceivedEmptySubtitle": "When someone shows interest in your profile, they will appear here.",
+  "interestsSentEmptyTitle": "No interests sent yet",
+  "interestsSentEmptySubtitle": "Browse profiles and send interests to start connecting.",
+  "profileAgeCity": "{age} years • {city}",
+  "@profileAgeCity": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "profileNoAbout": "No information provided",
+  "interestAccepted": "You accepted {name}'s interest",
+  "@interestAccepted": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestAcceptFailed": "We couldn't accept this interest. Please try again.",
+  "interestDeclined": "You declined {name}'s interest",
+  "@interestDeclined": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestDeclineFailed": "We couldn't decline this interest. Please try again.",
+  "ageYearsLong": "{age} years",
+  "@ageYearsLong": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "actionShortlist": "Shortlist",
+  "actionShortlisted": "Shortlisted",
+  "actionReject": "Decline",
+  "actionSendInterest": "Send interest",
+  "actionInterestSent": "Interest sent",
+  "badgeVerified": "Verified profile",
+  "badgeShortlisted": "In your shortlist",
+  "placeDistrictState": "{district}, {state}",
+  "@placeDistrictState": {
+    "placeholders": {
+      "district": {},
+      "state": {}
+    }
+  },
+  "profileAgeHeight": "{age} years, {height}",
+  "@profileAgeHeight": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "whyMatchedTooltip": "Why this match",
+  "actionInterest": "Interest",
+  "actionAddToShortlist": "Add to shortlist",
+  "actionRemoveFromShortlist": "Remove from shortlist",
+  "whyMatchNearby": "You live near {district}",
+  "@whyMatchNearby": {
+    "placeholders": {
+      "district": {}
+    }
+  },
+  "whyMatchEducation": "Similar education: {education}",
+  "@whyMatchEducation": {
+    "placeholders": {
+      "education": {}
+    }
+  },
+  "whyMatchCaste": "Caste preference matched: {caste}",
+  "@whyMatchCaste": {
+    "placeholders": {
+      "caste": {}
+    }
+  },
+  "whyMatchLanguages": "Languages in common: {languages}",
+  "@whyMatchLanguages": {
+    "placeholders": {
+      "languages": {}
+    }
+  },
+  "whyMatchGeneral": "Good compatibility based on your preferences",
+  "maintenanceTitle": "Under maintenance",
+  "maintenanceDefaultMessage": "We are making improvements. Please check back soon.",
+  "helpTitle": "Help & Support",
+  "helpIntro": "Need help with your account, a profile or a payment? Contact our support team.",
+  "helpNoContacts": "Support contacts are not available right now.",
+  "helpEmail": "Email",
+  "helpPhone": "Phone",
+  "helpWhatsapp": "WhatsApp",
+  "helpCopy": "Copy",
+  "helpCopied": "{label} copied",
+  "@helpCopied": {
+    "placeholders": {
+      "label": {}
+    }
+  },
+  "contactRevealUnavailable": "Contact reveal is not available right now.",
+  "sectionBasicInfo": "Basic information",
+  "sectionAboutMe": "About me",
+  "sectionFamilyInfo": "Family information",
+  "sectionPartnerPreferences": "Partner preferences",
+  "sectionSimilarProfiles": "Similar profiles",
+  "fieldReligion": "Religion",
+  "fieldCaste": "Caste",
+  "fieldSubCaste": "Sub-caste",
+  "fieldEducation": "Education",
+  "fieldOccupation": "Occupation",
+  "fieldWorkingLocation": "Working location",
+  "fieldAnnualIncome": "Annual income",
+  "fieldHeight": "Height",
+  "fieldWeight": "Weight",
+  "fieldMaritalStatus": "Marital status",
+  "fieldLanguages": "Languages",
+  "fieldHobbies": "Hobbies",
+  "fieldFatherName": "Father's name",
+  "fieldFatherOccupation": "Father's occupation",
+  "fieldMotherName": "Mother's name",
+  "fieldMotherOccupation": "Mother's occupation",
+  "fieldBrothers": "Brothers",
+  "fieldSisters": "Sisters",
+  "fieldFamilyType": "Family type",
+  "fieldFamilyValues": "Family values",
+  "fieldFamilyStatus": "Family status",
+  "fieldPreferredAge": "Preferred age",
+  "fieldPreferredHeight": "Preferred height",
+  "fieldPreferredStates": "Preferred states",
+  "fieldPreferredCastes": "Preferred castes",
+  "fieldPreferredEducation": "Preferred education",
+  "fieldPreferredOccupation": "Preferred occupation",
+  "fieldPreferredIncome": "Preferred income",
+  "fieldOtherPreferences": "Other preferences",
+  "actionMessage": "Message",
+  "actionRevealContact": "Reveal / request contact",
+  "pleaseSignIn": "Please sign in first",
+  "blockedNoReveal": "You can't view contact details of a blocked profile",
+  "contactRequestPending": "Contact request pending",
+  "signInToMessage": "Please sign in to send a message",
+  "profileInactiveTitle": "Profile inactive",
+  "profileInactiveReactivatePrompt": "Your profile is deactivated. Reactivate it now to send messages?",
+  "actionNotNow": "Not now",
+  "actionReactivate": "Reactivate",
+  "profileReactivated": "Profile reactivated",
+  "profileReactivateFailed": "We couldn't reactivate your profile. Please try again.",
+  "messagingDisabledInactive": "This profile is not active. Messaging is turned off for now.",
+  "messagingDisabledBlocked": "Messaging is turned off for blocked profiles",
+  "contactRequestSent": "Contact request sent",
+  "contactRequestFailed": "We couldn't send the request. Please try again.",
+  "acceptContactTitle": "Accept contact request?",
+  "acceptContactBody": "Share contact details with {name}?",
+  "@acceptContactBody": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "commonNo": "No",
+  "contactRequestAccepted": "Contact request accepted",
+  "contactAcceptFailed": "We couldn't accept the request. Please try again.",
+  "interestSentTo": "Interest sent to {name}",
+  "@interestSentTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestSendFailed": "We couldn't send your interest. Please try again.",
+  "shortlistRemoved": "Removed from shortlist",
+  "shortlistAdded": "Added to shortlist",
+  "shortlistFailed": "We couldn't update your shortlist. Please try again.",
+  "contactDetailsTitle": "Contact details",
+  "contactNoPhone": "This member has not added a phone number yet.",
+  "contactPhone": "Phone: {number}",
+  "@contactPhone": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "contactWhatsapp": "WhatsApp: {number}",
+  "@contactWhatsapp": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "contactLimitUpgrade": "You've reached your plan's contact limit. Upgrade your plan to see more.",
+  "contactRevealFailed": "We couldn't show the contact details. Please try again.",
+  "messageTo": "Message {name}",
+  "@messageTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "messageHintLong": "Type your message…",
+  "messageSent": "Message sent",
+  "messageSendFailed": "We couldn't send your message. Please try again.",
+  "blockProfileAction": "Block profile",
+  "reportProfileAction": "Report profile",
+  "blockProfileTitle": "Block profile?",
+  "blockProfileBody": "You will no longer see {name}, and they won't be able to contact you.",
+  "@blockProfileBody": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "profileBlocked": "Profile blocked",
+  "blockFailed": "We couldn't block this profile. Please try again.",
+  "actionBlock": "Block",
+  "reportProfileTitle": "Report profile",
+  "reportReason": "Reason",
+  "reportDetails": "Details (optional)",
+  "reportSubmitted": "Report submitted. Thank you for helping keep the community safe.",
+  "reportFailed": "We couldn't submit your report. Please try again.",
+  "actionSubmit": "Submit",
+  "similarEmpty": "No similar profiles found yet.",
+  "moreOptions": "More options",
+  "previousPhoto": "Previous photo",
+  "nextPhoto": "Next photo",
+  "photoCounter": "{current}/{total}",
+  "@photoCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ageYearsOld": "{age} years old",
+  "@ageYearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeLpa": "₹{amount} LPA",
+  "@incomeLpa": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "weightKg": "{weight} kg",
+  "@weightKg": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "ageRange": "{min} - {max} years",
+  "@ageRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "heightRangeCm": "{min} - {max} cm",
+  "@heightRangeCm": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeRangeLpa": "₹{min} - {max} LPA",
+  "@incomeRangeLpa": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "noLimit": "No limit",
+  "ageCityShort": "{age} • {city}",
+  "@ageCityShort": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSubtitle": "Try Me For Your Partner Selection",
+  "statMatches": "Matches",
+  "statShortlisted": "Shortlisted",
+  "statViewedYou": "Viewed you",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "greetingWithName": "{greeting}, {name}",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": {},
+      "name": {}
+    }
+  },
+  "homeTopPicks": "Top picks for you",
+  "homeYourMatches": "Your matches",
+  "homeViewedYou": "Viewed you",
+  "homeNewThisWeek": "New this week",
+  "homeViewedByYou": "Viewed by you",
+  "homeSeeAll": "See all",
+  "homeEmptyTopPicks": "No top picks yet. Highly compatible profiles will appear here.",
+  "homeEmptyMatches": "No matches yet. Update your preferences or try searching.",
+  "homeEmptyViewedYou": "No one has viewed your profile yet.",
+  "homeEmptyNewThisWeek": "No new profiles in the last 7 days.",
+  "homeEmptyViewedByYou": "Start viewing profiles to see them here.",
+  "homeCompleteProfileTitle": "Complete your profile",
+  "homeCompleteProfileProgress": "{percent}% complete · Get better matches with full details",
+  "@homeCompleteProfileProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCompleteAction": "Complete",
+  "homeDeactivatedTitle": "Your profile is deactivated",
+  "homeDeactivatedBody": "Reactivate your profile to send and receive messages and appear in searches.",
+  "statLabel": "{label}: {count}",
+  "@statLabel": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "matchesTabMatches": "Matches",
+  "matchesTabTopPicks": "Top picks",
+  "matchesTabInterests": "Interests",
+  "matchesTabShortlistedByYou": "Shortlisted by you",
+  "matchesTabShortlistedYou": "Shortlisted you",
+  "matchesTabViewed": "Viewed",
+  "matchesTabViewedYou": "Viewed you",
+  "matchesTabAccepted": "Accepted",
+  "matchesChooseList": "Choose a list",
+  "matchesPreviousList": "Previous list",
+  "matchesNextList": "Next list",
+  "signInRequiredTitle": "Sign in required",
+  "signInRequiredBody": "Sign in to find your match and connect with compatible profiles",
+  "matchesEmptyTitle": "No matches yet",
+  "matchesEmptyBody": "Complete your profile to get better matches",
+  "actionCompleteProfile": "Complete profile",
+  "interestsNoneReceivedTitle": "No interests received",
+  "interestsNoneReceivedBody": "Your profile will receive interests from compatible matches",
+  "actionImproveProfile": "Improve profile",
+  "topPicksEmptyTitle": "No top picks yet",
+  "topPicksEmptyBody": "Highly compatible profiles will appear here once matches are available",
+  "actionRefreshMatches": "Refresh matches",
+  "shortlistEmptyTitle": "No shortlisted profiles",
+  "shortlistEmptyBody": "Browse profiles and shortlist the ones you like",
+  "actionBrowseProfiles": "Browse profiles",
+  "shortlistedYouEmptyTitle": "No one has shortlisted you yet",
+  "shortlistedYouEmptyBody": "As more people discover your profile, you'll see them here",
+  "viewedEmptyTitle": "No profile views",
+  "viewedEmptyBody": "Start viewing profiles to see them here",
+  "viewedYouEmptyTitle": "No profile views yet",
+  "viewedYouEmptyBody": "People who view your profile will appear here",
+  "actionRefresh": "Refresh",
+  "acceptedNoneTitle": "No accepted connections",
+  "acceptedNoneBody": "Accepted interests will appear here",
+  "matchesLoading": "Loading matches…",
+  "errorTitle": "Something went wrong",
+  "errorLoadMatches": "We couldn't load your matches. Check your connection and try again.",
+  "interestAcceptedFrom": "You accepted {name}'s interest",
+  "@interestAcceptedFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestRejectedFrom": "You declined {name}'s interest",
+  "@interestRejectedFrom": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "restartToSignIn": "Please restart the app to sign in.",
+  "religionHindu": "Hindu",
+  "religionMuslim": "Muslim",
+  "religionChristian": "Christian",
+  "religionSikh": "Sikh",
+  "religionJain": "Jain",
+  "religionBuddhist": "Buddhist",
+  "optionOther": "Other",
+  "maritalNeverMarried": "Never married",
+  "maritalDivorced": "Divorced",
+  "maritalWidowed": "Widowed",
+  "maritalSeparated": "Separated",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "createdBySelf": "Self",
+  "createdBySibling": "Sibling",
+  "createdByParents": "Parents",
+  "createdByGuardian": "Guardian",
+  "workBusiness": "Business",
+  "workSalaried": "Salaried",
+  "workNotWorking": "Currently not working",
+  "registrationProfileCreated": "Profile created",
+  "registrationSaveFailed": "We couldn't save your details. Please try again.",
+  "registrationTitle": "Complete registration",
+  "registrationEmailFromLogin": "Email (from sign-in)",
+  "fieldFullName": "Full name",
+  "validationNameRequired": "Please enter your name",
+  "fieldGender": "Gender",
+  "validationSelectGender": "Please select a gender",
+  "fieldDateOfBirth": "Date of birth",
+  "validationSelectDob": "Please select your date of birth",
+  "fieldPhone": "Phone number",
+  "validationPhone": "Please enter a valid phone number",
+  "fieldWhatsapp": "WhatsApp number",
+  "validationWhatsapp": "Please enter a valid WhatsApp number",
+  "fieldProfileCreatedBy": "Profile created by",
+  "validationSelectOne": "Please choose one",
+  "fieldWorkStatus": "Work status",
+  "fieldOccupationCategory": "Occupation category",
+  "fieldQualification": "Qualification",
+  "fieldDiscipline": "Discipline / field",
+  "actionAdd": "Add",
+  "fieldCity": "City",
+  "validationReligion": "Please select a religion",
+  "validationCaste": "Please select a caste",
+  "fieldSubCasteOptional": "Sub-caste (optional)",
+  "fieldState": "State",
+  "validationState": "Please select a state",
+  "fieldDistrict": "District",
+  "validationDistrict": "Please select a district",
+  "actionSaveAndContinue": "Save and continue",
+  "registrationLanguageHint": "Choose the language you are most comfortable with",
+  "settingsAppearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "profileTitle": "Profile",
+  "profileLoading": "Loading profile…",
+  "profileSignInBody": "Sign in to see your profile, favourites and personalised recommendations",
+  "planLabel": "Plan: {plan}",
+  "@planLabel": {
+    "placeholders": {
+      "plan": {}
+    }
+  },
+  "planFree": "Free",
+  "planGold": "Gold",
+  "planPlatinum": "Platinum",
+  "upgradeComingSoon": "Plan upgrades are not available yet.",
+  "actionUpgrade": "Upgrade",
+  "emailVerificationTitle": "Email verification required",
+  "emailVerificationBody": "Please open the verification link in your email to finish setting up your account.",
+  "actionResend": "Resend",
+  "changePhoto": "Change profile photo",
+  "memberSince": "Member since {date}",
+  "@memberSince": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "actionEditProfile": "Edit profile",
+  "actionManagePhotos": "Manage photos",
+  "statComplete": "Complete",
+  "statIncomplete": "Incomplete",
+  "quickActionsTitle": "Quick actions",
+  "quickFavorites": "My favourites",
+  "quickFavoritesSub": "View your interests",
+  "quickMatchesSub": "See your matches",
+  "quickCompletion": "Profile completion",
+  "quickCompletionSub": "Complete your profile",
+  "quickRefresh": "Refresh data",
+  "quickRefreshSub": "Reload your profile and suggestions",
+  "settingsTitle": "Settings",
+  "settingsNotifications": "Notifications",
+  "settingsNotificationsSub": "Manage notification preferences",
+  "settingsPrivacy": "Privacy & security",
+  "settingsPrivacySub": "Account security settings",
+  "settingsHelpSub": "Get help and contact us",
+  "settingsAbout": "About",
+  "settingsAboutSub": "App version and info",
+  "actionSignOut": "Sign out",
+  "verificationEmailSent": "Verification email sent. Please check your inbox.",
+  "verificationEmailFailed": "We couldn't send the verification email. Please try again.",
+  "photoTake": "Take photo",
+  "photoGallery": "Choose from gallery",
+  "photoAdd": "Add photo",
+  "photoRemove": "Remove photo",
+  "photoPrimary": "Primary",
+  "photoMakePrimary": "Make primary",
+  "accountActions": "Account actions",
+  "actionReactivateProfile": "Reactivate profile",
+  "actionDeactivateProfile": "Deactivate profile",
+  "actionDeleteProfile": "Delete profile",
+  "profileNotLoaded": "Your profile hasn't loaded yet. Please try again.",
+  "deactivateBody": "Deactivating hides your profile from searches and turns off incoming messages. You can reactivate it any time by editing your profile.",
+  "actionDeactivate": "Deactivate",
+  "profileDeactivated": "Profile deactivated",
+  "profileDeactivateFailed": "We couldn't deactivate your profile. Please try again.",
+  "deleteBody": "Deleting your profile permanently removes your profile records. A minimal archive is kept so support can restore it if needed. This cannot be undone.",
+  "actionDelete": "Delete",
+  "profileDeleted": "Profile deleted. Signing you out…",
+  "profileDeleteFailed": "We couldn't delete your profile. Please try again.",
+  "signOutConfirm": "Are you sure you want to sign out?",
+  "signingOut": "Signing out…",
+  "interestsShownHere": "Your interests are in the Interests tab.",
+  "matchesInTab": "Your matches are in the Matches tab.",
+  "notificationSettingsComingSoon": "Notification settings are not available yet.",
+  "securitySettingsComingSoon": "Security settings are not available yet.",
+  "aboutComingSoon": "The About page is not available yet.",
+  "profileStatusActive": "Your profile is active",
+  "profileStatusDeactivated": "Your profile is deactivated",
+  "profileStatusMissing": "No profile found. Create your profile to get matches.",
+  "noProfileTitle": "No profile found",
+  "noProfileBody": "We couldn't find a profile linked to your account. You can still browse, but to get personalised matches, please create your profile.",
+  "createProfileFailed": "We couldn't create your profile. Please try again.",
+  "actionCreateProfile": "Create my profile",
+  "profileRestored": "Profile restored from archive.",
+  "noArchivedProfile": "No archived profile found to restore.",
+  "restoreFailed": "We couldn't restore your profile. Please try again.",
+  "actionRestoreProfile": "Restore my profile",
+  "diagnosticsPrinted": "Diagnostics written to the console",
+  "actionPrintDiagnostics": "Print diagnostics",
+  "myProfileTitle": "My profile",
+  "fieldName": "Name",
+  "fieldAge": "Age",
+  "fieldLocation": "Location",
+  "actionEditMyProfile": "Edit my profile",
+  "refreshSuccess": "Profile data refreshed",
+  "refreshNotSignedIn": "Couldn't refresh: you're not signed in",
+  "defaultUserName": "Member",
+  "statInterests": "Interests",
+  "searchTitle": "Search profiles",
+  "savedSearchesTooltip": "Saved searches",
+  "contactRequestsTooltip": "Contact requests",
+  "actionResetFilters": "Reset filters",
+  "searchTip": "Tip: adjust the filters and tap Search to see results here.",
+  "searchLocationPrefs": "Location preferences",
+  "searchBasicPrefs": "Basic preferences",
+  "fieldSubCasteShort": "Sub-caste",
+  "searchMoreEducations": "More education options",
+  "searchMoreOccupations": "More occupations",
+  "searchMoreCastes": "More castes",
+  "searchRangePrefs": "Range preferences",
+  "filterOnlineNow": "Online now",
+  "filterRecentlyActive": "Recently active",
+  "sortBy": "Sort by",
+  "sortNewest": "Newest",
+  "sortYoungerFirst": "Younger first",
+  "sortOlderFirst": "Older first",
+  "sortHigherIncome": "Higher income",
+  "actionSaveSearch": "Save this search",
+  "quickSearch": "Quick search (no filters)",
+  "searchEmptyTitle": "Search for profiles",
+  "searchEmptyBody": "Use the filters above to find compatible matches",
+  "contactAvailable": "Contact available",
+  "contactStateRequestSent": "Request sent",
+  "contactStateRequestReceived": "Request received",
+  "recentChip": "Recent",
+  "joinedWithinTooltip": "Joined within days",
+  "actionClearAll": "Clear all",
+  "completeRegistrationFirst": "Please complete registration first.",
+  "saveSearchTitle": "Save this search",
+  "saveSearchHint": "e.g. Chennai IT, 25-30, Hindu",
+  "savedSearchesEmpty": "No saved searches yet.",
+  "deleteSavedSearchTitle": "Delete saved search?",
+  "runSearch": "Run search",
+  "fieldAbout": "About",
+  "fieldLocationPlain": "Location",
+  "searchLoading": "Loading…",
+  "rangeAge": "Age: {min} - {max} years",
+  "@rangeAge": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "rangeHeight": "Height: {min} - {max} cm",
+  "@rangeHeight": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "heightCm": "{value} cm",
+  "@heightCm": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "rangeIncome": "Income: {min}L - {max}L per year",
+  "@rangeIncome": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeLakhShort": "{value}L",
+  "@incomeLakhShort": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "profilesFound": "{count, plural, =0{No profiles found} =1{1 profile found} other{{count} profiles found}}",
+  "@profilesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profilesRecommended": "{count, plural, =1{1 recommended profile} other{{count} recommended profiles}}",
+  "@profilesRecommended": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chipLabelValue": "{label}: {value}",
+  "@chipLabelValue": {
+    "placeholders": {
+      "label": {},
+      "value": {}
+    }
+  },
+  "chipAgeRange": "Age {min}-{max}",
+  "@chipAgeRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "chipHeightRange": "Height {min}-{max} cm",
+  "@chipHeightRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "chipIncomeRange": "Income {min}-{max}L",
+  "@chipIncomeRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "joinedWithinDays": "{days, plural, =1{Joined: last day} other{Joined: last {days} days}}",
+  "@joinedWithinDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "searchFailed": "Search didn't work. Please try again.",
+  "filtersLoadFailed": "We couldn't load the filter options. Please try again.",
+  "defaultSearchName": "Search {date}",
+  "@defaultSearchName": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "savedSearchNamed": "Saved search \"{name}\"",
+  "@savedSearchNamed": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "saveSearchFailed": "We couldn't save this search. Please try again.",
+  "deleteSavedSearchBody": "\"{name}\" will be removed.",
+  "@deleteSavedSearchBody": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "savedSearchAlertsOn": "Alerts on • {date}",
+  "@savedSearchAlertsOn": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "savedSearchAlertsOff": "Alerts off • {date}",
+  "@savedSearchAlertsOff": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "toggleFailed": "We couldn't change this setting. Please try again.",
+  "langTamil": "Tamil",
+  "langEnglish": "English",
+  "langTelugu": "Telugu",
+  "langKannada": "Kannada",
+  "langMalayalam": "Malayalam",
+  "langHindi": "Hindi",
+  "editSectionLocationCareer": "Location & career",
+  "editTabLocationCareer": "Location & career",
+  "editProfileTitle": "Edit profile",
+  "editTabBasic": "Basic",
+  "editTabContact": "Contact",
+  "editTabFamily": "Family",
+  "editTabPartner": "Partner preferences",
+  "editTabPhotos": "Photos",
+  "profileLoadingYours": "Loading your profile…",
+  "editEmailHelper": "Your sign-in email. Only you can see it.",
+  "fieldDobRequired": "Date of birth *",
+  "fieldReligionRequired": "Religion *",
+  "fieldCasteRequired": "Caste *",
+  "fieldStateRequired": "State *",
+  "fieldDistrictRequired": "District *",
+  "fieldEducationRequired": "Education *",
+  "fieldHeightCm": "Height (cm)",
+  "fieldWeightKg": "Weight (kg)",
+  "sectionContactInfo": "Contact information",
+  "fieldPhoneShort": "Phone",
+  "fieldAltPhone": "Alternate phone",
+  "fieldCurrentAddress": "Current address",
+  "fieldPermanentAddress": "Permanent address",
+  "showPhoneNumber": "Show phone number",
+  "showAddress": "Show address",
+  "fieldFamilyDetails": "Family details",
+  "fieldMinAge": "Min age",
+  "fieldMaxAge": "Max age",
+  "fieldMinHeight": "Min height (cm)",
+  "fieldMaxHeight": "Max height (cm)",
+  "fieldPreferredDistricts": "Preferred districts",
+  "fieldPreferredOccupations": "Preferred occupations",
+  "fieldMinIncome": "Min income",
+  "fieldMaxIncome": "Max income",
+  "fieldPreferredMaritalStatus": "Preferred marital status",
+  "profilePhotosTitle": "Profile photos",
+  "actionPrevious": "Previous",
+  "profileSavedLoadingMatches": "Profile saved. Loading your matches…",
+  "fillMandatoryFields": "Please fill in all fields marked with * to continue.",
+  "actionFinish": "Finish",
+  "actionNext": "Next",
+  "mandatoryBanner": "Fields marked with * are needed to show you relevant matches.",
+  "selectDate": "Select date",
+  "chipsInputHint": "Type and press + to add",
+  "actionEdit": "Edit",
+  "savedBasic": "Basic information saved",
+  "savedBasicAuto": "Basic information auto-saved",
+  "savedLocation": "Location & career saved",
+  "savedLocationAuto": "Location & career auto-saved",
+  "savedContact": "Contact information saved",
+  "savedContactAuto": "Contact information auto-saved",
+  "savedFamily": "Family information saved",
+  "savedFamilyAuto": "Family information auto-saved",
+  "savedPartner": "Partner preferences saved",
+  "savedPartnerAuto": "Partner preferences auto-saved",
+  "savedPhotos": "Photos updated",
+  "profileStillLoading": "Your profile is still loading. Please try again in a moment.",
+  "fillDobReligionCaste": "Please fill in your date of birth, religion and caste",
+  "photosGuidance": "Add up to 3 clear photos. Crop to show your face. Avoid filters and group photos.",
+  "removePhotoTitle": "Remove photo?",
+  "removePhotoBody": "This will delete the photo from storage.",
+  "autoSavedPrefix": "Saved automatically: {message}",
+  "@autoSavedPrefix": {
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "autoSaveFailed": "Couldn't save automatically. Your changes are still here; tap Save to try again.",
+  "saveFailed": "We couldn't save your changes. Please try again.",
+  "fieldRequired": "{field} is required",
+  "@fieldRequired": {
+    "placeholders": {
+      "field": {}
+    }
+  },
+  "photoSlot": "Photo {number}",
+  "@photoSlot": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "familyNuclear": "Nuclear",
+  "familyJoint": "Joint",
+  "valuesTraditional": "Traditional",
+  "valuesModern": "Modern",
+  "valuesModerate": "Moderate",
+  "statusMiddleClass": "Middle class",
+  "statusUpperMiddleClass": "Upper middle class",
+  "statusRich": "Affluent",
+  "toastInterestsUpdated": "Your interests were updated",
+  "toastInterestWithdrawn": "An interest was withdrawn"
+}

@@ -45,11 +45,47 @@ flutter test
 flutter build web --dart-define-from-file=.env
 ```
 
+## Theming and languages
+
+**Design tokens.** Colours, spacing, radii and text styles live in
+`lib/shared/theme/`. `tokens.dart` defines the brand colour roles
+(`AppPalette`, with a light and a dark value for each), spacing and radius
+constants (`AppDimensions`), and shorthands for widgets:
+`context.palette.textSecondary`, `context.colors.primary`,
+`context.styles.body2`. `theme.dart` builds the light and dark `ThemeData`
+from them. Screens should not use raw `Color(...)`, `Colors.*` or
+`TextStyle(fontSize: ...)`; add a token instead. Every text colour token must
+keep a 4.5:1 contrast ratio against the backgrounds in both themes, and
+`test/theme_tokens_test.dart` fails if it does not.
+
+**Theme and language choice.** `lib/app/preferences/user_preferences.dart`
+holds the member's theme mode (System / Light / Dark) and language, saved on
+the device. Members change them under Profile → Settings; the language can
+also be picked on the sign-in and registration screens. Without a choice the
+app uses the admin's default language (`AppSettings.defaultLocale`).
+
+**Translations.** Every user-visible string is in `lib/l10n/app_en.arb`
+(English, the template) and `lib/l10n/app_ta.arb` (Tamil). To add one:
+
+1. Add the key to both ARB files (placeholders and plurals use ICU syntax; see
+   `profilesFound` for a plural).
+2. Run `flutter gen-l10n` (also runs on `flutter pub get`); the generated
+   `app_localizations*.dart` files are committed.
+3. Use it as `context.l10n.yourKey` (import `lib/l10n/l10n.dart`).
+
+Format dates and numbers with `lib/l10n/formatters.dart`
+(`context.formatDate`, `context.relativeTime`, `context.formatNumber`) so they
+follow the language. Fixed option values (religion, marital status, gender
+and similar) stay in English in the database; show them with
+`context.optionLabel(value)` from `lib/l10n/option_labels.dart`. Tamil text
+uses the Noto Sans Tamil font (via google_fonts).
+
 ## Project layout
 
 | Path | What it holds |
 |---|---|
-| `lib/app/` | App setup: Supabase config, dependency injection |
+| `lib/app/` | App setup: Supabase config, dependency injection, settings, theme and language preferences |
+| `lib/l10n/` | Translations (ARB files), generated localizations, date/number formatters |
 | `lib/features/<feature>/` | Screens, state and widgets per feature: `auth`, `onboarding`, `home`, `profile`, `discovery`, `interests`, `chat`, `notifications`, `subscriptions` |
 | `lib/shared/` | Code used by several features: models, theme, shared state and services, widgets |
 | `lib/core/services/` | Backend-neutral service interfaces |

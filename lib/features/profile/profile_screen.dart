@@ -9,6 +9,10 @@ import 'profile_edit_screen.dart';
 import '../auth/auth_user.dart';
 import '../../shared/services/matrimonial_service.dart';
 import '../../shared/widgets/storage_image.dart';
+import '../../shared/widgets/display_settings.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../l10n/option_labels.dart';
 import '../subscriptions/subscription.dart';
 import '../subscriptions/subscription_service.dart';
 import '../../app/di/service_locator.dart';
@@ -25,11 +29,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: AppColors.primary,
+        title: Text(context.l10n.profileTitle),
+        backgroundColor: context.palette.primary,
         elevation: 0,
         actions: [
           IconButton(
+            tooltip: context.l10n.accountActions,
             onPressed: () => _showSettingsDialog(context),
             icon: const Icon(Icons.settings),
           ),
@@ -60,13 +65,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(color: AppColors.accent),
+          CircularProgressIndicator(color: context.palette.accent),
           SizedBox(height: AppDimensions.paddingM),
-          Text('Loading profile...', style: AppTextStyles.subtitle1),
+          Text(context.l10n.profileLoading, style: context.styles.subtitle1),
         ],
       ),
     );
@@ -82,28 +87,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Icon(
               Icons.account_circle_outlined,
               size: AppDimensions.iconXL * 2,
-              color: AppColors.textTertiary,
+              color: context.palette.textTertiary,
             ),
             const SizedBox(height: AppDimensions.paddingL),
             Text(
-              'Sign In Required',
-              style: AppTextStyles.heading3,
+              context.l10n.signInRequiredTitle,
+              style: context.styles.heading3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingS),
             Text(
-              'Sign in to access your profile, favorites, and personalized recommendations',
-              style: AppTextStyles.body2,
+              context.l10n.profileSignInBody,
+              style: context.styles.body2,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingL),
             ElevatedButton.icon(
               onPressed: () => _showSignInDialog(context),
               icon: const Icon(Icons.login),
-              label: const Text('Sign In'),
+              label: Text(context.l10n.authSignIn),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                foregroundColor: Colors.white,
+                backgroundColor: context.palette.accent,
+                foregroundColor: context.palette.onPrimary,
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppDimensions.paddingL,
                   vertical: AppDimensions.paddingM,
@@ -122,7 +127,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ) {
     final userProfile = context.read<AuthProvider>().userProfile;
     final userName =
-        userProfile?['full_name'] ?? user.email?.split('@')[0] ?? 'User';
+        userProfile?['full_name'] ??
+        user.email?.split('@')[0] ??
+        context.l10n.defaultUserName;
     final userEmail = user.email ?? '';
     // Prefer matrimonial primary photo (photoUrls[0]), then profileImageUrl, then auth profile avatar
     final matAvatar = (matrimonialProfile?.photoUrls.isNotEmpty == true)
@@ -141,32 +148,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
               future: SubscriptionService.getActive(matrimonialProfile.id),
               builder: (context, snap) {
                 final sub = snap.data;
-                final tier = sub?.tier.name.toUpperCase() ?? 'FREE';
+                final tier = switch (sub?.tier.name) {
+                  'gold' => context.l10n.planGold,
+                  'platinum' => context.l10n.planPlatinum,
+                  _ => context.l10n.planFree,
+                };
                 return Container(
                   margin: const EdgeInsets.only(bottom: AppDimensions.paddingM),
                   padding: const EdgeInsets.all(AppDimensions.paddingM),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.workspace_premium,
-                        color: AppColors.accent,
+                        color: context.palette.accent,
                       ),
                       const SizedBox(width: 8),
-                      Text('Plan: $tier', style: AppTextStyles.subtitle1),
+                      Text(
+                        context.l10n.planLabel(tier),
+                        style: context.styles.subtitle1,
+                      ),
                       const Spacer(),
                       TextButton(
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Upgrade flow coming soon'),
+                            SnackBar(
+                              content: Text(context.l10n.upgradeComingSoon),
                             ),
                           );
                         },
-                        child: const Text('Upgrade'),
+                        child: Text(context.l10n.actionUpgrade),
                       ),
                     ],
                   ),
@@ -219,36 +233,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
       margin: const EdgeInsets.only(bottom: AppDimensions.paddingM),
       padding: const EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.1),
+        color: context.palette.warning.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: context.palette.warning.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         children: [
-          Icon(Icons.mark_email_unread, color: AppColors.warning),
+          Icon(Icons.mark_email_unread, color: context.palette.warning),
           const SizedBox(width: AppDimensions.paddingM),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Email Verification Required',
-                  style: AppTextStyles.subtitle2.copyWith(
-                    color: AppColors.warning,
+                  context.l10n.emailVerificationTitle,
+                  style: context.styles.subtitle2.copyWith(
+                    color: context.palette.warning,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: AppDimensions.paddingXS),
                 Text(
-                  'Please check your email and click the verification link to complete your account setup.',
-                  style: AppTextStyles.caption,
+                  context.l10n.emailVerificationBody,
+                  style: context.styles.caption,
                 ),
               ],
             ),
           ),
           TextButton(
             onPressed: _resendVerificationEmail,
-            child: Text('Resend', style: TextStyle(color: AppColors.warning)),
+            child: Text(
+              context.l10n.actionResend,
+              style: TextStyle(color: context.palette.warning),
+            ),
           ),
         ],
       ),
@@ -264,11 +283,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: context.palette.shadow,
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -286,17 +305,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   if (resolved != null && resolved.isNotEmpty) {
                     return CircleAvatar(
                       radius: 50,
-                      backgroundColor: AppColors.accent,
+                      backgroundColor: context.palette.accent,
                       backgroundImage: NetworkImage(resolved),
                     );
                   }
                   return CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppColors.accent,
+                    backgroundColor: context.palette.accent,
                     child: Text(
-                      name.isNotEmpty ? name[0].toUpperCase() : 'U',
-                      style: AppTextStyles.heading2.copyWith(
-                        color: Colors.white,
+                      name.isNotEmpty ? name[0].toUpperCase() : '?',
+                      style: context.styles.heading2.copyWith(
+                        color: context.palette.onPrimary,
                       ),
                     ),
                   );
@@ -305,18 +324,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: GestureDetector(
-                  onTap: () => _showImagePicker(context),
-                  child: Container(
-                    padding: const EdgeInsets.all(AppDimensions.paddingS),
-                    decoration: const BoxDecoration(
-                      color: AppColors.accent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
-                      size: 16,
+                child: Semantics(
+                  button: true,
+                  label: context.l10n.changePhoto,
+                  child: GestureDetector(
+                    onTap: () => _showImagePicker(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(AppDimensions.paddingS),
+                      decoration: BoxDecoration(
+                        color: context.palette.accent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: context.palette.onPrimary,
+                        size: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -329,19 +352,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // User Info
           Text(
             name,
-            style: AppTextStyles.heading3,
+            style: context.styles.heading3,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppDimensions.paddingS),
           Text(
             email,
-            style: AppTextStyles.body2.copyWith(color: AppColors.textSecondary),
+            style: context.styles.body2.copyWith(
+              color: context.palette.textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppDimensions.paddingS),
           Text(
-            'Member since ${_formatDate(memberSince ?? DateTime.now())}',
-            style: AppTextStyles.caption,
+            context.l10n.memberSince(
+              context.formatDate(memberSince ?? DateTime.now()),
+            ),
+            style: context.styles.caption,
             textAlign: TextAlign.center,
           ),
 
@@ -356,19 +383,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               OutlinedButton.icon(
                 onPressed: () => _navigateToProfileEdit(),
                 icon: const Icon(Icons.edit),
-                label: const Text('Edit Profile'),
+                label: Text(context.l10n.actionEditProfile),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.accent,
-                  side: const BorderSide(color: AppColors.accent),
+                  foregroundColor: context.palette.accent,
+                  side: BorderSide(color: context.palette.accent),
                 ),
               ),
               OutlinedButton.icon(
                 onPressed: _showManagePhotosSheet,
                 icon: const Icon(Icons.photo_library_outlined),
-                label: const Text('Manage Photos'),
+                label: Text(context.l10n.actionManagePhotos),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.accent,
-                  side: const BorderSide(color: AppColors.accent),
+                  foregroundColor: context.palette.accent,
+                  side: BorderSide(color: context.palette.accent),
                 ),
               ),
             ],
@@ -386,15 +413,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Container(
         padding: const EdgeInsets.all(AppDimensions.paddingL),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.palette.surface,
           borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatItem('Interests', '0', Icons.favorite),
-            _buildStatItem('Matches', '0', Icons.people),
-            _buildStatItem('Profile', '0', Icons.person),
+            _buildStatItem(context.l10n.statInterests, '0', Icons.favorite),
+            _buildStatItem(context.l10n.statMatches, '0', Icons.people),
+            _buildStatItem(context.l10n.profileTitle, '0', Icons.person),
           ],
         ),
       );
@@ -403,7 +430,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Consumer<MatrimonialProvider>(
@@ -415,18 +442,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                'Interests',
+                context.l10n.statInterests,
                 matrimony.sentInterests.length.toString(),
                 Icons.favorite,
               ),
               _buildStatItem(
-                'Matches',
+                context.l10n.statMatches,
                 matrimony.acceptedConnections.length.toString(),
                 Icons.people,
               ),
               _buildStatItem(
-                'Profile',
-                complete ? 'Complete' : 'Incomplete',
+                context.l10n.profileTitle,
+                complete
+                    ? context.l10n.statComplete
+                    : context.l10n.statIncomplete,
                 Icons.person,
               ),
             ],
@@ -439,14 +468,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildStatItem(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, color: AppColors.accent, size: AppDimensions.iconL),
+        Icon(icon, color: context.palette.accent, size: AppDimensions.iconL),
         const SizedBox(height: AppDimensions.paddingS),
         Text(
           value,
-          style: AppTextStyles.heading3.copyWith(color: AppColors.accent),
+          style: context.styles.heading3.copyWith(
+            color: context.palette.accent,
+          ),
         ),
         const SizedBox(height: AppDimensions.paddingXS),
-        Text(label, style: AppTextStyles.caption),
+        Text(label, style: context.styles.caption),
       ],
     );
   }
@@ -455,35 +486,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Quick Actions', style: AppTextStyles.subtitle1),
+          Text(context.l10n.quickActionsTitle, style: context.styles.subtitle1),
           const SizedBox(height: AppDimensions.paddingM),
           _buildActionItem(
-            'My Favorites',
-            'View your interests',
+            context.l10n.quickFavorites,
+            context.l10n.quickFavoritesSub,
             Icons.favorite,
             () => _navigateToInterests(),
           ),
           _buildActionItem(
-            'Matches',
-            'See your matrimonial matches',
+            context.l10n.statMatches,
+            context.l10n.quickMatchesSub,
             Icons.people,
             () => _navigateToMatches(),
           ),
           _buildActionItem(
-            'Profile Completion',
-            'Complete your matrimonial profile',
+            context.l10n.quickCompletion,
+            context.l10n.quickCompletionSub,
             Icons.edit,
             () => _navigateToProfileCompletion(),
           ),
           _buildActionItem(
-            'Refresh Data',
-            'Reload your profile and suggestions',
+            context.l10n.quickRefresh,
+            context.l10n.quickRefreshSub,
             Icons.refresh,
             () => _refreshData(),
           ),
@@ -499,9 +530,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     VoidCallback onTap,
   ) {
     return ListTile(
-      leading: Icon(icon, color: AppColors.accent),
-      title: Text(title, style: AppTextStyles.body1),
-      subtitle: Text(subtitle, style: AppTextStyles.caption),
+      leading: Icon(icon, color: context.palette.accent),
+      title: Text(title, style: context.styles.body1),
+      subtitle: Text(subtitle, style: context.styles.caption),
       trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
@@ -512,35 +543,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Settings', style: AppTextStyles.subtitle1),
+          Text(context.l10n.settingsTitle, style: context.styles.subtitle1),
           const SizedBox(height: AppDimensions.paddingM),
+          const DisplaySettings(),
+          const SizedBox(height: AppDimensions.paddingM),
+          const Divider(),
           _buildActionItem(
-            'Notifications',
-            'Manage notification preferences',
+            context.l10n.settingsNotifications,
+            context.l10n.settingsNotificationsSub,
             Icons.notifications,
             () => _navigateToNotifications(),
           ),
           _buildActionItem(
-            'Privacy & Security',
-            'Account security settings',
+            context.l10n.settingsPrivacy,
+            context.l10n.settingsPrivacySub,
             Icons.security,
             () => _navigateToSecurity(),
           ),
           _buildActionItem(
-            'Help & Support',
-            'Get help and contact us',
+            context.l10n.helpTitle,
+            context.l10n.settingsHelpSub,
             Icons.help,
             () => _navigateToHelp(),
           ),
           _buildActionItem(
-            'About',
-            'App version and info',
+            context.l10n.settingsAbout,
+            context.l10n.settingsAboutSub,
             Icons.info,
             () => _navigateToAbout(),
           ),
@@ -555,19 +589,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ElevatedButton.icon(
         onPressed: _showSignOutDialog,
         icon: const Icon(Icons.logout),
-        label: const Text('Sign Out'),
+        label: Text(context.l10n.actionSignOut),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.error,
-          foregroundColor: Colors.white,
+          backgroundColor: context.palette.error,
+          foregroundColor: context.palette.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: AppDimensions.paddingM),
         ),
       ),
     );
-  }
-
-  // Helper Methods
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
   }
 
   // Action Methods
@@ -575,9 +604,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // This shouldn't be called since we're using AuthWrapper
     // But just in case, we can show a message
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please restart the app to sign in.'),
-        backgroundColor: AppColors.warning,
+      SnackBar(
+        content: Text(context.l10n.restartToSignIn),
+        backgroundColor: context.palette.warning,
       ),
     );
   }
@@ -591,10 +620,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SnackBar(
             content: Text(
               ok
-                  ? 'Verification email sent! Please check your inbox.'
-                  : 'Could not send verification email.',
+                  ? context.l10n.verificationEmailSent
+                  : context.l10n.verificationEmailFailed,
             ),
-            backgroundColor: ok ? AppColors.success : AppColors.error,
+            backgroundColor: ok
+                ? context.palette.success
+                : context.palette.error,
           ),
         );
       }
@@ -602,8 +633,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to send verification email: $e'),
-            backgroundColor: AppColors.error,
+            content: Text(context.l10n.verificationEmailFailed),
+            backgroundColor: context.palette.error,
           ),
         );
       }
@@ -621,7 +652,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('Take Photo'),
+              title: Text(context.l10n.photoTake),
               onTap: () {
                 debugPrint('[ProfilePhoto] source: camera');
                 Navigator.pop(context, 'camera');
@@ -629,7 +660,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Choose from Gallery'),
+              title: Text(context.l10n.photoGallery),
               onTap: () {
                 debugPrint('[ProfilePhoto] source: gallery');
                 Navigator.pop(context, 'gallery');
@@ -637,7 +668,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.close),
-              title: const Text('Cancel'),
+              title: Text(context.l10n.commonCancel),
               onTap: () {
                 debugPrint('[ProfilePhoto] source: cancel');
                 Navigator.pop(context);
@@ -772,15 +803,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       const Icon(Icons.photo_library_outlined),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Manage Photos',
-                        style: AppTextStyles.heading3,
+                      Text(
+                        context.l10n.actionManagePhotos,
+                        style: context.styles.heading3,
                       ),
                       const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.add_a_photo),
                         onPressed: addPhoto,
-                        tooltip: 'Add Photo',
+                        tooltip: context.l10n.photoAdd,
                       ),
                     ],
                   ),
@@ -802,14 +833,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onTap: addPhoto,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: context.palette.surface,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: AppColors.accent.withValues(alpha: 0.3),
+                                color: context.palette.accent.withValues(
+                                  alpha: 0.3,
+                                ),
                               ),
                             ),
-                            child: const Center(
-                              child: Icon(Icons.add, color: AppColors.accent),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: context.palette.accent,
+                              ),
                             ),
                           ),
                         );
@@ -834,14 +870,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.5),
+                                  color: context.palette.imageScrim.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   shape: BoxShape.circle,
                                 ),
                                 padding: const EdgeInsets.all(4),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.close,
                                   size: 16,
-                                  color: Colors.white,
+                                  color: context.palette.onImage,
+                                  semanticLabel: context.l10n.photoRemove,
                                 ),
                               ),
                             ),
@@ -850,7 +889,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Positioned(
                               bottom: 4,
                               left: 4,
-                              child: _badge('Primary'),
+                              child: _badge(context.l10n.photoPrimary),
                             )
                           else
                             Positioned(
@@ -863,7 +902,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     photos.insert(0, v);
                                   });
                                 },
-                                child: _badge('Make Primary'),
+                                child: _badge(context.l10n.photoMakePrimary),
                               ),
                             ),
                         ],
@@ -875,7 +914,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx),
-                        child: const Text('Close'),
+                        child: Text(context.l10n.commonClose),
                       ),
                       const Spacer(),
                       ElevatedButton.icon(
@@ -884,7 +923,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           if (ctx.mounted) Navigator.pop(ctx);
                         },
                         icon: const Icon(Icons.save),
-                        label: const Text('Save'),
+                        label: Text(context.l10n.commonSave),
                       ),
                     ],
                   ),
@@ -900,12 +939,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _badge(String text) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: BoxDecoration(
-      color: Colors.black.withValues(alpha: 0.6),
+      color: context.palette.imageScrim.withValues(alpha: 0.6),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Text(
       text,
-      style: const TextStyle(color: Colors.white, fontSize: 10),
+      style: context.styles.micro.copyWith(color: context.palette.onImage),
     ),
   );
 
@@ -913,12 +952,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Settings'),
-        content: const Text('Account actions'),
+        title: Text(context.l10n.settingsTitle),
+        content: Text(context.l10n.accountActions),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(context.l10n.commonClose),
           ),
           Builder(
             builder: (dialogCtx) {
@@ -942,8 +981,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             .forceRefreshUserData(auth.user?.id ?? '');
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Profile reactivated'),
+                            SnackBar(
+                              content: Text(context.l10n.profileReactivated),
                             ),
                           );
                         }
@@ -951,7 +990,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     } catch (e) {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Failed to reactivate: $e')),
+                          SnackBar(
+                            content: Text(context.l10n.profileReactivateFailed),
+                          ),
                         );
                       }
                     }
@@ -960,7 +1001,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
                 },
                 child: Text(
-                  isDeactivated ? 'Reactivate profile' : 'Deactivate profile',
+                  isDeactivated
+                      ? context.l10n.actionReactivateProfile
+                      : context.l10n.actionDeactivateProfile,
                 ),
               );
             },
@@ -970,9 +1013,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.of(context).pop();
               await _confirmDeleteFromProfile();
             },
-            child: const Text(
-              'Delete profile',
-              style: TextStyle(color: Colors.red),
+            child: Text(
+              context.l10n.actionDeleteProfile,
+              style: TextStyle(color: context.palette.error),
             ),
           ),
         ],
@@ -987,9 +1030,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = matrimonialProvider.currentUserProfile;
     if (profile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+        SnackBar(
+          content: Text(context.l10n.profileNotLoaded),
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -998,18 +1041,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Deactivate profile'),
-        content: const Text(
-          'Deactivating will hide your profile from searches and disable inbound messages. You can reactivate later by editing your profile.',
-        ),
+        title: Text(context.l10n.actionDeactivateProfile),
+        content: Text(context.l10n.deactivateBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Deactivate'),
+            child: Text(context.l10n.actionDeactivate),
           ),
         ],
       ),
@@ -1022,9 +1063,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (success) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile deactivated'),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.profileDeactivated),
+            backgroundColor: context.palette.success,
           ),
         );
         await matrimonialProvider.forceRefreshUserData(auth.user?.id ?? '');
@@ -1033,8 +1074,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to deactivate: $e'),
-          backgroundColor: AppColors.error,
+          content: Text(context.l10n.profileDeactivateFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1049,9 +1090,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = matrimonialProvider.currentUserProfile;
     if (profile == null) {
       messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+        SnackBar(
+          content: Text(context.l10n.profileNotLoaded),
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -1060,19 +1101,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete profile'),
-        content: const Text(
-          'Deleting your profile will permanently remove profile records. A minimal archive will be kept for potential support restore. This action cannot be undone.',
-        ),
+        title: Text(context.l10n.actionDeleteProfile),
+        content: Text(context.l10n.deleteBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.palette.error,
+              foregroundColor: context.colors.onError,
+            ),
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Delete'),
+            child: Text(context.l10n.actionDelete),
           ),
         ],
       ),
@@ -1084,9 +1126,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final success = await MatrimonialService.deleteProfile(profile.id);
       if (success) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Profile deleted. Signing out...'),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.profileDeleted),
+            backgroundColor: context.palette.success,
           ),
         );
         await auth.signOut();
@@ -1096,8 +1138,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } catch (e) {
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Failed to delete profile: $e'),
-          backgroundColor: AppColors.error,
+          content: Text(context.l10n.profileDeleteFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1107,12 +1149,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
+        title: Text(context.l10n.actionSignOut),
+        content: Text(context.l10n.signOutConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -1121,7 +1163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // Show loading indicator
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Row(
                     children: [
                       SizedBox(
@@ -1130,7 +1172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                       SizedBox(width: 16),
-                      Text('Signing out...'),
+                      Text(context.l10n.signingOut),
                     ],
                   ),
                   duration: Duration(seconds: 2),
@@ -1141,8 +1183,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               final authProvider = context.read<AuthProvider>();
               await authProvider.signOut();
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Sign Out'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.palette.error,
+            ),
+            child: Text(context.l10n.actionSignOut),
           ),
         ],
       ),
@@ -1152,19 +1196,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Navigation methods
   void _navigateToInterests() {
     // Show interests in a dialog or navigate to interests screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Your interests will be shown here')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(context.l10n.interestsShownHere)));
   }
 
   void _navigateToMatches() {
     // Navigate to matches screen (using the bottom navigation)
     // This will be handled by the main screen's bottom navigation
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Navigate to Matches tab to see your matches'),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(context.l10n.matchesInTab)));
   }
 
   void _navigateToProfileCompletion() {
@@ -1177,13 +1219,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _navigateToNotifications() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Notifications settings coming soon!')),
+      SnackBar(content: Text(context.l10n.notificationSettingsComingSoon)),
     );
   }
 
   void _navigateToSecurity() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Security settings coming soon!')),
+      SnackBar(content: Text(context.l10n.securitySettingsComingSoon)),
     );
   }
 
@@ -1196,7 +1238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _navigateToAbout() {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text('About page coming soon!')));
+    ).showSnackBar(SnackBar(content: Text(context.l10n.aboutComingSoon)));
   }
 
   Widget _buildMatrimonialProfileStatus(MatrimonialUser? matrimonialProfile) {
@@ -1205,16 +1247,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: matrimonialProfile != null
             ? (matrimonialProfile.isActive
-                  ? AppColors.success.withValues(alpha: 0.1)
-                  : AppColors.warning.withValues(alpha: 0.1))
-            : AppColors.warning.withValues(alpha: 0.1),
+                  ? context.palette.success.withValues(alpha: 0.1)
+                  : context.palette.warning.withValues(alpha: 0.1))
+            : context.palette.warning.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
         border: Border.all(
           color: matrimonialProfile != null
               ? (matrimonialProfile.isActive
-                    ? AppColors.success.withValues(alpha: 0.3)
-                    : AppColors.warning.withValues(alpha: 0.3))
-              : AppColors.warning.withValues(alpha: 0.3),
+                    ? context.palette.success.withValues(alpha: 0.3)
+                    : context.palette.warning.withValues(alpha: 0.3))
+              : context.palette.warning.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -1227,9 +1269,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 : Icons.warning,
             color: matrimonialProfile != null
                 ? (matrimonialProfile.isActive
-                      ? AppColors.success
-                      : AppColors.warning)
-                : AppColors.warning,
+                      ? context.palette.success
+                      : context.palette.warning)
+                : context.palette.warning,
             size: 20,
           ),
           const SizedBox(width: AppDimensions.paddingS),
@@ -1237,15 +1279,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Text(
               matrimonialProfile != null
                   ? (matrimonialProfile.isActive
-                        ? 'Matrimonial profile active'
-                        : 'Your profile is deactivated')
-                  : 'No matrimonial profile found - create your profile to get matches',
-              style: AppTextStyles.body2.copyWith(
+                        ? context.l10n.profileStatusActive
+                        : context.l10n.profileStatusDeactivated)
+                  : context.l10n.profileStatusMissing,
+              style: context.styles.body2.copyWith(
                 color: matrimonialProfile != null
                     ? (matrimonialProfile.isActive
-                          ? AppColors.success
-                          : AppColors.warning)
-                    : AppColors.warning,
+                          ? context.palette.success
+                          : context.palette.warning)
+                    : context.palette.warning,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -1260,7 +1302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   if (ok) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Profile reactivated')),
+                      SnackBar(content: Text(context.l10n.profileReactivated)),
                     );
                     final auth = context.read<AuthProvider>();
                     await context
@@ -1270,11 +1312,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 } catch (e) {
                   if (!mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to reactivate: $e')),
+                    SnackBar(
+                      content: Text(context.l10n.profileReactivateFailed),
+                    ),
                   );
                 }
               },
-              child: const Text('Reactivate'),
+              child: Text(context.l10n.actionReactivate),
             ),
         ],
       ),
@@ -1291,7 +1335,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildProfileHeader(
-            user.fullName ?? user.email?.split('@').first ?? 'User',
+            user.fullName ??
+                user.email?.split('@').first ??
+                context.l10n.defaultUserName,
             user.email ?? '',
             '',
             user.createdAt,
@@ -1300,10 +1346,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             padding: const EdgeInsets.all(AppDimensions.paddingM),
             decoration: BoxDecoration(
-              color: AppColors.warning.withValues(alpha: 0.08),
+              color: context.palette.warning.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
               border: Border.all(
-                color: AppColors.warning.withValues(alpha: 0.3),
+                color: context.palette.warning.withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -1311,23 +1357,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.warning_amber_rounded,
-                      color: AppColors.warning,
+                      color: context.palette.warning,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'No matrimonial profile found',
-                      style: AppTextStyles.subtitle2.copyWith(
-                        color: AppColors.warning,
+                      context.l10n.noProfileTitle,
+                      style: context.styles.subtitle2.copyWith(
+                        color: context.palette.warning,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'We couldn\'t find your matrimonial profile linked to your Supabase account. You can still browse, but to get personalized matches, please create your profile.',
-                ),
+                Text(context.l10n.noProfileBody),
                 const SizedBox(height: 12),
                 Row(
                   children: [
@@ -1353,9 +1397,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else {
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
                                   content: Text(
-                                    'Could not auto-create profile. Please try again.',
+                                    context.l10n.createProfileFailed,
                                   ),
                                 ),
                               );
@@ -1365,17 +1409,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           if (mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Failed to create profile: $e'),
+                                content: Text(context.l10n.createProfileFailed),
                               ),
                             );
                           }
                         }
                       },
                       icon: const Icon(Icons.person_add),
-                      label: const Text('Create My Profile'),
+                      label: Text(context.l10n.actionCreateProfile),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.accent,
-                        foregroundColor: Colors.white,
+                        backgroundColor: context.palette.accent,
+                        foregroundColor: context.palette.onPrimary,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1391,10 +1435,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Profile restored from archive.',
-                                  ),
+                                SnackBar(
+                                  content: Text(context.l10n.profileRestored),
                                 ),
                               );
                               Navigator.push(
@@ -1407,10 +1449,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else {
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'No archived profile found to restore.',
-                                  ),
+                                SnackBar(
+                                  content: Text(context.l10n.noArchivedProfile),
                                 ),
                               );
                             }
@@ -1418,13 +1458,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         } catch (e) {
                           if (mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Restore failed: $e')),
+                              SnackBar(
+                                content: Text(context.l10n.restoreFailed),
+                              ),
                             );
                           }
                         }
                       },
                       icon: const Icon(Icons.restore),
-                      label: const Text('Restore My Profile'),
+                      label: Text(context.l10n.actionRestoreProfile),
                     ),
                     const SizedBox(width: 12),
                     OutlinedButton.icon(
@@ -1445,14 +1487,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Diagnostics printed to console'),
+                            SnackBar(
+                              content: Text(context.l10n.diagnosticsPrinted),
                             ),
                           );
                         }
                       },
                       icon: const Icon(Icons.bug_report),
-                      label: const Text('Print Diagnostics'),
+                      label: Text(context.l10n.actionPrintDiagnostics),
                     ),
                   ],
                 ),
@@ -1468,11 +1510,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: context.palette.shadow,
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -1481,34 +1523,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Matrimonial Profile', style: AppTextStyles.heading3),
+          Text(context.l10n.myProfileTitle, style: context.styles.heading3),
           const SizedBox(height: AppDimensions.paddingM),
 
           // Basic Info
-          _buildInfoRow('Name:', matrimonialProfile.name),
-          _buildInfoRow('Age:', '${matrimonialProfile.age} years'),
-          _buildInfoRow('Gender:', matrimonialProfile.gender),
-          _buildInfoRow('Height:', matrimonialProfile.heightInFeetInches),
+          _buildInfoRow(context.l10n.fieldName, matrimonialProfile.name),
+          _buildInfoRow(
+            context.l10n.fieldAge,
+            context.l10n.ageYearsLong(matrimonialProfile.age),
+          ),
+          _buildInfoRow(
+            context.l10n.fieldGender,
+            context.optionLabel(matrimonialProfile.gender),
+          ),
+          _buildInfoRow(
+            context.l10n.fieldHeight,
+            matrimonialProfile.heightInFeetInches,
+          ),
 
           const SizedBox(height: AppDimensions.paddingM),
 
           // Education & Occupation
-          _buildInfoRow('Education:', matrimonialProfile.education),
-          _buildInfoRow('Occupation:', matrimonialProfile.occupation),
+          _buildInfoRow(
+            context.l10n.fieldEducation,
+            matrimonialProfile.education,
+          ),
+          _buildInfoRow(
+            context.l10n.fieldOccupation,
+            matrimonialProfile.occupation,
+          ),
 
           const SizedBox(height: AppDimensions.paddingM),
 
           // Location
           _buildInfoRow(
-            'Location:',
-            '${matrimonialProfile.district}, ${matrimonialProfile.state}',
+            context.l10n.fieldLocation,
+            context.l10n.placeDistrictState(
+              matrimonialProfile.district,
+              matrimonialProfile.state,
+            ),
           ),
 
           const SizedBox(height: AppDimensions.paddingM),
 
           // Religion & Caste
-          _buildInfoRow('Religion:', matrimonialProfile.religion),
-          _buildInfoRow('Caste:', matrimonialProfile.caste),
+          _buildInfoRow(
+            context.l10n.fieldReligion,
+            context.optionLabel(matrimonialProfile.religion),
+          ),
+          _buildInfoRow(context.l10n.fieldCaste, matrimonialProfile.caste),
 
           const SizedBox(height: AppDimensions.paddingL),
 
@@ -1518,10 +1581,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ElevatedButton.icon(
               onPressed: () => _navigateToProfileEdit(),
               icon: const Icon(Icons.edit),
-              label: const Text('Edit Matrimonial Profile'),
+              label: Text(context.l10n.actionEditMyProfile),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                backgroundColor: context.palette.primary,
+                foregroundColor: context.palette.onPrimary,
               ),
             ),
           ),
@@ -1540,13 +1603,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 100,
             child: Text(
               label,
-              style: AppTextStyles.body2.copyWith(
+              style: context.styles.body2.copyWith(
                 fontWeight: FontWeight.w600,
-                color: AppColors.textSecondary,
+                color: context.palette.textSecondary,
               ),
             ),
           ),
-          Expanded(child: Text(value, style: AppTextStyles.body2)),
+          Expanded(child: Text(value, style: context.styles.body2)),
         ],
       ),
     );
@@ -1566,8 +1629,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile data refreshed successfully'),
+          SnackBar(
+            content: Text(context.l10n.refreshSuccess),
             duration: Duration(seconds: 2),
           ),
         );
@@ -1575,10 +1638,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Unable to refresh: User not authenticated'),
+          SnackBar(
+            content: Text(context.l10n.refreshNotSignedIn),
             duration: Duration(seconds: 2),
-            backgroundColor: Colors.red,
+            backgroundColor: context.palette.error,
           ),
         );
       }

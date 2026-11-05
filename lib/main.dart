@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'features/auth/auth_provider.dart';
 import 'shared/state/matrimonial_provider.dart';
 import 'shared/theme/theme.dart';
-import 'shared/theme/constants.dart';
 import 'app/config/supabase_config.dart';
+import 'app/preferences/user_preferences.dart';
+import 'l10n/app_localizations.dart';
 import 'app/di/service_locator.dart';
 import 'app/router.dart';
 import 'app/settings/app_settings.dart';
@@ -51,7 +53,10 @@ Future<void> main() async {
   final settings = AppSettings(SupabaseAppSettingsSource());
   await settings.start();
 
-  runApp(TryMeYourPartnerApp(appSettings: settings));
+  // Theme and language choices apply from the first frame.
+  final preferences = await UserPreferences.load();
+
+  runApp(TryMeYourPartnerApp(appSettings: settings, preferences: preferences));
 }
 
 class TryMeYourPartnerApp extends StatelessWidget {
@@ -60,7 +65,16 @@ class TryMeYourPartnerApp extends StatelessWidget {
 
   /// Admin-controlled settings; tests pass one built on a fake source.
   final AppSettings? appSettings;
-  const TryMeYourPartnerApp({super.key, this.authService, this.appSettings});
+
+  /// Saved theme and language choices; defaults (system theme, the admin's
+  /// default language) when not given.
+  final UserPreferences? preferences;
+  const TryMeYourPartnerApp({
+    super.key,
+    this.authService,
+    this.appSettings,
+    this.preferences,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +82,9 @@ class TryMeYourPartnerApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AppSettings>.value(
           value: appSettings ?? AppSettings(const _NoSettings()),
+        ),
+        ChangeNotifierProvider<UserPreferences>(
+          create: (_) => preferences ?? UserPreferences(),
         ),
         ChangeNotifierProvider(create: (_) => AuthProvider(auth: authService)),
         // Auto-refresh matrimonial data whenever auth user changes
@@ -107,11 +124,23 @@ class _RoutedAppState extends State<_RoutedApp> {
 
   @override
   Widget build(BuildContext context) {
+    final prefs = context.watch<UserPreferences>();
+    final settings = context.watch<AppSettings>();
+    // The member's own choice wins; otherwise the admin's default language.
+    final shownLocale = prefs.effectiveLocale(settings.defaultLocale);
     return MaterialApp.router(
-      title: AppConstants.appName,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.lightTheme,
-      themeMode: ThemeMode.light,
+      onGenerateTitle: (context) => AppLocalizations.of(context).appName,
+      theme: AppTheme.light(shownLocale),
+      darkTheme: AppTheme.dark(shownLocale),
+      themeMode: prefs.themeMode,
+      locale: shownLocale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       builder: (context, child) =>

@@ -11,6 +11,9 @@ import '../../shared/models/presence_status.dart';
 import 'typing_provider.dart';
 import '../../shared/models/icebreaker.dart';
 import '../../shared/widgets/storage_image.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
 
 class ChatThreadScreen extends StatefulWidget {
   final String otherProfileId;
@@ -142,7 +145,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
       setState(() => _loading = false);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Failed to load chat: $e')));
+      ).showSnackBar(SnackBar(content: Text(context.l10n.chatLoadFailed)));
     }
   }
 
@@ -325,7 +328,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Failed to send: $e')));
+      ).showSnackBar(SnackBar(content: Text(context.l10n.chatSendFailed)));
     }
   }
 
@@ -352,32 +355,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
         now.year == local.year &&
         now.month == local.month &&
         now.day == local.day;
-    String two(int n) => n.toString().padLeft(2, '0');
-    String ap(int h) => h >= 12 ? 'PM' : 'AM';
-    int h12(int h) {
-      final x = h % 12;
-      return x == 0 ? 12 : x;
-    }
-
-    final time = '${h12(local.hour)}:${two(local.minute)} ${ap(local.hour)}';
-    if (isSameDay) return time;
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    final day = local.day;
-    final mon = months[local.month - 1];
-    return '$mon $day, $time';
+    return isSameDay
+        ? context.formatTime(local)
+        : context.formatDateTime(local);
   }
 
   @override
@@ -396,7 +376,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
             children: [
               CircleAvatar(
                 radius: 14,
-                backgroundColor: Colors.grey.withValues(alpha: 0.2),
+                backgroundColor: context.palette.surfaceMuted,
                 child:
                     (widget.otherImageUrl != null &&
                         widget.otherImageUrl!.isNotEmpty)
@@ -432,13 +412,15 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
             if ((_meActive == false) || (_otherActive == false))
               Container(
                 width: double.infinity,
-                color: Colors.amber.withValues(alpha: 0.15),
-                padding: const EdgeInsets.all(8),
+                color: context.palette.warningContainer,
+                padding: const EdgeInsets.all(AppDimensions.paddingS),
                 child: Text(
                   _meActive == false
-                      ? 'Your profile is deactivated. Reactivate to send messages.'
-                      : 'This profile is not active currently. You can read previous messages but cannot send new ones.',
-                  style: const TextStyle(fontSize: 12),
+                      ? context.l10n.chatMyProfileInactive
+                      : context.l10n.chatOtherProfileInactive,
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.textPrimary,
+                  ),
                 ),
               ),
             Consumer<TypingProvider>(
@@ -448,10 +430,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                 return Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    'Typing…',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.green.shade700,
+                    context.l10n.chatTyping,
+                    style: context.styles.caption.copyWith(
+                      color: context.palette.success,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -483,8 +464,8 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                             ),
                             decoration: BoxDecoration(
                               color: isMe
-                                  ? Colors.blue.shade50
-                                  : Colors.grey.shade200,
+                                  ? context.palette.infoContainer
+                                  : context.palette.surfaceMuted,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
@@ -498,9 +479,8 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                                   children: [
                                     Text(
                                       _formatTimestamp(m.at),
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.grey.shade600,
+                                      style: context.styles.micro.copyWith(
+                                        color: context.palette.textTertiary,
                                       ),
                                     ),
                                     const SizedBox(width: 4),
@@ -525,7 +505,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      tooltip: 'Suggest prompt',
+                      tooltip: context.l10n.chatSuggestPrompt,
                       onPressed: (_meActive == false) || (_otherActive == false)
                           ? null
                           : _showIcebreakers,
@@ -544,9 +524,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                                   tp.onUserTyping();
                                   _onTypingChanged();
                                 },
-                          decoration: const InputDecoration(
-                            hintText: 'Type a message',
-                            border: OutlineInputBorder(),
+                          decoration: InputDecoration(
+                            hintText: context.l10n.chatMessageHint,
+                            border: const OutlineInputBorder(),
                             isDense: true,
                           ),
                           enabled:
@@ -557,6 +537,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
+                      tooltip: context.l10n.chatSend,
                       onPressed: (_meActive == false) || (_otherActive == false)
                           ? null
                           : _send,
@@ -574,10 +555,13 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
   }
 
   Widget _buildPresenceOrTyping() {
+    final style = context.styles.overline.copyWith(
+      color: context.colors.onSurfaceVariant,
+    );
     if (_otherTyping) {
       return Text(
-        'Typing…',
-        style: TextStyle(fontSize: 11, color: Colors.green.shade700),
+        context.l10n.chatTyping,
+        style: style.copyWith(color: context.palette.success),
       );
     }
     final p = _presenceStatus;
@@ -585,27 +569,13 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
       return const SizedBox.shrink();
     }
     if (p.isOnline) {
-      return const Text(
-        'Online',
-        style: TextStyle(fontSize: 11, color: Colors.white70),
-      );
+      return Text(context.l10n.presenceOnline, style: style);
     }
     final last = p.lastActiveAt;
-    final label = last != null ? _formatLastSeen(last) : 'Offline';
-    return Text(
-      label,
-      style: const TextStyle(fontSize: 11, color: Colors.white70),
-    );
-  }
-
-  String _formatLastSeen(DateTime last) {
-    final now = DateTime.now();
-    final diff = now.difference(last);
-    if (diff.inMinutes < 1) return 'Last seen just now';
-    if (diff.inMinutes < 60) return 'Last seen ${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return 'Last seen ${diff.inHours}h ago';
-    final days = diff.inDays;
-    return 'Last seen ${days}d ago';
+    final label = last != null
+        ? context.l10n.chatLastSeen(context.relativeTime(last))
+        : context.l10n.presenceOffline;
+    return Text(label, style: style);
   }
 
   void _showIcebreakers() async {
@@ -615,9 +585,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     final prompts = _prompts.isNotEmpty
         ? _prompts.map((e) => e.text).toList()
         : <String>[
-            'What\'s something you\'re passionate about outside of work?',
-            'Weekend plans: chill at home or explore outside?',
-            'What\'s a small joy that made your day recently?',
+            context.l10n.chatStarterPassion,
+            context.l10n.chatStarterWeekend,
+            context.l10n.chatStarterSmallJoy,
           ];
     if (!mounted) return;
     showModalBottomSheet(
@@ -657,13 +627,29 @@ class _TickIcon extends StatelessWidget {
     // Sent: one grey check; Delivered: two grey checks; Read: two blue checks
     final isRead = readAt != null;
     final isDelivered = deliveredAt != null;
+    final l = context.l10n;
     if (isRead) {
-      return Icon(Icons.done_all, size: 16, color: Colors.blue.shade400);
+      return Icon(
+        Icons.done_all,
+        size: 16,
+        color: context.palette.info,
+        semanticLabel: l.chatTickRead,
+      );
     }
     if (isDelivered) {
-      return const Icon(Icons.done_all, size: 16, color: Colors.grey);
+      return Icon(
+        Icons.done_all,
+        size: 16,
+        color: context.palette.textTertiary,
+        semanticLabel: l.chatTickDelivered,
+      );
     }
-    return const Icon(Icons.done, size: 16, color: Colors.grey);
+    return Icon(
+      Icons.done,
+      size: 16,
+      color: context.palette.textTertiary,
+      semanticLabel: l.chatTickSent,
+    );
   }
 }
 

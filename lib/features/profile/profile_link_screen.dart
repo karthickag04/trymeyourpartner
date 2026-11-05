@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../shared/models/matrimonial_user.dart';
 import '../../shared/services/matrimonial_service.dart';
 import '../../shared/theme/constants.dart';
@@ -21,9 +22,9 @@ class ProfileLinkScreen extends StatelessWidget {
       future: MatrimonialService.getProfileByCode(code),
       builder: (context, snap) {
         if (snap.connectionState != ConnectionState.done) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+              child: CircularProgressIndicator(color: context.palette.primary),
             ),
           );
         }
@@ -31,11 +32,11 @@ class ProfileLinkScreen extends StatelessWidget {
         if (profile == null) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(
+            body: Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppDimensions.paddingL),
                 child: Text(
-                  'This profile is not available.',
+                  context.l10n.profileNotAvailable,
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/l10n.dart';
 import '../../../shared/models/matrimonial_user.dart';
 import '../../../shared/theme/constants.dart';
 import '../../chat/widgets/presence_indicator.dart';
@@ -31,7 +32,7 @@ class ProfileCard extends StatelessWidget {
     // Debug logging removed for cleaner console
 
     return Card(
-      color: AppColors.cardBackground,
+      color: context.palette.cardBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
@@ -55,7 +56,7 @@ class ProfileCard extends StatelessWidget {
                         topLeft: Radius.circular(AppDimensions.radiusL),
                         topRight: Radius.circular(AppDimensions.radiusL),
                       ),
-                      color: AppColors.surface,
+                      color: context.palette.surface,
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -69,18 +70,18 @@ class ProfileCard extends StatelessWidget {
                               src: profile.profileImageUrl,
                               fit: BoxFit.cover,
                               placeholder: Container(
-                                color: AppColors.surface,
-                                child: const Center(
+                                color: context.palette.surface,
+                                child: Center(
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: AppColors.accent,
+                                    color: context.palette.accent,
                                   ),
                                 ),
                               ),
-                              errorWidget: _buildDefaultAvatar(),
-                              emptyWidget: _buildDefaultAvatar(),
+                              errorWidget: _buildDefaultAvatar(context),
+                              emptyWidget: _buildDefaultAvatar(context),
                             )
-                          : _buildDefaultAvatar(),
+                          : _buildDefaultAvatar(context),
                     ),
                   ),
                   // Presence dot overlay bottom-right
@@ -89,8 +90,8 @@ class ProfileCard extends StatelessWidget {
                     bottom: 8,
                     child: Container(
                       padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: context.palette.cardBackground,
                         shape: BoxShape.circle,
                       ),
                       child: PresenceIndicator(
@@ -110,21 +111,25 @@ class ProfileCard extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: AppColors.warning,
+                            color: context.palette.warning,
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
+                            border: Border.all(
+                              color: context.palette.cardBackground,
+                              width: 2,
+                            ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
+                                color: context.palette.shadow,
                                 blurRadius: 6,
                                 offset: const Offset(0, 2),
                               ),
                             ],
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.star,
-                            color: Colors.white,
+                            color: context.palette.onPrimary,
                             size: 18,
+                            semanticLabel: context.l10n.badgeShortlisted,
                           ),
                         ),
                       ),
@@ -153,7 +158,7 @@ class ProfileCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               profile.displayName,
-                              style: AppTextStyles.subtitle1.copyWith(
+                              style: context.styles.subtitle1.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13, // Reduced for better fit
                               ),
@@ -162,10 +167,11 @@ class ProfileCard extends StatelessWidget {
                             ),
                           ),
                           if (profile.isVerified)
-                            const Icon(
+                            Icon(
                               Icons.verified,
-                              color: AppColors.success,
+                              color: context.palette.success,
                               size: 12, // Smaller icon
+                              semanticLabel: context.l10n.badgeVerified,
                             ),
                         ],
                       ),
@@ -174,15 +180,18 @@ class ProfileCard extends StatelessWidget {
                       PresenceIndicator(
                         profileId: profile.id,
                         showText: true,
-                        textColor: Colors.black54,
-                        pollEvery: Duration(seconds: 60),
+                        textColor: context.palette.textTertiary,
+                        pollEvery: const Duration(seconds: 60),
                       ),
 
                       const SizedBox(height: 2), // Reduced spacing
                       // Age and Height
                       Text(
-                        '${profile.age} years, ${profile.heightInFeetInches}',
-                        style: AppTextStyles.caption.copyWith(fontSize: 10),
+                        context.l10n.profileAgeHeight(
+                          profile.age,
+                          profile.heightInFeetInches,
+                        ),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -192,7 +201,7 @@ class ProfileCard extends StatelessWidget {
                       // Education
                       Text(
                         profile.education,
-                        style: AppTextStyles.caption.copyWith(fontSize: 10),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -202,7 +211,7 @@ class ProfileCard extends StatelessWidget {
                       // Occupation
                       Text(
                         profile.occupation,
-                        style: AppTextStyles.caption.copyWith(fontSize: 10),
+                        style: context.styles.micro,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -221,10 +230,12 @@ class ProfileCard extends StatelessWidget {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.accent.withValues(alpha: 0.1),
+                                color: context.palette.accent.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
-                                  color: AppColors.accent.withValues(
+                                  color: context.palette.accent.withValues(
                                     alpha: 0.3,
                                   ),
                                   width: 1,
@@ -232,18 +243,20 @@ class ProfileCard extends StatelessWidget {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.location_on,
                                     size: 12,
-                                    color: AppColors.accent,
+                                    color: context.palette.accent,
                                   ),
                                   const SizedBox(width: 3),
                                   Expanded(
                                     child: Text(
-                                      '${profile.district}, ${profile.state}',
-                                      style: AppTextStyles.caption.copyWith(
-                                        color: AppColors.accent,
-                                        fontSize: 10,
+                                      context.l10n.placeDistrictState(
+                                        profile.district,
+                                        profile.state,
+                                      ),
+                                      style: context.styles.micro.copyWith(
+                                        color: context.palette.accent,
                                         fontWeight: FontWeight.w600,
                                       ),
                                       maxLines: 1,
@@ -259,7 +272,7 @@ class ProfileCard extends StatelessWidget {
 
                           // Why Match button (opens a small reasons sheet)
                           IconButton(
-                            tooltip: 'Why matched',
+                            tooltip: context.l10n.whyMatchedTooltip,
                             icon: const Icon(Icons.info_outline, size: 16),
                             onPressed: () => _showWhyMatch(context),
                           ),
@@ -267,25 +280,26 @@ class ProfileCard extends StatelessWidget {
                           // Send Interest Button
                           if (onInterest != null)
                             SizedBox(
-                              height: 28,
+                              height: AppDimensions.minTapTarget,
                               child: ElevatedButton.icon(
                                 onPressed: isInterestSent ? null : onInterest,
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.favorite,
-                                  color: Colors.white,
+                                  color: context.palette.onPrimary,
                                   size: 12,
                                 ),
                                 label: Text(
-                                  isInterestSent ? 'Interest Sent' : 'Interest',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 9,
+                                  isInterestSent
+                                      ? context.l10n.actionInterestSent
+                                      : context.l10n.actionInterest,
+                                  style: context.styles.overline.copyWith(
+                                    color: context.palette.onPrimary,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.accent,
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: context.palette.accent,
+                                  foregroundColor: context.palette.onPrimary,
                                   elevation: 1,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 6,
@@ -294,7 +308,10 @@ class ProfileCard extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6),
                                   ),
-                                  minimumSize: const Size(0, 28),
+                                  minimumSize: const Size(
+                                    AppDimensions.minTapTarget,
+                                    AppDimensions.minTapTarget,
+                                  ),
                                 ),
                               ),
                             ),
@@ -309,7 +326,10 @@ class ProfileCard extends StatelessWidget {
             // Action Buttons (excluding Send Interest which is now inline)
             if (onAccept != null || onReject != null || onShortlist != null)
               Container(
-                constraints: const BoxConstraints(minHeight: 35, maxHeight: 50),
+                constraints: const BoxConstraints(
+                  minHeight: AppDimensions.minTapTarget,
+                  maxHeight: 52,
+                ),
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppDimensions.paddingS,
                   vertical: 2,
@@ -320,12 +340,12 @@ class ProfileCard extends StatelessWidget {
                       Expanded(
                         child: IconButton(
                           onPressed: onAccept,
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.check_circle_outline,
-                            color: AppColors.success,
+                            color: context.palette.success,
                             size: 18,
                           ),
-                          tooltip: 'Accept',
+                          tooltip: context.l10n.actionAccept,
                           padding: const EdgeInsets.all(4),
                         ),
                       ),
@@ -333,12 +353,12 @@ class ProfileCard extends StatelessWidget {
                       Expanded(
                         child: IconButton(
                           onPressed: onReject,
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.cancel_outlined,
-                            color: AppColors.error,
+                            color: context.palette.error,
                             size: 18,
                           ),
-                          tooltip: 'Reject',
+                          tooltip: context.l10n.actionReject,
                           padding: const EdgeInsets.all(4),
                         ),
                       ),
@@ -349,12 +369,12 @@ class ProfileCard extends StatelessWidget {
                           onPressed: onShortlist,
                           icon: Icon(
                             isShortlisted ? Icons.star : Icons.star_border,
-                            color: AppColors.warning,
+                            color: context.palette.warning,
                             size: 18,
                           ),
                           tooltip: isShortlisted
-                              ? 'Remove from Shortlist'
-                              : 'Add to Shortlist',
+                              ? context.l10n.actionRemoveFromShortlist
+                              : context.l10n.actionAddToShortlist,
                           padding: const EdgeInsets.all(4),
                         ),
                       ),
@@ -367,18 +387,17 @@ class ProfileCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDefaultAvatar() {
+  Widget _buildDefaultAvatar(BuildContext context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: AppColors.accent.withValues(alpha: 0.1),
+      color: context.palette.accent.withValues(alpha: 0.1),
       child: Center(
         child: Text(
           profile.name.isNotEmpty ? profile.name[0].toUpperCase() : '?',
-          style: const TextStyle(
-            fontSize: 32,
+          style: context.styles.heading1.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppColors.accent,
+            color: context.palette.accent,
           ),
         ),
       ),
@@ -386,7 +405,7 @@ class ProfileCard extends StatelessWidget {
   }
 
   void _showWhyMatch(BuildContext context) {
-    final reasons = _computeWhyMatch(profile);
+    final reasons = _computeWhyMatch(context, profile);
     showModalBottomSheet(
       context: context,
       builder: (ctx) => SafeArea(
@@ -395,7 +414,7 @@ class ProfileCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           itemBuilder: (_, i) => Row(
             children: [
-              const Icon(Icons.check, size: 16, color: AppColors.accent),
+              Icon(Icons.check, size: 16, color: context.palette.accent),
               const SizedBox(width: 8),
               Expanded(child: Text(reasons[i])),
             ],
@@ -407,23 +426,24 @@ class ProfileCard extends StatelessWidget {
     );
   }
 
-  List<String> _computeWhyMatch(MatrimonialUser other) {
+  List<String> _computeWhyMatch(BuildContext context, MatrimonialUser other) {
     final List<String> reasons = [];
     // NOTE: This is a lightweight, client-only heuristic. Replace with backend view later.
+    final l = context.l10n;
     if (other.district.isNotEmpty) {
-      reasons.add('You live near ${other.district}');
+      reasons.add(l.whyMatchNearby(other.district));
     }
     if (other.education.isNotEmpty) {
-      reasons.add('Similar education: ${other.education}');
+      reasons.add(l.whyMatchEducation(other.education));
     }
     if (other.caste.isNotEmpty) {
-      reasons.add('Caste preference matched: ${other.caste}');
+      reasons.add(l.whyMatchCaste(other.caste));
     }
     if (other.languages.isNotEmpty) {
-      reasons.add('Language overlap: ${other.languages.join(', ')}');
+      reasons.add(l.whyMatchLanguages(other.languages.join(', ')));
     }
     if (reasons.isEmpty) {
-      reasons.add('Good compatibility based on your preferences');
+      reasons.add(l.whyMatchGeneral);
     }
     return reasons.take(4).toList();
   }

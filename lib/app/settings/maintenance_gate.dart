@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../l10n/l10n.dart';
 import 'app_settings.dart';
 
 /// Shows a maintenance screen instead of the app while an admin has
@@ -15,7 +16,7 @@ class MaintenanceGate extends StatelessWidget {
     if (!settings.maintenanceEnabled) return child;
     final message = settings.maintenanceMessage.isNotEmpty
         ? settings.maintenanceMessage
-        : 'We are making improvements. Please check back soon.';
+        : context.l10n.maintenanceDefaultMessage;
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -27,7 +28,7 @@ class MaintenanceGate extends StatelessWidget {
                 const Icon(Icons.build_circle_outlined, size: 64),
                 const SizedBox(height: 16),
                 Text(
-                  'Under maintenance',
+                  context.l10n.maintenanceTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
@@ -36,7 +37,7 @@ class MaintenanceGate extends StatelessWidget {
                 const SizedBox(height: 24),
                 OutlinedButton(
                   onPressed: settings.refresh,
-                  child: const Text('Try again'),
+                  child: Text(context.l10n.commonRetry),
                 ),
               ],
             ),

@@ -5,6 +5,9 @@ import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../auth/auth_provider.dart';
 import '../profile/widgets/profile_card_horizontal.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
+import '../../shared/widgets/state_views.dart';
 
 class InterestsScreen extends StatefulWidget {
   const InterestsScreen({super.key});
@@ -44,18 +47,15 @@ class _InterestsScreenState extends State<InterestsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Interests'),
-        backgroundColor: Colors.pink.shade50,
+        title: Text(context.l10n.interestsTitle),
+        backgroundColor: context.colors.primaryContainer,
         elevation: 0,
-        foregroundColor: Colors.pink.shade800,
+        foregroundColor: context.colors.onPrimaryContainer,
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.pink,
-          unselectedLabelColor: Colors.grey,
-          indicatorColor: Colors.pink,
-          tabs: const [
-            Tab(text: 'Received'),
-            Tab(text: 'Sent'),
+          tabs: [
+            Tab(text: context.l10n.interestsTabReceived),
+            Tab(text: context.l10n.interestsTabSent),
           ],
         ),
       ),
@@ -70,48 +70,21 @@ class _InterestsScreenState extends State<InterestsScreen>
     return Consumer<MatrimonialProvider>(
       builder: (context, matrimonialProvider, child) {
         if (matrimonialProvider.isLoading) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(color: Colors.pink),
-                SizedBox(height: 16),
-                Text('Loading received interests...'),
-              ],
-            ),
-          );
+          return LoadingView(message: context.l10n.interestsLoadingReceived);
         }
 
         final receivedInterests = matrimonialProvider.receivedInterests;
 
         if (receivedInterests.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'No interests received yet',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'When someone shows interest in your profile,\nthey will appear here.',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+          return EmptyStateView(
+            icon: Icons.favorite_border,
+            title: context.l10n.interestsReceivedEmptyTitle,
+            subtitle: context.l10n.interestsReceivedEmptySubtitle,
           );
         }
 
         return Container(
-          color: Colors.pink.shade50,
+          color: context.palette.secondary,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: receivedInterests.length,
@@ -138,48 +111,21 @@ class _InterestsScreenState extends State<InterestsScreen>
     return Consumer<MatrimonialProvider>(
       builder: (context, matrimonialProvider, child) {
         if (matrimonialProvider.isLoading) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(color: Colors.pink),
-                SizedBox(height: 16),
-                Text('Loading sent interests...'),
-              ],
-            ),
-          );
+          return LoadingView(message: context.l10n.interestsLoadingSent);
         }
 
         final sentInterests = matrimonialProvider.sentInterests;
 
         if (sentInterests.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.send_outlined, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text(
-                  'No interests sent yet',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Browse profiles and send interests\nto start connecting.',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+          return EmptyStateView(
+            icon: Icons.send_outlined,
+            title: context.l10n.interestsSentEmptyTitle,
+            subtitle: context.l10n.interestsSentEmptySubtitle,
           );
         }
 
         return Container(
-          color: Colors.pink.shade50,
+          color: context.palette.secondary,
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: sentInterests.length,
@@ -210,9 +156,9 @@ class _InterestsScreenState extends State<InterestsScreen>
         maxChildSize: 0.95,
         minChildSize: 0.5,
         builder: (context, scrollController) => Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration: BoxDecoration(
+            color: context.palette.cardBackground,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: SingleChildScrollView(
             controller: scrollController,
@@ -225,7 +171,7 @@ class _InterestsScreenState extends State<InterestsScreen>
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundColor: Colors.grey.shade200,
+                      backgroundColor: context.palette.surfaceMuted,
                       child: ClipOval(
                         child: SizedBox(
                           width: 80,
@@ -250,10 +196,7 @@ class _InterestsScreenState extends State<InterestsScreen>
                                       profile.name.isNotEmpty
                                           ? profile.name[0].toUpperCase()
                                           : '?',
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: context.styles.heading2,
                                     ),
                                   ),
                                   emptyWidget: Center(
@@ -261,10 +204,7 @@ class _InterestsScreenState extends State<InterestsScreen>
                                       profile.name.isNotEmpty
                                           ? profile.name[0].toUpperCase()
                                           : '?',
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: context.styles.heading2,
                                     ),
                                   ),
                                 )
@@ -273,10 +213,7 @@ class _InterestsScreenState extends State<InterestsScreen>
                                     profile.name.isNotEmpty
                                         ? profile.name[0].toUpperCase()
                                         : '?',
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: context.styles.heading2,
                                   ),
                                 ),
                         ),
@@ -287,18 +224,14 @@ class _InterestsScreenState extends State<InterestsScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(profile.name, style: context.styles.heading2),
                           Text(
-                            profile.name,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                            context.l10n.profileAgeCity(
+                              profile.age as int,
+                              profile.city as String,
                             ),
-                          ),
-                          Text(
-                            '${profile.age} years • ${profile.city}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
+                            style: context.styles.body1.copyWith(
+                              color: context.palette.textTertiary,
                             ),
                           ),
                         ],
@@ -308,8 +241,8 @@ class _InterestsScreenState extends State<InterestsScreen>
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  profile.aboutMe ?? 'No information provided',
-                  style: const TextStyle(fontSize: 16),
+                  (profile.aboutMe as String?) ?? context.l10n.profileNoAbout,
+                  style: context.styles.body1,
                 ),
               ],
             ),
@@ -330,8 +263,10 @@ class _InterestsScreenState extends State<InterestsScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Interest from ${profile.name} accepted!'),
-              backgroundColor: Colors.green,
+              content: Text(
+                context.l10n.interestAccepted(profile.name as String),
+              ),
+              backgroundColor: context.palette.success,
             ),
           );
         })
@@ -339,8 +274,8 @@ class _InterestsScreenState extends State<InterestsScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to accept interest: $e'),
-              backgroundColor: Colors.red,
+              content: Text(context.l10n.interestAcceptFailed),
+              backgroundColor: context.palette.error,
             ),
           );
         });
@@ -357,8 +292,10 @@ class _InterestsScreenState extends State<InterestsScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Interest from ${profile.name} declined'),
-              backgroundColor: Colors.orange,
+              content: Text(
+                context.l10n.interestDeclined(profile.name as String),
+              ),
+              backgroundColor: context.palette.warning,
             ),
           );
         })
@@ -366,8 +303,8 @@ class _InterestsScreenState extends State<InterestsScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to decline interest: $e'),
-              backgroundColor: Colors.red,
+              content: Text(context.l10n.interestDeclineFailed),
+              backgroundColor: context.palette.error,
             ),
           );
         });

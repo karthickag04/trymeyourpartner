@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/l10n.dart';
 import '../../../shared/models/matrimonial_user.dart';
 import '../../../shared/theme/constants.dart';
 import '../../chat/widgets/presence_indicator.dart';
@@ -33,7 +34,7 @@ class ProfileCardHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.cardBackground,
+      color: context.palette.cardBackground,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusL),
       ),
@@ -52,23 +53,23 @@ class ProfileCardHorizontal extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Left side - Profile Image
-                  _buildProfileImage(),
+                  _buildProfileImage(context),
 
                   // Right side - Profile Details
-                  Expanded(child: _buildProfileDetails()),
+                  Expanded(child: _buildProfileDetails(context)),
                 ],
               ),
             ),
 
             // Bottom - Action Buttons
-            if (_hasActionButtons()) _buildActionButtons(),
+            if (_hasActionButtons()) _buildActionButtons(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileImage() {
+  Widget _buildProfileImage(BuildContext context) {
     return Container(
       width: 120, // Fixed width for profile image
       height: 140, // Fixed height instead of double.infinity
@@ -81,7 +82,7 @@ class ProfileCardHorizontal extends StatelessWidget {
             height: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              color: AppColors.surface,
+              color: context.palette.surface,
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(AppDimensions.radiusM),
@@ -92,18 +93,18 @@ class ProfileCardHorizontal extends StatelessWidget {
                       src: profile.profileImageUrl,
                       fit: BoxFit.cover,
                       placeholder: Container(
-                        color: AppColors.surface,
-                        child: const Center(
+                        color: context.palette.surface,
+                        child: Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.accent,
+                            color: context.palette.accent,
                           ),
                         ),
                       ),
-                      errorWidget: _buildDefaultAvatar(),
-                      emptyWidget: _buildDefaultAvatar(),
+                      errorWidget: _buildDefaultAvatar(context),
+                      emptyWidget: _buildDefaultAvatar(context),
                     )
-                  : _buildDefaultAvatar(),
+                  : _buildDefaultAvatar(context),
             ),
           ),
 
@@ -115,18 +116,26 @@ class ProfileCardHorizontal extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: AppColors.warning,
+                  color: context.palette.warning,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(
+                    color: context.palette.cardBackground,
+                    width: 2,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
+                      color: context.palette.shadow,
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.star, color: Colors.white, size: 16),
+                child: Icon(
+                  Icons.star,
+                  color: context.palette.onPrimary,
+                  size: 16,
+                  semanticLabel: context.l10n.badgeShortlisted,
+                ),
               ),
             ),
 
@@ -138,14 +147,18 @@ class ProfileCardHorizontal extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: AppColors.success,
+                  color: context.palette.success,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+                  border: Border.all(
+                    color: context.palette.cardBackground,
+                    width: 2,
+                  ),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.verified,
-                  color: Colors.white,
+                  color: context.palette.onPrimary,
                   size: 12,
+                  semanticLabel: context.l10n.badgeVerified,
                 ),
               ),
             ),
@@ -154,7 +167,7 @@ class ProfileCardHorizontal extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileDetails() {
+  Widget _buildProfileDetails(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingM,
@@ -170,9 +183,9 @@ class ProfileCardHorizontal extends StatelessWidget {
               Expanded(
                 child: Text(
                   profile.displayName,
-                  style: AppTextStyles.heading3.copyWith(
+                  style: context.styles.heading3.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: context.palette.textPrimary,
                     fontSize: 16, // Slightly smaller
                   ),
                   maxLines: 1,
@@ -189,8 +202,8 @@ class ProfileCardHorizontal extends StatelessWidget {
               PresenceIndicator(
                 profileId: profile.id,
                 showText: true,
-                textColor: AppColors.textSecondary,
-                pollEvery: Duration(seconds: 60),
+                textColor: context.palette.textSecondary,
+                pollEvery: const Duration(seconds: 60),
               ),
             ],
           ),
@@ -199,23 +212,25 @@ class ProfileCardHorizontal extends StatelessWidget {
           // Age and Height
           Row(
             children: [
-              Icon(Icons.cake, size: 14, color: AppColors.textSecondary),
+              Icon(Icons.cake, size: 14, color: context.palette.textSecondary),
               const SizedBox(width: 4),
               Text(
-                '${profile.age} years',
-                style: AppTextStyles.body2.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 12, // Smaller text
+                context.l10n.ageYearsLong(profile.age),
+                style: context.styles.caption.copyWith(
+                  color: context.palette.textSecondary,
                 ),
               ),
               const SizedBox(width: AppDimensions.paddingS),
-              Icon(Icons.height, size: 14, color: AppColors.textSecondary),
+              Icon(
+                Icons.height,
+                size: 14,
+                color: context.palette.textSecondary,
+              ),
               const SizedBox(width: 4),
               Text(
                 profile.heightInFeetInches,
-                style: AppTextStyles.body2.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 12, // Smaller text
+                style: context.styles.caption.copyWith(
+                  color: context.palette.textSecondary,
                 ),
               ),
             ],
@@ -225,15 +240,14 @@ class ProfileCardHorizontal extends StatelessWidget {
           // Education
           Row(
             children: [
-              Icon(Icons.school, size: 14, color: AppColors.accent),
+              Icon(Icons.school, size: 14, color: context.palette.accent),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   profile.education,
-                  style: AppTextStyles.body2.copyWith(
-                    color: AppColors.textPrimary,
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.textPrimary,
                     fontWeight: FontWeight.w500,
-                    fontSize: 12, // Smaller text
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -246,15 +260,14 @@ class ProfileCardHorizontal extends StatelessWidget {
           // Occupation
           Row(
             children: [
-              Icon(Icons.work, size: 14, color: AppColors.accent),
+              Icon(Icons.work, size: 14, color: context.palette.accent),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   profile.occupation,
-                  style: AppTextStyles.body2.copyWith(
-                    color: AppColors.textPrimary,
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.textPrimary,
                     fontWeight: FontWeight.w500,
-                    fontSize: 12, // Smaller text
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -271,25 +284,28 @@ class ProfileCardHorizontal extends StatelessWidget {
               vertical: 4,
             ),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: context.palette.surface,
               borderRadius: BorderRadius.circular(AppDimensions.radiusS),
-              border: Border.all(
-                color: Colors.grey.withValues(alpha: 0.3),
-                width: 1,
-              ),
+              border: Border.all(color: context.palette.divider, width: 1),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.location_on, size: 14, color: Colors.grey[700]),
+                Icon(
+                  Icons.location_on,
+                  size: 14,
+                  color: context.palette.textSecondary,
+                ),
                 const SizedBox(width: 4),
                 Flexible(
                   child: Text(
-                    '${profile.district}, ${profile.state}',
-                    style: AppTextStyles.body2.copyWith(
-                      color: Colors.grey[800],
+                    context.l10n.placeDistrictState(
+                      profile.district,
+                      profile.state,
+                    ),
+                    style: context.styles.overline.copyWith(
+                      color: context.palette.textSecondary,
                       fontWeight: FontWeight.w500,
-                      fontSize: 11,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -304,10 +320,12 @@ class ProfileCardHorizontal extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: (statusColor ?? AppColors.accent).withValues(alpha: 0.1),
+                color: (statusColor ?? context.palette.accent).withValues(
+                  alpha: 0.1,
+                ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: (statusColor ?? AppColors.accent).withValues(
+                  color: (statusColor ?? context.palette.accent).withValues(
                     alpha: 0.6,
                   ),
                 ),
@@ -318,15 +336,14 @@ class ProfileCardHorizontal extends StatelessWidget {
                   Icon(
                     Icons.handshake_outlined,
                     size: 14,
-                    color: statusColor ?? AppColors.accent,
+                    color: statusColor ?? context.palette.accent,
                   ),
                   const SizedBox(width: 6),
                   Text(
                     statusLabel!,
-                    style: AppTextStyles.body2.copyWith(
-                      color: statusColor ?? AppColors.accent,
+                    style: context.styles.overline.copyWith(
+                      color: statusColor ?? context.palette.accent,
                       fontWeight: FontWeight.w600,
-                      fontSize: 11,
                     ),
                   ),
                 ],
@@ -338,14 +355,14 @@ class ProfileCardHorizontal extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingM,
         vertical: AppDimensions.paddingS,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(AppDimensions.radiusL),
           bottomRight: Radius.circular(AppDimensions.radiusL),
@@ -360,18 +377,20 @@ class ProfileCardHorizontal extends StatelessWidget {
                 onPressed: onShortlist,
                 icon: Icon(
                   isShortlisted ? Icons.star : Icons.star_border,
-                  color: AppColors.warning,
+                  color: context.palette.warning,
                   size: 18,
                 ),
                 label: Text(
-                  isShortlisted ? 'Shortlisted' : 'Shortlist',
+                  isShortlisted
+                      ? context.l10n.actionShortlisted
+                      : context.l10n.actionShortlist,
                   style: TextStyle(
-                    color: AppColors.warning,
+                    color: context.palette.warning,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: AppColors.warning),
+                  side: BorderSide(color: context.palette.warning),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
@@ -387,16 +406,16 @@ class ProfileCardHorizontal extends StatelessWidget {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: onReject,
-                icon: const Icon(Icons.close, color: AppColors.error, size: 18),
-                label: const Text(
-                  'Reject',
+                icon: Icon(Icons.close, color: context.palette.error, size: 18),
+                label: Text(
+                  context.l10n.actionReject,
                   style: TextStyle(
-                    color: AppColors.error,
+                    color: context.palette.error,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: AppColors.error),
+                  side: BorderSide(color: context.palette.error),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
@@ -410,16 +429,20 @@ class ProfileCardHorizontal extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: onAccept,
-                icon: const Icon(Icons.favorite, color: Colors.white, size: 18),
-                label: const Text(
-                  'Accept',
+                icon: Icon(
+                  Icons.favorite,
+                  color: context.palette.onPrimary,
+                  size: 18,
+                ),
+                label: Text(
+                  context.l10n.actionAccept,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: context.palette.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.success,
+                  backgroundColor: context.palette.success,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
@@ -440,20 +463,22 @@ class ProfileCardHorizontal extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: isInterestSent ? null : onInterest,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.favorite,
-                    color: Colors.white,
+                    color: context.palette.onPrimary,
                     size: 18,
                   ),
                   label: Text(
-                    isInterestSent ? 'Interest Sent' : 'Send Interest',
+                    isInterestSent
+                        ? context.l10n.actionInterestSent
+                        : context.l10n.actionSendInterest,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: context.palette.onPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accent,
+                    backgroundColor: context.palette.accent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         AppDimensions.radiusM,
@@ -471,21 +496,20 @@ class ProfileCardHorizontal extends StatelessWidget {
     );
   }
 
-  Widget _buildDefaultAvatar() {
+  Widget _buildDefaultAvatar(BuildContext context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.accent.withValues(alpha: 0.1),
+        color: context.palette.accent.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.radiusM),
       ),
       child: Center(
         child: Text(
           profile.name.isNotEmpty ? profile.name[0].toUpperCase() : '?',
-          style: TextStyle(
-            fontSize: 32,
+          style: context.styles.heading1.copyWith(
             fontWeight: FontWeight.bold,
-            color: AppColors.accent,
+            color: context.palette.accent,
           ),
         ),
       ),

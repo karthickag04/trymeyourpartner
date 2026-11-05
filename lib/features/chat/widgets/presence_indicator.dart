@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../app/di/service_locator.dart';
 import '../../../core/services/presence_service.dart';
+import '../../../l10n/formatters.dart';
+import '../../../l10n/l10n.dart';
 import '../../../shared/models/presence_status.dart';
+import '../../../shared/theme/constants.dart';
 
 class PresenceIndicator extends StatefulWidget {
   final String profileId;
@@ -59,54 +62,34 @@ class _PresenceIndicatorState extends State<PresenceIndicator> {
   Widget build(BuildContext context) {
     final s = _status;
     final online = s?.isOnline ?? false;
-    final color = online ? Colors.green : Colors.grey;
+    final palette = context.palette;
+    final color = online ? palette.success : palette.textTertiary;
     final dot = Container(
       width: 8,
       height: 8,
       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
-    if (!widget.showText) return dot;
-    final text = online ? 'Online' : _formatLastSeen(s?.lastActiveAt);
+    final last = s?.lastActiveAt;
+    final text = online
+        ? context.l10n.presenceOnline
+        : last == null
+        ? context.l10n.presenceOffline
+        : context.relativeTime(last);
+    if (!widget.showText) {
+      return Semantics(label: text, child: dot);
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         dot,
-        const SizedBox(width: 4),
+        const SizedBox(width: AppDimensions.paddingXS),
         Text(
           text,
-          style: TextStyle(
-            fontSize: 10,
-            color: widget.textColor ?? Colors.white70,
+          style: context.styles.micro.copyWith(
+            color: widget.textColor ?? palette.onImage.withValues(alpha: 0.9),
           ),
         ),
       ],
     );
-  }
-
-  String _formatLastSeen(DateTime? last) {
-    if (last == null) return 'Offline';
-    final now = DateTime.now();
-    final diff = now.difference(last);
-
-    if (diff.inSeconds < 60) return 'Just now';
-    if (diff.inMinutes < 60) {
-      final m = diff.inMinutes;
-      return m == 1 ? '1 minute ago' : '$m minutes ago';
-    }
-    if (diff.inHours < 24) {
-      final h = diff.inHours;
-      return h == 1 ? 'An hour ago' : '$h hours ago';
-    }
-    if (diff.inDays < 7) {
-      final d = diff.inDays;
-      if (d == 1) return 'Yesterday';
-      return '$d days ago';
-    }
-    if (diff.inDays < 30) {
-      final w = (diff.inDays / 7).floor();
-      return w == 1 ? 'A week ago' : '$w weeks ago';
-    }
-    final months = (diff.inDays / 30).floor();
-    return months == 1 ? 'A month ago' : '$months months ago';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/router.dart';
+import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -85,16 +86,17 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.background,
-              Color(0xFF0A0A0A),
-              AppColors.primary,
+              palette.background,
+              palette.imageScrim,
+              palette.brandGradient.last,
             ],
           ),
         ),
@@ -119,12 +121,12 @@ class _SplashScreenState extends State<SplashScreen>
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.accent.withValues(alpha: 0.3),
+                              color: palette.accent.withValues(alpha: 0.3),
                               blurRadius: 20,
                               spreadRadius: 5,
                             ),
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
+                              color: palette.shadow,
                               blurRadius: 10,
                               offset: const Offset(0, 8),
                             ),
@@ -138,12 +140,12 @@ class _SplashScreenState extends State<SplashScreen>
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary,
+                                  color: palette.primary,
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: const Icon(
-                                  Icons.play_circle_fill,
-                                  color: AppColors.accent,
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: palette.onPrimary,
                                   size: 60,
                                 ),
                               );
@@ -160,12 +162,11 @@ class _SplashScreenState extends State<SplashScreen>
                 // App Name with fade animation
                 FadeTransition(
                   opacity: _textAnimation,
-                  child: const Text(
-                    AppConstants.appName,
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  child: Text(
+                    context.l10n.appName,
+                    textAlign: TextAlign.center,
+                    style: context.styles.heading1.copyWith(
+                      color: palette.onImage,
                       letterSpacing: 2.0,
                     ),
                   ),
@@ -178,11 +179,11 @@ class _SplashScreenState extends State<SplashScreen>
                   position: _slideAnimation,
                   child: FadeTransition(
                     opacity: _textAnimation,
-                    child: const Text(
-                      'Learn • Stream • Grow',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textSecondary,
+                    child: Text(
+                      context.l10n.splashTagline,
+                      textAlign: TextAlign.center,
+                      style: context.styles.subtitle1.copyWith(
+                        color: palette.onImage.withValues(alpha: 0.85),
                         letterSpacing: 1.2,
                         fontWeight: FontWeight.w300,
                       ),
@@ -203,17 +204,15 @@ class _SplashScreenState extends State<SplashScreen>
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.accent.withValues(alpha: 0.8),
+                            palette.onImage.withValues(alpha: 0.8),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Loading your experience...',
-                        style: TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
+                      Text(
+                        context.l10n.splashLoading,
+                        style: context.styles.body2.copyWith(
+                          color: palette.onImage.withValues(alpha: 0.85),
                         ),
                       ),
                     ],

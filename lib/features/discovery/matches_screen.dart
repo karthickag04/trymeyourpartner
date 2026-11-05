@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/l10n.dart';
 import '../../app/router.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_provider.dart';
@@ -111,7 +112,8 @@ class _MatchesScreenState extends State<MatchesScreen>
         return Scaffold(
           appBar: AppBar(
             title: _buildPagerHeader(context),
-            backgroundColor: AppColors.primary,
+            backgroundColor: context.palette.primary,
+            foregroundColor: context.palette.onPrimary,
             elevation: 0,
           ),
           body: Consumer<MatrimonialProvider>(
@@ -178,15 +180,15 @@ class _MatchesScreenState extends State<MatchesScreen>
   }
 
   PreferredSizeWidget _buildPagerHeader(BuildContext context) {
-    const labels = [
-      'Matches',
-      'Top Picks',
-      'Interests',
-      'Shortlisted By You',
-      'Shortlisted You',
-      'Viewed',
-      'Viewed You',
-      'Accepted',
+    final labels = [
+      context.l10n.matchesTabMatches,
+      context.l10n.matchesTabTopPicks,
+      context.l10n.matchesTabInterests,
+      context.l10n.matchesTabShortlistedByYou,
+      context.l10n.matchesTabShortlistedYou,
+      context.l10n.matchesTabViewed,
+      context.l10n.matchesTabViewedYou,
+      context.l10n.matchesTabAccepted,
     ];
     return AppBar(
       automaticallyImplyLeading: false,
@@ -196,7 +198,8 @@ class _MatchesScreenState extends State<MatchesScreen>
       title: Row(
         children: [
           PopupMenuButton<int>(
-            icon: const Icon(Icons.menu, color: Colors.white),
+            tooltip: context.l10n.matchesChooseList,
+            icon: Icon(Icons.menu, color: context.palette.onPrimary),
             onSelected: (i) {
               setState(() => _pageIndex = i);
               _pageController.jumpToPage(i);
@@ -208,7 +211,11 @@ class _MatchesScreenState extends State<MatchesScreen>
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.arrow_left_rounded, color: Colors.white),
+            tooltip: context.l10n.matchesPreviousList,
+            icon: Icon(
+              Icons.arrow_left_rounded,
+              color: context.palette.onPrimary,
+            ),
             onPressed: () {
               final i = (_pageIndex - 1) % labels.length;
               final next = i < 0 ? i + labels.length : i;
@@ -221,15 +228,19 @@ class _MatchesScreenState extends State<MatchesScreen>
             child: Center(
               child: Text(
                 labels[_pageIndex],
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: context.palette.onPrimary,
                 ),
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.arrow_right_rounded, color: Colors.white),
+            tooltip: context.l10n.matchesNextList,
+            icon: Icon(
+              Icons.arrow_right_rounded,
+              color: context.palette.onPrimary,
+            ),
             onPressed: () {
               final next = (_pageIndex + 1) % labels.length;
               setState(() => _pageIndex = next);
@@ -245,8 +256,9 @@ class _MatchesScreenState extends State<MatchesScreen>
   Widget _buildSignInPrompt() {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Matches'),
-        backgroundColor: AppColors.primary,
+        title: Text(context.l10n.matchesTabMatches),
+        backgroundColor: context.palette.primary,
+        foregroundColor: context.palette.onPrimary,
         elevation: 0,
       ),
       body: Center(
@@ -258,28 +270,28 @@ class _MatchesScreenState extends State<MatchesScreen>
               Icon(
                 Icons.favorite_border,
                 size: AppDimensions.iconXL * 2,
-                color: AppColors.textTertiary,
+                color: context.palette.textTertiary,
               ),
               const SizedBox(height: AppDimensions.paddingL),
               Text(
-                'Sign In Required',
-                style: AppTextStyles.heading3,
+                context.l10n.signInRequiredTitle,
+                style: context.styles.heading3,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppDimensions.paddingS),
               Text(
-                'Sign in to find your perfect match and connect with compatible profiles',
-                style: AppTextStyles.body2,
+                context.l10n.signInRequiredBody,
+                style: context.styles.body2,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppDimensions.paddingL),
               ElevatedButton.icon(
                 onPressed: () => _showSignInDialog(context),
                 icon: const Icon(Icons.login),
-                label: const Text('Sign In'),
+                label: Text(context.l10n.authSignIn),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
+                  backgroundColor: context.palette.accent,
+                  foregroundColor: context.palette.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppDimensions.paddingL,
                     vertical: AppDimensions.paddingM,
@@ -304,10 +316,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.matchedProfiles.isEmpty) {
       return _buildEmptyState(
-        'No Matches Yet',
-        'Complete your profile to get better matches',
+        context.l10n.matchesEmptyTitle,
+        context.l10n.matchesEmptyBody,
         Icons.people_outline,
-        'Complete Profile',
+        context.l10n.actionCompleteProfile,
         () => _navigateToProfileCompletion(),
       );
     }
@@ -322,10 +334,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.receivedInterests.isEmpty) {
       return _buildEmptyState(
-        'No Interests Received',
-        'Your profile will receive interests from compatible matches',
+        context.l10n.interestsNoneReceivedTitle,
+        context.l10n.interestsNoneReceivedBody,
         Icons.favorite_border,
-        'Improve Profile',
+        context.l10n.actionImproveProfile,
         () => _navigateToProfileCompletion(),
       );
     }
@@ -340,10 +352,10 @@ class _MatchesScreenState extends State<MatchesScreen>
     final topPicks = provider.getTopPicks(limit: 50);
     if (topPicks.isEmpty) {
       return _buildEmptyState(
-        'No Top Picks yet',
-        'We’ll show highly compatible profiles here once matches are available',
+        context.l10n.topPicksEmptyTitle,
+        context.l10n.topPicksEmptyBody,
         Icons.recommend_outlined,
-        'Refresh Matches',
+        context.l10n.actionRefreshMatches,
         _loadMatches,
       );
     }
@@ -357,10 +369,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.shortlistedByMe.isEmpty) {
       return _buildEmptyState(
-        'No Shortlisted Profiles',
-        'Start browsing profiles and shortlist the ones you like',
+        context.l10n.shortlistEmptyTitle,
+        context.l10n.shortlistEmptyBody,
         Icons.star_border,
-        'Browse Profiles',
+        context.l10n.actionBrowseProfiles,
         () async {
           final authProvider = context.read<AuthProvider>();
           final userId = authProvider.user?.id;
@@ -383,10 +395,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.shortlistedMe.isEmpty) {
       return _buildEmptyState(
-        'No One Shortlisted You Yet',
-        'As more people discover your profile, you\'ll see them here',
+        context.l10n.shortlistedYouEmptyTitle,
+        context.l10n.shortlistedYouEmptyBody,
         Icons.star_outline,
-        'Improve Profile',
+        context.l10n.actionImproveProfile,
         () => _navigateToProfileCompletion(),
       );
     }
@@ -401,10 +413,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.viewedProfiles.isEmpty) {
       return _buildEmptyState(
-        'No Profile Views',
-        'Start viewing profiles to see them here',
+        context.l10n.viewedEmptyTitle,
+        context.l10n.viewedEmptyBody,
         Icons.visibility_off,
-        'Browse Profiles',
+        context.l10n.actionBrowseProfiles,
         () async {
           final authProvider = context.read<AuthProvider>();
           final userId = authProvider.user?.id;
@@ -427,10 +439,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.viewersOfMe.isEmpty) {
       return _buildEmptyState(
-        'No Profile Views Yet',
-        'We\'ll show people who viewed your profile here',
+        context.l10n.viewedYouEmptyTitle,
+        context.l10n.viewedYouEmptyBody,
         Icons.remove_red_eye_outlined,
-        'Refresh',
+        context.l10n.actionRefresh,
         () async {
           final authProvider = context.read<AuthProvider>();
           final userId = authProvider.user?.id;
@@ -452,10 +464,10 @@ class _MatchesScreenState extends State<MatchesScreen>
 
     if (provider.acceptedConnections.isEmpty) {
       return _buildEmptyState(
-        'No Accepted Connections',
-        'Accepted interests will appear here',
+        context.l10n.acceptedNoneTitle,
+        context.l10n.acceptedNoneBody,
         Icons.handshake_outlined,
-        'Refresh',
+        context.l10n.actionRefresh,
         () async {
           final authProvider = context.read<AuthProvider>();
           final userId = authProvider.user?.id;
@@ -471,13 +483,13 @@ class _MatchesScreenState extends State<MatchesScreen>
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(color: AppColors.accent),
+          CircularProgressIndicator(color: context.palette.accent),
           SizedBox(height: AppDimensions.paddingM),
-          Text('Loading matches...', style: AppTextStyles.subtitle1),
+          Text(context.l10n.matchesLoading, style: context.styles.subtitle1),
         ],
       ),
     );
@@ -493,24 +505,24 @@ class _MatchesScreenState extends State<MatchesScreen>
             Icon(
               Icons.error_outline,
               size: AppDimensions.iconXL,
-              color: AppColors.error,
+              color: context.palette.error,
             ),
             const SizedBox(height: AppDimensions.paddingM),
             Text(
-              'Something went wrong',
-              style: AppTextStyles.heading3,
+              context.l10n.errorTitle,
+              style: context.styles.heading3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingS),
             Text(
-              error,
-              style: AppTextStyles.body2,
+              context.l10n.errorLoadMatches,
+              style: context.styles.body2,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingL),
             ElevatedButton(
               onPressed: _loadMatches,
-              child: const Text('Try Again'),
+              child: Text(context.l10n.commonRetry),
             ),
           ],
         ),
@@ -534,18 +546,18 @@ class _MatchesScreenState extends State<MatchesScreen>
             Icon(
               icon,
               size: AppDimensions.iconXL * 1.5,
-              color: AppColors.textTertiary,
+              color: context.palette.textTertiary,
             ),
             const SizedBox(height: AppDimensions.paddingL),
             Text(
               title,
-              style: AppTextStyles.heading3,
+              style: context.styles.heading3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingS),
             Text(
               description,
-              style: AppTextStyles.body2,
+              style: context.styles.body2,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppDimensions.paddingL),
@@ -614,8 +626,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Interest sent to ${profile.name}'),
-                backgroundColor: AppColors.success,
+                content: Text(context.l10n.interestSentTo(profile.name)),
+                backgroundColor: context.palette.success,
               ),
             );
           }
@@ -624,8 +636,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Failed to send interest: $error'),
-                backgroundColor: AppColors.error,
+                content: Text(context.l10n.interestSendFailed),
+                backgroundColor: context.palette.error,
               ),
             );
           }
@@ -641,9 +653,11 @@ class _MatchesScreenState extends State<MatchesScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              wasShortlisted ? 'Removed from shortlist' : 'Added to shortlist',
+              wasShortlisted
+                  ? context.l10n.shortlistRemoved
+                  : context.l10n.shortlistAdded,
             ),
-            backgroundColor: AppColors.accent,
+            backgroundColor: context.palette.accent,
           ),
         );
       }
@@ -665,8 +679,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           provider.loadReceivedInterests(currentUserId);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Interest accepted from ${profile.name}'),
-              backgroundColor: AppColors.success,
+              content: Text(context.l10n.interestAcceptedFrom(profile.name)),
+              backgroundColor: context.palette.success,
             ),
           );
         })
@@ -674,8 +688,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to accept interest: $e'),
-              backgroundColor: AppColors.error,
+              content: Text(context.l10n.interestAcceptFailed),
+              backgroundColor: context.palette.error,
             ),
           );
         });
@@ -695,8 +709,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           provider.loadReceivedInterests(currentUserId);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Interest rejected from ${profile.name}'),
-              backgroundColor: AppColors.textSecondary,
+              content: Text(context.l10n.interestRejectedFrom(profile.name)),
+              backgroundColor: context.palette.textSecondary,
             ),
           );
         })
@@ -704,8 +718,8 @@ class _MatchesScreenState extends State<MatchesScreen>
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to reject interest: $e'),
-              backgroundColor: AppColors.error,
+              content: Text(context.l10n.interestDeclineFailed),
+              backgroundColor: context.palette.error,
             ),
           );
         });
@@ -713,9 +727,9 @@ class _MatchesScreenState extends State<MatchesScreen>
 
   void _showSignInDialog(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please restart the app to sign in.'),
-        backgroundColor: AppColors.warning,
+      SnackBar(
+        content: Text(context.l10n.restartToSignIn),
+        backgroundColor: context.palette.warning,
       ),
     );
   }

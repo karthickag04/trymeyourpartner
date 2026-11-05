@@ -5,6 +5,7 @@ import '../../core/services/profile_service.dart';
 import '../../shared/models/profile.dart' as basic;
 import '../../shared/state/matrimonial_provider.dart';
 import 'package:provider/provider.dart';
+import '../../l10n/l10n.dart';
 
 class RequestsInboxScreen extends StatefulWidget {
   const RequestsInboxScreen({super.key});
@@ -64,12 +65,12 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact Requests'),
+        title: Text(context.l10n.contactRequestsTitle),
         bottom: TabBar(
           controller: _tab,
-          tabs: const [
-            Tab(text: 'Received'),
-            Tab(text: 'Sent'),
+          tabs: [
+            Tab(text: context.l10n.contactRequestsReceived),
+            Tab(text: context.l10n.contactRequestsSent),
           ],
         ),
       ),
@@ -90,7 +91,7 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
 
   Widget _buildList(List<ContactRequest> list, {required bool received}) {
     if (list.isEmpty) {
-      return const Center(child: Text('No requests'));
+      return Center(child: Text(context.l10n.contactRequestsEmpty));
     }
     return ListView.separated(
       itemCount: list.length,
@@ -100,7 +101,9 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
         final otherId = received ? r.requesterProfileId : r.targetProfileId;
         final other = _profiles[otherId];
         final title = other?.name ?? otherId;
-        final subtitle = 'Status: ${r.status.name}';
+        final subtitle = context.l10n.contactRequestStatus(
+          _statusLabel(context, r.status),
+        );
         return ListTile(
           leading: const CircleAvatar(child: Icon(Icons.person)),
           title: Text(title),
@@ -121,7 +124,7 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
                         if (!mounted) return;
                         _load();
                       },
-                      child: const Text('Accept'),
+                      child: Text(context.l10n.actionAccept),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -135,7 +138,7 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
                         if (!mounted) return;
                         _load();
                       },
-                      child: const Text('Decline'),
+                      child: Text(context.l10n.actionDecline),
                     ),
                   ],
                 )
@@ -143,5 +146,15 @@ class _RequestsInboxScreenState extends State<RequestsInboxScreen>
         );
       },
     );
+  }
+
+  String _statusLabel(BuildContext context, ContactRequestStatus status) {
+    final l = context.l10n;
+    return switch (status) {
+      ContactRequestStatus.pending => l.contactStatusPending,
+      ContactRequestStatus.accepted => l.contactStatusAccepted,
+      ContactRequestStatus.declined => l.contactStatusDeclined,
+      ContactRequestStatus.cancelled => l.contactStatusCancelled,
+    };
   }
 }

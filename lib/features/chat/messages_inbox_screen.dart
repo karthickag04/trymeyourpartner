@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../app/di/service_locator.dart';
 import 'chat_thread_screen.dart';
 import '../../core/services/profile_service.dart';
 import '../../shared/widgets/storage_image.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
 
 class MessagesInboxScreen extends StatefulWidget {
   const MessagesInboxScreen({super.key});
@@ -23,9 +25,9 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
     final me = context.watch<MatrimonialProvider>().currentUserProfile;
     final myId = me?.id;
     return Scaffold(
-      appBar: AppBar(title: const Text('Messages')),
+      appBar: AppBar(title: Text(context.l10n.messagesTitle)),
       body: myId == null
-          ? const Center(child: Text('Please sign in to see messages'))
+          ? Center(child: Text(context.l10n.messagesSignInRequired))
           : FutureBuilder<List<_InboxItem>>(
               future: _fetchInbox(myId),
               builder: (context, snap) {
@@ -34,12 +36,22 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
                 }
                 if (snap.hasError) {
                   return Center(
-                    child: Text('Failed to load messages: ${snap.error}'),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(context.l10n.messagesLoadFailed),
+                        const SizedBox(height: AppDimensions.paddingS),
+                        TextButton(
+                          onPressed: () => setState(() {}),
+                          child: Text(context.l10n.commonRetry),
+                        ),
+                      ],
+                    ),
                   );
                 }
                 final items = snap.data ?? [];
                 if (items.isEmpty) {
-                  return const Center(child: Text('No messages yet'));
+                  return Center(child: Text(context.l10n.messagesEmpty));
                 }
                 // Batch-load unread counts once per visible set
                 Future.microtask(() => _loadUnreadBatchIfNeeded(myId, items));
@@ -62,12 +74,12 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
                       builder: (context, activeSnap) {
                         final isActive = activeSnap.data;
                         final showName = (isActive == false)
-                            ? 'Profile not active'
+                            ? context.l10n.profileNotActive
                             : (c.otherName ?? c.otherProfileId);
                         final unread = _unreadByPeer[c.otherProfileId] ?? 0;
                         return ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Colors.grey.withValues(alpha: 0.2),
+                            backgroundColor: context.palette.surfaceMuted,
                             child:
                                 (c.otherImageUrl != null &&
                                     c.otherImageUrl!.isNotEmpty)
@@ -105,15 +117,22 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.redAccent,
+                                    color: context.palette.error,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Text(
-                                    unread > 99 ? '99+' : '$unread',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
+                                  child: Semantics(
+                                    label: context.l10n.unreadCountLabel(
+                                      unread,
+                                    ),
+                                    excludeSemantics: true,
+                                    child: Text(
+                                      unread > 99
+                                          ? context.l10n.countOverflow(99)
+                                          : context.formatNumber(unread),
+                                      style: context.styles.micro.copyWith(
+                                        color: context.colors.onError,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -122,9 +141,9 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
                           onTap: (isActive == false)
                               ? () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                    SnackBar(
                                       content: Text(
-                                        'This profile is not active currently',
+                                        context.l10n.profileNotActiveNow,
                                       ),
                                     ),
                                   );
@@ -208,16 +227,10 @@ class _MessagesInboxScreenState extends State<MessagesInboxScreen> {
   }
 
   String _fmtTime(DateTime t) {
-    try {
-      final locale = Localizations.localeOf(context).toString();
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final d = DateTime(t.year, t.month, t.day);
-      if (d == today) return DateFormat.jm(locale).format(t);
-      return DateFormat.yMMMd(locale).format(t);
-    } catch (_) {
-      return t.toLocal().toString();
-    }
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final d = DateTime(t.year, t.month, t.day);
+    return d == today ? context.formatTime(t) : context.formatDate(t);
   }
 }
 

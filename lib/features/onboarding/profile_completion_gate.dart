@@ -59,10 +59,10 @@ class _ProfileCompletionGateState extends State<ProfileCompletionGate> {
         // visitors to /login), show a spinner rather than registration, which
         // would query member data without a session.
         if (auth.isLoading || !auth.isAuthenticated || matrimony.isLoading) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
+          return Scaffold(
+            backgroundColor: context.palette.background,
             body: Center(
-              child: CircularProgressIndicator(color: AppColors.accent),
+              child: CircularProgressIndicator(color: context.palette.accent),
             ),
           );
         }

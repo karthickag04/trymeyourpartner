@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/l10n.dart';
+import '../../l10n/option_labels.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
@@ -436,7 +439,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text(context.l10n.editProfileTitle),
         actions: [
           PopupMenuButton<String>(
             onSelected: (v) async {
@@ -444,39 +447,39 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
               if (v == 'delete') await _confirmDelete();
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'deactivate',
-                child: Text('Deactivate profile'),
+                child: Text(context.l10n.actionDeactivateProfile),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'delete',
-                child: Text('Delete profile'),
+                child: Text(context.l10n.actionDeleteProfile),
               ),
             ],
           ),
         ],
-        backgroundColor: AppColors.primary,
+        backgroundColor: context.palette.primary,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          tabs: const [
-            Tab(text: 'Basic'),
-            Tab(text: 'Location & Career'),
-            Tab(text: 'Contact'),
-            Tab(text: 'Family'),
-            Tab(text: 'Partner Prefs'),
-            Tab(text: 'Photos'),
+          tabs: [
+            Tab(text: context.l10n.editTabBasic),
+            Tab(text: context.l10n.editTabLocationCareer),
+            Tab(text: context.l10n.editTabContact),
+            Tab(text: context.l10n.editTabFamily),
+            Tab(text: context.l10n.editTabPartner),
+            Tab(text: context.l10n.editTabPhotos),
           ],
         ),
       ),
       body: !ready
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 12),
-                  Text('Loading your profile...'),
+                  Text(context.l10n.profileLoadingYours),
                 ],
               ),
             )
@@ -485,7 +488,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
               children: [
                 // Basic
                 _buildTabSection(
-                  title: 'Basic Information',
+                  title: context.l10n.sectionBasicInfo,
                   isEditing: _editBasic,
                   onToggleEdit: () => setState(() => _editBasic = !_editBasic),
                   enableEdit: ready,
@@ -494,26 +497,33 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     child: Column(
                       children: [
                         _requirementBanner(),
-                        _rowText('Full Name', _nameCtrl, requiredField: true),
                         _rowText(
-                          'Email',
+                          context.l10n.fieldFullName,
+                          _nameCtrl,
+                          requiredField: true,
+                        ),
+                        _rowText(
+                          context.l10n.authEmailLabel,
                           _emailCtrl,
                           keyboardType: TextInputType.emailAddress,
                           readOnly: true,
-                          helperText: 'Your login email. Only you can see it.',
+                          helperText: context.l10n.editEmailHelper,
                         ),
-                        _rowDropdown('Gender', ['Male', 'Female'], _gender, (
-                          v,
-                        ) {
-                          setState(() => _gender = v!);
-                          _scheduleAutoSave('Basic Info');
-                        }),
-                        _rowDate('Date of Birth *', _dob, (d) {
+                        _rowDropdown(
+                          context.l10n.fieldGender,
+                          ['Male', 'Female'],
+                          _gender,
+                          (v) {
+                            setState(() => _gender = v!);
+                            _scheduleAutoSave('Basic Info');
+                          },
+                        ),
+                        _rowDate(context.l10n.fieldDobRequired, _dob, (d) {
                           setState(() => _dob = d);
                           _scheduleAutoSave('Basic Info');
                         }),
                         _rowDropdown(
-                          'Religion *',
+                          context.l10n.fieldReligionRequired,
                           AppConstants.religionCategories,
                           _religion,
                           (v) {
@@ -525,12 +535,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             _scheduleAutoSave('Basic Info');
                           },
                         ),
-                        _rowDropdown('Caste *', _casteOptions, _caste, (v) {
-                          setState(() => _caste = v);
-                          _scheduleAutoSave('Basic Info');
-                        }),
                         _rowDropdown(
-                          'Marital Status',
+                          context.l10n.fieldCasteRequired,
+                          _casteOptions,
+                          _caste,
+                          (v) {
+                            setState(() => _caste = v);
+                            _scheduleAutoSave('Basic Info');
+                          },
+                        ),
+                        _rowDropdown(
+                          context.l10n.fieldMaritalStatus,
                           AppConstants.maritalStatuses,
                           _maritalStatus,
                           (v) {
@@ -538,13 +553,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             _scheduleAutoSave('Basic Info');
                           },
                         ),
-                        _rowText('About', _aboutCtrl, maxLines: 3),
+                        _rowText(
+                          context.l10n.fieldAbout,
+                          _aboutCtrl,
+                          maxLines: 3,
+                        ),
                       ],
                     ),
                   ),
                 ),
                 _buildTabSection(
-                  title: 'Location & Career',
+                  title: context.l10n.editSectionLocationCareer,
                   isEditing: _editLocation,
                   onToggleEdit: () =>
                       setState(() => _editLocation = !_editLocation),
@@ -555,7 +574,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                       children: [
                         _requirementBanner(),
                         _rowDropdown(
-                          'State *',
+                          context.l10n.fieldStateRequired,
                           _stateOptions.map((e) => e.name).toList(),
                           _state,
                           (v) {
@@ -568,7 +587,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           },
                         ),
                         _rowDropdown(
-                          'District *',
+                          context.l10n.fieldDistrictRequired,
                           _districtOptions.map((e) => e.name).toList(),
                           _district,
                           (v) {
@@ -576,9 +595,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             _scheduleAutoSave('Location & Career');
                           },
                         ),
-                        _rowText('City', _cityCtrl),
+                        _rowText(context.l10n.fieldCity, _cityCtrl),
                         _rowDropdown(
-                          'Education *',
+                          context.l10n.fieldEducationRequired,
                           _educationOptions,
                           _education,
                           (v) {
@@ -587,7 +606,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           },
                         ),
                         _rowDropdown(
-                          'Occupation',
+                          context.l10n.fieldOccupation,
                           _occupationOptions,
                           _occupation,
                           (v) {
@@ -595,19 +614,22 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             _scheduleAutoSave('Location & Career');
                           },
                         ),
-                        _rowText('Working Location', _workingLocationCtrl),
                         _rowText(
-                          'Annual Income',
+                          context.l10n.fieldWorkingLocation,
+                          _workingLocationCtrl,
+                        ),
+                        _rowText(
+                          context.l10n.fieldAnnualIncome,
                           _annualIncomeCtrl,
                           keyboardType: TextInputType.number,
                         ),
                         _rowNumber(
-                          'Height (cm)',
+                          context.l10n.fieldHeightCm,
                           initial: _heightCm,
                           onChanged: (v) => _heightCm = v,
                         ),
                         _rowNumber(
-                          'Weight (kg)',
+                          context.l10n.fieldWeightKg,
                           initial: _weightKg,
                           onChanged: (v) => _weightKg = v,
                         ),
@@ -616,7 +638,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                   ),
                 ),
                 _buildTabSection(
-                  title: 'Contact Information',
+                  title: context.l10n.sectionContactInfo,
                   isEditing: _editContact,
                   onToggleEdit: () =>
                       setState(() => _editContact = !_editContact),
@@ -626,27 +648,27 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     child: Column(
                       children: [
                         _rowText(
-                          'Phone',
+                          context.l10n.fieldPhoneShort,
                           _phoneCtrl,
                           keyboardType: TextInputType.phone,
                         ),
                         _rowText(
-                          'Alternate Phone',
+                          context.l10n.fieldAltPhone,
                           _altPhoneCtrl,
                           keyboardType: TextInputType.phone,
                         ),
                         _rowText(
-                          'WhatsApp',
+                          context.l10n.helpWhatsapp,
                           _whatsappCtrl,
                           keyboardType: TextInputType.phone,
                         ),
                         _rowText(
-                          'Current Address',
+                          context.l10n.fieldCurrentAddress,
                           _currentAddrCtrl,
                           maxLines: 2,
                         ),
                         _rowText(
-                          'Permanent Address',
+                          context.l10n.fieldPermanentAddress,
                           _permanentAddrCtrl,
                           maxLines: 2,
                         ),
@@ -655,21 +677,21 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           onChanged: _editContact
                               ? (v) => setState(() => _showPhone = v)
                               : null,
-                          title: const Text('Show Phone Number'),
+                          title: Text(context.l10n.showPhoneNumber),
                         ),
                         SwitchListTile(
                           value: _showAddress,
                           onChanged: _editContact
                               ? (v) => setState(() => _showAddress = v)
                               : null,
-                          title: const Text('Show Address'),
+                          title: Text(context.l10n.showAddress),
                         ),
                       ],
                     ),
                   ),
                 ),
                 _buildTabSection(
-                  title: 'Family Information',
+                  title: context.l10n.sectionFamilyInfo,
                   isEditing: _editFamily,
                   onToggleEdit: () =>
                       setState(() => _editFamily = !_editFamily),
@@ -678,40 +700,53 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     key: _familyFormKey,
                     child: Column(
                       children: [
-                        _rowText('Father Name', _fatherNameCtrl),
-                        _rowText('Father Occupation', _fatherOccCtrl),
-                        _rowText('Mother Name', _motherNameCtrl),
-                        _rowText('Mother Occupation', _motherOccCtrl),
+                        _rowText(context.l10n.fieldFatherName, _fatherNameCtrl),
                         _rowText(
-                          'Brothers',
+                          context.l10n.fieldFatherOccupation,
+                          _fatherOccCtrl,
+                        ),
+                        _rowText(context.l10n.fieldMotherName, _motherNameCtrl),
+                        _rowText(
+                          context.l10n.fieldMotherOccupation,
+                          _motherOccCtrl,
+                        ),
+                        _rowText(
+                          context.l10n.fieldBrothers,
                           _brothersCtrl,
                           keyboardType: TextInputType.number,
                         ),
                         _rowText(
-                          'Sisters',
+                          context.l10n.fieldSisters,
                           _sistersCtrl,
                           keyboardType: TextInputType.number,
                         ),
                         _rowDropdown(
-                          'Family Type',
-                          ['Nuclear', 'Joint'],
+                          context.l10n.fieldFamilyType,
+                          [
+                            context.l10n.familyNuclear,
+                            context.l10n.familyJoint,
+                          ],
                           _familyType,
                           (v) => setState(() => _familyType = v),
                         ),
                         _rowDropdown(
-                          'Family Values',
-                          ['Traditional', 'Modern', 'Moderate'],
+                          context.l10n.fieldFamilyValues,
+                          [
+                            context.l10n.valuesTraditional,
+                            context.l10n.valuesModern,
+                            context.l10n.valuesModerate,
+                          ],
                           _familyValues,
                           (v) => setState(() => _familyValues = v),
                         ),
                         _rowDropdown(
-                          'Family Status',
+                          context.l10n.fieldFamilyStatus,
                           ['Middle Class', 'Upper Middle Class', 'Rich'],
                           _familyStatus,
                           (v) => setState(() => _familyStatus = v),
                         ),
                         _rowText(
-                          'Family Details',
+                          context.l10n.fieldFamilyDetails,
                           _familyDetailsCtrl,
                           maxLines: 3,
                         ),
@@ -720,7 +755,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                   ),
                 ),
                 _buildTabSection(
-                  title: 'Partner Preferences',
+                  title: context.l10n.sectionPartnerPreferences,
                   isEditing: _editPartner,
                   onToggleEdit: () =>
                       setState(() => _editPartner = !_editPartner),
@@ -733,7 +768,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           children: [
                             Expanded(
                               child: _rowNumber(
-                                'Min Age',
+                                context.l10n.fieldMinAge,
                                 initial: _ppMinAge?.toDouble(),
                                 onChanged: (v) => _ppMinAge = v?.round(),
                               ),
@@ -741,7 +776,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             const SizedBox(width: 12),
                             Expanded(
                               child: _rowNumber(
-                                'Max Age',
+                                context.l10n.fieldMaxAge,
                                 initial: _ppMaxAge?.toDouble(),
                                 onChanged: (v) => _ppMaxAge = v?.round(),
                               ),
@@ -752,7 +787,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           children: [
                             Expanded(
                               child: _rowNumber(
-                                'Min Height (cm)',
+                                context.l10n.fieldMinHeight,
                                 initial: _ppMinHeight,
                                 onChanged: (v) => _ppMinHeight = v,
                               ),
@@ -760,32 +795,38 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             const SizedBox(width: 12),
                             Expanded(
                               child: _rowNumber(
-                                'Max Height (cm)',
+                                context.l10n.fieldMaxHeight,
                                 initial: _ppMaxHeight,
                                 onChanged: (v) => _ppMaxHeight = v,
                               ),
                             ),
                           ],
                         ),
-                        _chipsInput('Preferred States', _ppPreferredStates),
                         _chipsInput(
-                          'Preferred Districts',
+                          context.l10n.fieldPreferredStates,
+                          _ppPreferredStates,
+                        ),
+                        _chipsInput(
+                          context.l10n.fieldPreferredDistricts,
                           _ppPreferredDistricts,
                         ),
-                        _chipsInput('Preferred Castes', _ppPreferredCastes),
                         _chipsInput(
-                          'Preferred Education',
+                          context.l10n.fieldPreferredCastes,
+                          _ppPreferredCastes,
+                        ),
+                        _chipsInput(
+                          context.l10n.fieldPreferredEducation,
                           _ppPreferredEducation,
                         ),
                         _chipsInput(
-                          'Preferred Occupations',
+                          context.l10n.fieldPreferredOccupations,
                           _ppPreferredOccupation,
                         ),
                         Row(
                           children: [
                             Expanded(
                               child: _rowNumber(
-                                'Min Income',
+                                context.l10n.fieldMinIncome,
                                 initial: _ppMinIncome,
                                 onChanged: (v) => _ppMinIncome = v,
                               ),
@@ -793,7 +834,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                             const SizedBox(width: 12),
                             Expanded(
                               child: _rowNumber(
-                                'Max Income',
+                                context.l10n.fieldMaxIncome,
                                 initial: _ppMaxIncome,
                                 onChanged: (v) => _ppMaxIncome = v,
                               ),
@@ -801,12 +842,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           ],
                         ),
                         _multiSelect(
-                          'Preferred Marital Status',
+                          context.l10n.fieldPreferredMaritalStatus,
                           AppConstants.maritalStatuses,
                           _ppPreferredMaritalStatus,
                         ),
                         _rowText(
-                          'Other Preferences',
+                          context.l10n.fieldOtherPreferences,
                           _ppOtherCtrl,
                           maxLines: 2,
                         ),
@@ -816,7 +857,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                 ),
                 // Photos
                 _buildTabSection(
-                  title: 'Profile Photos',
+                  title: context.l10n.profilePhotosTitle,
                   isEditing: _editPhotos,
                   onToggleEdit: () =>
                       setState(() => _editPhotos = !_editPhotos),
@@ -836,7 +877,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                       _tabController.animateTo(_currentIndex - 1);
                     },
               icon: const Icon(Icons.chevron_left),
-              label: const Text('Previous'),
+              label: Text(context.l10n.actionPrevious),
             ),
             const Spacer(),
             ElevatedButton.icon(
@@ -844,19 +885,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                   ? () => _saveCurrentSection(provider, auth)
                   : null,
               icon: _saving
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 16,
                       height: 16,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: context.palette.onPrimary,
                       ),
                     )
                   : const Icon(Icons.save),
-              label: const Text('Save'),
+              label: Text(context.l10n.commonSave),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                foregroundColor: Colors.white,
+                backgroundColor: context.palette.accent,
+                foregroundColor: context.palette.onPrimary,
               ),
             ),
             const SizedBox(width: 8),
@@ -871,8 +912,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     Navigator.pop(context);
                     // Optionally inform completion
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Profile saved. Loading matches...'),
+                      SnackBar(
+                        content: Text(context.l10n.profileSavedLoadingMatches),
                         duration: Duration(seconds: 2),
                       ),
                     );
@@ -880,11 +921,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     context.read<MatrimonialProvider>().refreshMatches();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Please fill all mandatory fields marked with * to proceed.',
-                        ),
-                        backgroundColor: AppColors.warning,
+                      SnackBar(
+                        content: Text(context.l10n.fillMandatoryFields),
+                        backgroundColor: context.palette.warning,
                       ),
                     );
                   }
@@ -896,7 +935,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                     : Icons.chevron_right,
               ),
               label: Text(
-                _currentIndex == _tabController.length - 1 ? 'Finish' : 'Next',
+                _currentIndex == _tabController.length - 1
+                    ? context.l10n.actionFinish
+                    : context.l10n.actionNext,
               ),
             ),
           ],
@@ -914,9 +955,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final profile = provider.currentUserProfile;
     if (profile == null) {
       messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+        SnackBar(
+          content: Text(context.l10n.profileNotLoaded),
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -925,18 +966,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Deactivate profile'),
-        content: const Text(
-          'Deactivating will hide your profile from searches and disable inbound messages. You can reactivate later by editing your profile.',
-        ),
+        title: Text(context.l10n.actionDeactivateProfile),
+        content: Text(context.l10n.deactivateBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Deactivate'),
+            child: Text(context.l10n.actionDeactivate),
           ),
         ],
       ),
@@ -948,9 +987,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       final success = await MatrimonialService.deactivateProfile(profile.id);
       if (success) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Profile deactivated'),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.profileDeactivated),
+            backgroundColor: context.palette.success,
           ),
         );
         // Refresh provider state and navigate back to main
@@ -960,8 +999,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     } catch (e) {
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Failed to deactivate: $e'),
-          backgroundColor: AppColors.error,
+          content: Text(context.l10n.profileDeactivateFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -976,9 +1015,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final profile = provider.currentUserProfile;
     if (profile == null) {
       messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Profile not loaded'),
-          backgroundColor: AppColors.error,
+        SnackBar(
+          content: Text(context.l10n.profileNotLoaded),
+          backgroundColor: context.palette.error,
         ),
       );
       return;
@@ -987,19 +1026,20 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete profile'),
-        content: const Text(
-          'Deleting your profile will permanently remove profile records. A minimal archive will be kept for potential support restore. This action cannot be undone.',
-        ),
+        title: Text(context.l10n.actionDeleteProfile),
+        content: Text(context.l10n.deleteBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.palette.error,
+              foregroundColor: context.colors.onError,
+            ),
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Delete'),
+            child: Text(context.l10n.actionDelete),
           ),
         ],
       ),
@@ -1011,9 +1051,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       final success = await MatrimonialService.deleteProfile(profile.id);
       if (success) {
         messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Profile deleted. Signing out...'),
-            backgroundColor: AppColors.success,
+          SnackBar(
+            content: Text(context.l10n.profileDeleted),
+            backgroundColor: context.palette.success,
           ),
         );
         // Sign out the user to clear session and navigate to login
@@ -1026,8 +1066,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     } catch (e) {
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Failed to delete profile: $e'),
-          backgroundColor: AppColors.error,
+          content: Text(context.l10n.profileDeleteFailed),
+          backgroundColor: context.palette.error,
         ),
       );
     }
@@ -1058,8 +1098,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           border: const OutlineInputBorder(),
         ),
         validator: requiredField
-            ? (v) =>
-                  (v == null || v.trim().isEmpty) ? '$label is required' : null
+            ? (v) => (v == null || v.trim().isEmpty)
+                  ? context.l10n.fieldRequired(label)
+                  : null
             : null,
         onChanged: onChanged,
       ),
@@ -1072,14 +1113,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.warning.withValues(alpha: 0.08),
+        color: context.palette.warning.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: context.palette.warning.withValues(alpha: 0.3),
+        ),
       ),
-      child: const Text(
-        'Fields marked with * are mandatory to see relevant matches.',
-        style: TextStyle(fontSize: 12),
-      ),
+      child: Text(context.l10n.mandatoryBanner, style: context.styles.caption),
     );
   }
 
@@ -1111,7 +1151,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             isExpanded: true,
             value: safeValue,
             items: uniqueItems
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(context.optionLabel(e)),
+                  ),
+                )
                 .toList(),
             onChanged: onChanged,
           ),
@@ -1144,9 +1189,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             border: const OutlineInputBorder(),
           ),
           child: Text(
-            value != null
-                ? value.toIso8601String().split('T').first
-                : 'Select date',
+            value != null ? context.formatDate(value) : context.l10n.selectDate,
           ),
         ),
       ),
@@ -1179,7 +1222,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTextStyles.subtitle2),
+          Text(label, style: context.styles.subtitle2),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -1198,8 +1241,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
               Expanded(
                 child: TextField(
                   controller: ctrl,
-                  decoration: const InputDecoration(
-                    hintText: 'Type and press + to add',
+                  decoration: InputDecoration(
+                    hintText: context.l10n.chipsInputHint,
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -1272,14 +1315,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         children: [
           Row(
             children: [
-              Expanded(child: Text(title, style: AppTextStyles.heading3)),
+              Expanded(child: Text(title, style: context.styles.heading3)),
               OutlinedButton.icon(
                 onPressed: enableEdit ? onToggleEdit : null,
                 icon: Icon(isEditing ? Icons.lock_open : Icons.edit, size: 18),
-                label: Text(isEditing ? 'Done' : 'Edit'),
+                label: Text(
+                  isEditing ? context.l10n.commonDone : context.l10n.actionEdit,
+                ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.accent,
-                  side: const BorderSide(color: AppColors.accent),
+                  foregroundColor: context.palette.accent,
+                  side: BorderSide(color: context.palette.accent),
                 ),
               ),
             ],
@@ -1316,7 +1361,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           aboutMe: _aboutCtrl.text.trim(),
         );
       },
-      'Basic information auto-saved',
+      context.l10n.savedBasicAuto,
       showSnackbar: false,
       isAutoSave: true,
     );
@@ -1345,7 +1390,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           weight: _weightKg,
         );
       },
-      'Location & career auto-saved',
+      context.l10n.savedLocationAuto,
       showSnackbar: false,
       isAutoSave: true,
     );
@@ -1382,7 +1427,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Contact information auto-saved',
+      context.l10n.savedContactAuto,
       showSnackbar: false,
       isAutoSave: true,
       saveContact: true,
@@ -1421,7 +1466,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Family information auto-saved',
+      context.l10n.savedFamilyAuto,
       showSnackbar: false,
       isAutoSave: true,
       saveFamily: true,
@@ -1455,7 +1500,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Partner preferences auto-saved',
+      context.l10n.savedPartnerAuto,
       showSnackbar: false,
       isAutoSave: true,
       savePartner: true,
@@ -1484,11 +1529,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         // Profile isn't ready yet; avoid throwing noisy errors. Inform user on manual save.
         if (!isAutoSave && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Profile is loading. Please try again in a moment.',
-              ),
-              backgroundColor: AppColors.warning,
+            SnackBar(
+              content: Text(context.l10n.profileStillLoading),
+              backgroundColor: context.palette.warning,
             ),
           );
         }
@@ -1515,9 +1558,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              isAutoSave ? '💾 Auto-saved: $successMessage' : successMessage,
+              isAutoSave
+                  ? context.l10n.autoSavedPrefix(successMessage)
+                  : successMessage,
             ),
-            backgroundColor: AppColors.success,
+            backgroundColor: context.palette.success,
             duration: Duration(seconds: isAutoSave ? 2 : 3),
           ),
         );
@@ -1530,9 +1575,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              isAutoSave ? '❌ Auto-save failed: $e' : 'Failed to save: $e',
+              isAutoSave
+                  ? context.l10n.autoSaveFailed
+                  : context.l10n.saveFailed,
             ),
-            backgroundColor: AppColors.error,
+            backgroundColor: context.palette.error,
             duration: Duration(seconds: 4),
           ),
         );
@@ -1553,9 +1600,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         (_religion == null || _religion!.trim().isEmpty) ||
         (_caste == null || _caste!.trim().isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill Date of Birth, Religion and Caste'),
-          backgroundColor: AppColors.warning,
+        SnackBar(
+          content: Text(context.l10n.fillDobReligionCaste),
+          backgroundColor: context.palette.warning,
         ),
       );
       return;
@@ -1571,7 +1618,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         maritalStatus: _maritalStatus,
         aboutMe: _aboutCtrl.text.trim(),
       );
-    }, 'Basic information saved');
+    }, context.l10n.savedBasic);
     // If caste updated, refresh matches
     // ignore: unawaited_futures
     provider.refreshMatches();
@@ -1597,7 +1644,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
         height: _heightCm,
         weight: _weightKg,
       );
-    }, 'Location & career saved');
+    }, context.l10n.savedLocation);
     // Refresh matches if mandatory fields impacted
     // ignore: unawaited_futures
     provider.refreshMatches();
@@ -1635,7 +1682,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Contact information saved',
+      context.l10n.savedContact,
       saveContact: true,
     );
     setState(() => _editContact = false);
@@ -1675,7 +1722,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Family information saved',
+      context.l10n.savedFamily,
       saveFamily: true,
     );
     setState(() => _editFamily = false);
@@ -1712,7 +1759,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           ),
         );
       },
-      'Partner preferences saved',
+      context.l10n.savedPartner,
       savePartner: true,
     );
     // Partner preferences change can influence matches
@@ -1797,10 +1844,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Add up to 3 clear photos. Crop to show your face. Avoid filters or group photos.',
-          style: TextStyle(fontSize: 12),
-        ),
+        Text(context.l10n.photosGuidance, style: context.styles.caption),
         const SizedBox(height: 12),
         GridView.count(
           crossAxisCount: 3,
@@ -1828,8 +1872,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.grey[200],
-              border: Border.all(color: Colors.grey.shade300),
+              color: context.palette.surfaceMuted,
+              border: Border.all(color: context.palette.divider),
               // For Supabase private we may have a storage path; resolve signed URL lazily
               // For HTTP we already store a URL
             ),
@@ -1855,13 +1899,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.black54,
+                    color: context.palette.imageScrim.withValues(alpha: 0.55),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.delete,
-                    color: Colors.white,
+                    color: context.palette.onImage,
                     size: 16,
+                    semanticLabel: context.l10n.photoRemove,
                   ),
                 ),
               ),
@@ -1873,12 +1918,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.black45,
+                  color: context.palette.imageScrim.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  'Photo ${slot + 1}',
-                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                  context.l10n.photoSlot(slot + 1),
+                  style: context.styles.micro.copyWith(
+                    color: context.palette.onImage,
+                  ),
                 ),
               ),
             ),
@@ -1900,7 +1947,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
           children: [
             ListTile(
               leading: const Icon(Icons.photo_camera),
-              title: const Text('Take photo'),
+              title: Text(context.l10n.photoTake),
               onTap: () {
                 debugPrint('[PhotoUI] source selected: camera');
                 Navigator.pop(ctx, 'camera');
@@ -1908,7 +1955,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Choose from gallery'),
+              title: Text(context.l10n.photoGallery),
               onTap: () {
                 debugPrint('[PhotoUI] source selected: gallery');
                 Navigator.pop(ctx, 'gallery');
@@ -1916,7 +1963,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
             ),
             ListTile(
               leading: const Icon(Icons.close),
-              title: const Text('Cancel'),
+              title: Text(context.l10n.commonCancel),
               onTap: () {
                 debugPrint('[PhotoUI] source selection: cancel');
                 Navigator.pop(ctx);
@@ -1973,16 +2020,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Remove photo?'),
-        content: const Text('This will delete the photo from storage.'),
+        title: Text(context.l10n.removePhotoTitle),
+        content: Text(context.l10n.removePhotoBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete'),
+            child: Text(context.l10n.actionDelete),
           ),
         ],
       ),
@@ -2011,7 +2058,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     await _saveSection(provider, auth, (existing) {
       final normalized = _photos.where((e) => e.trim().isNotEmpty).toList();
       return existing.copyWith(photoUrls: normalized);
-    }, 'Photos updated');
+    }, context.l10n.savedPhotos);
     setState(() => _editPhotos = false);
   }
 }
