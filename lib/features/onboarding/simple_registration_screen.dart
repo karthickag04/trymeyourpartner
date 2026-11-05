@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../l10n/formatters.dart';
+import '../../l10n/option_labels.dart';
+import '../../shared/widgets/language_selector.dart';
+import '../../l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/router.dart';
 import 'package:provider/provider.dart';
@@ -249,7 +253,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Profile created'),
+            content: Text(context.l10n.registrationProfileCreated),
             backgroundColor: context.palette.success,
           ),
         );
@@ -275,7 +279,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to save: $e'),
+          content: Text(context.l10n.registrationSaveFailed),
           backgroundColor: context.palette.error,
         ),
       );
@@ -293,8 +297,9 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
       canPop: !_saving,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Complete Registration'),
+          title: Text(context.l10n.registrationTitle),
           backgroundColor: context.palette.primary,
+          foregroundColor: context.palette.onPrimary,
         ),
         body: p == null
             ? const Center(child: CircularProgressIndicator())
@@ -305,8 +310,30 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Language first, so the rest of the form is read in
+                      // the member's own language.
+                      Card(
+                        margin: EdgeInsets.zero,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: AppDimensions.paddingM,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  context.l10n.registrationLanguageHint,
+                                  style: context.styles.body2,
+                                ),
+                              ),
+                              const LanguageSelector(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: AppDimensions.paddingM),
                       Text(
-                        'Email (from login)',
+                        context.l10n.registrationEmailFromLogin,
                         style: context.styles.subtitle2,
                       ),
                       const SizedBox(height: 6),
@@ -314,34 +341,41 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _nameCtrl,
-                        decoration: const InputDecoration(
-                          labelText: 'Full name',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldFullName,
                         ),
                         validator: (v) => (v == null || v.trim().isEmpty)
-                            ? 'Name required'
+                            ? context.l10n.validationNameRequired
                             : null,
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
                         value: _gender,
-                        items: const [
-                          DropdownMenuItem(value: 'Male', child: Text('Male')),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'Male',
+                            child: Text(context.l10n.genderMale),
+                          ),
                           DropdownMenuItem(
                             value: 'Female',
-                            child: Text('Female'),
+                            child: Text(context.l10n.genderFemale),
                           ),
                         ],
                         onChanged: (v) => setState(() => _gender = v),
                         isExpanded: true,
-                        decoration: const InputDecoration(labelText: 'Gender'),
-                        validator: (v) => v == null ? 'Select gender' : null,
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldGender,
+                        ),
+                        validator: (v) => v == null
+                            ? context.l10n.validationSelectGender
+                            : null,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _dobCtrl,
                         readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Date of Birth',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldDateOfBirth,
                         ),
                         onTap: () async {
                           final now = DateTime.now();
@@ -362,84 +396,88 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           if (picked != null) {
                             setState(() {
                               _dob = picked;
-                              _dobCtrl.text =
-                                  '${picked.year}-${picked.month}-${picked.day}';
+                              _dobCtrl.text = context.formatDate(picked);
                             });
                           }
                         },
-                        validator: (_) =>
-                            _dob == null ? 'Select date of birth' : null,
+                        validator: (_) => _dob == null
+                            ? context.l10n.validationSelectDob
+                            : null,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _phoneCtrl,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone number',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldPhone,
                         ),
                         keyboardType: TextInputType.phone,
                         validator: (v) => (v == null || v.trim().length < 10)
-                            ? 'Valid phone required'
+                            ? context.l10n.validationPhone
                             : null,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _whatsCtrl,
-                        decoration: const InputDecoration(
-                          labelText: 'WhatsApp number',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldWhatsapp,
                         ),
                         keyboardType: TextInputType.phone,
                         validator: (v) => (v == null || v.trim().length < 10)
-                            ? 'Valid WhatsApp required'
+                            ? context.l10n.validationWhatsapp
                             : null,
                       ),
                       const SizedBox(height: 8),
                       // Created by
                       DropdownButtonFormField<String>(
                         value: _createdBy,
-                        items: const [
-                          DropdownMenuItem(value: 'self', child: Text('Self')),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'self',
+                            child: Text(context.l10n.createdBySelf),
+                          ),
                           DropdownMenuItem(
                             value: 'sibling',
-                            child: Text('Sibling'),
+                            child: Text(context.l10n.createdBySibling),
                           ),
                           DropdownMenuItem(
                             value: 'parents',
-                            child: Text('Parents'),
+                            child: Text(context.l10n.createdByParents),
                           ),
                           DropdownMenuItem(
                             value: 'guardian',
-                            child: Text('Guardian'),
+                            child: Text(context.l10n.createdByGuardian),
                           ),
                         ],
                         onChanged: (v) => setState(() => _createdBy = v),
                         isExpanded: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Profile created by',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldProfileCreatedBy,
                         ),
-                        validator: (v) => v == null ? 'Select one' : null,
+                        validator: (v) =>
+                            v == null ? context.l10n.validationSelectOne : null,
                       ),
                       const SizedBox(height: 8),
                       // Work status
                       DropdownButtonFormField<String>(
                         value: _workStatus,
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'business',
-                            child: Text('Business'),
+                            child: Text(context.l10n.workBusiness),
                           ),
                           DropdownMenuItem(
                             value: 'salaried',
-                            child: Text('Salaried'),
+                            child: Text(context.l10n.workSalaried),
                           ),
                           DropdownMenuItem(
                             value: 'not_working',
-                            child: Text('Currently not working'),
+                            child: Text(context.l10n.workNotWorking),
                           ),
                         ],
                         onChanged: (v) => setState(() => _workStatus = v),
                         isExpanded: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Work status',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldWorkStatus,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -454,8 +492,8 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                         onChanged: (v) =>
                             setState(() => _occupationCategory = v),
                         isExpanded: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Occupation category',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldOccupationCategory,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -481,8 +519,8 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                                 });
                               },
                               isExpanded: true,
-                              decoration: const InputDecoration(
-                                labelText: 'Qualification',
+                              decoration: InputDecoration(
+                                labelText: context.l10n.fieldQualification,
                               ),
                             ),
                           ),
@@ -490,8 +528,8 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           Expanded(
                             flex: 3,
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Discipline/Domain',
+                              decoration: InputDecoration(
+                                labelText: context.l10n.fieldDiscipline,
                               ),
                               controller: _disciplineCtrl,
                             ),
@@ -514,7 +552,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                                   _disciplineCtrl.clear();
                                 });
                               },
-                              child: const Text('Add'),
+                              child: Text(context.l10n.actionAdd),
                             ),
                           ),
                         ],
@@ -541,22 +579,27 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _cityCtrl,
-                        decoration: const InputDecoration(labelText: 'City'),
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldCity,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
                         value: _religion,
                         items: AppConstants.religionCategories
                             .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)),
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(context.optionLabel(e)),
+                              ),
                             )
                             .toList(),
                         onChanged: (v) => _onReligionChanged(v),
-                        decoration: const InputDecoration(
-                          labelText: 'Religion',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldReligion,
                         ),
                         validator: (v) =>
-                            v == null ? 'Religion required' : null,
+                            v == null ? context.l10n.validationReligion : null,
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
@@ -567,13 +610,16 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                             )
                             .toList(),
                         onChanged: (v) => setState(() => _caste = v),
-                        decoration: const InputDecoration(labelText: 'Caste'),
-                        validator: (v) => v == null ? 'Caste required' : null,
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldCaste,
+                        ),
+                        validator: (v) =>
+                            v == null ? context.l10n.validationCaste : null,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Sub Caste (optional)',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldSubCasteOptional,
                         ),
                         onChanged: (v) => _subCaste = v,
                       ),
@@ -586,8 +632,11 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                             )
                             .toList(),
                         onChanged: (v) => _onStateChanged(v),
-                        decoration: const InputDecoration(labelText: 'State'),
-                        validator: (v) => v == null ? 'State required' : null,
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldState,
+                        ),
+                        validator: (v) =>
+                            v == null ? context.l10n.validationState : null,
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
@@ -598,11 +647,11 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                             )
                             .toList(),
                         onChanged: (v) => setState(() => _district = v),
-                        decoration: const InputDecoration(
-                          labelText: 'District',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.fieldDistrict,
                         ),
                         validator: (v) =>
-                            v == null ? 'District required' : null,
+                            v == null ? context.l10n.validationDistrict : null,
                       ),
 
                       const SizedBox(height: 16),
@@ -618,7 +667,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : const Text('Save and Continue'),
+                              : Text(context.l10n.actionSaveAndContinue),
                         ),
                       ),
                     ],

@@ -1242,4 +1242,159 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restartToSignIn => 'Please restart the app to sign in.';
+
+  @override
+  String get religionHindu => 'Hindu';
+
+  @override
+  String get religionMuslim => 'Muslim';
+
+  @override
+  String get religionChristian => 'Christian';
+
+  @override
+  String get religionSikh => 'Sikh';
+
+  @override
+  String get religionJain => 'Jain';
+
+  @override
+  String get religionBuddhist => 'Buddhist';
+
+  @override
+  String get optionOther => 'Other';
+
+  @override
+  String get maritalNeverMarried => 'Never married';
+
+  @override
+  String get maritalDivorced => 'Divorced';
+
+  @override
+  String get maritalWidowed => 'Widowed';
+
+  @override
+  String get maritalSeparated => 'Separated';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get createdBySelf => 'Self';
+
+  @override
+  String get createdBySibling => 'Sibling';
+
+  @override
+  String get createdByParents => 'Parents';
+
+  @override
+  String get createdByGuardian => 'Guardian';
+
+  @override
+  String get workBusiness => 'Business';
+
+  @override
+  String get workSalaried => 'Salaried';
+
+  @override
+  String get workNotWorking => 'Currently not working';
+
+  @override
+  String get registrationProfileCreated => 'Profile created';
+
+  @override
+  String get registrationSaveFailed =>
+      'We couldn\'t save your details. Please try again.';
+
+  @override
+  String get registrationTitle => 'Complete registration';
+
+  @override
+  String get registrationEmailFromLogin => 'Email (from sign-in)';
+
+  @override
+  String get fieldFullName => 'Full name';
+
+  @override
+  String get validationNameRequired => 'Please enter your name';
+
+  @override
+  String get fieldGender => 'Gender';
+
+  @override
+  String get validationSelectGender => 'Please select a gender';
+
+  @override
+  String get fieldDateOfBirth => 'Date of birth';
+
+  @override
+  String get validationSelectDob => 'Please select your date of birth';
+
+  @override
+  String get fieldPhone => 'Phone number';
+
+  @override
+  String get validationPhone => 'Please enter a valid phone number';
+
+  @override
+  String get fieldWhatsapp => 'WhatsApp number';
+
+  @override
+  String get validationWhatsapp => 'Please enter a valid WhatsApp number';
+
+  @override
+  String get fieldProfileCreatedBy => 'Profile created by';
+
+  @override
+  String get validationSelectOne => 'Please choose one';
+
+  @override
+  String get fieldWorkStatus => 'Work status';
+
+  @override
+  String get fieldOccupationCategory => 'Occupation category';
+
+  @override
+  String get fieldQualification => 'Qualification';
+
+  @override
+  String get fieldDiscipline => 'Discipline / field';
+
+  @override
+  String get actionAdd => 'Add';
+
+  @override
+  String get fieldCity => 'City';
+
+  @override
+  String get validationReligion => 'Please select a religion';
+
+  @override
+  String get validationCaste => 'Please select a caste';
+
+  @override
+  String get fieldSubCasteOptional => 'Sub-caste (optional)';
+
+  @override
+  String get fieldState => 'State';
+
+  @override
+  String get validationState => 'Please select a state';
+
+  @override
+  String get fieldDistrict => 'District';
+
+  @override
+  String get validationDistrict => 'Please select a district';
+
+  @override
+  String get actionSaveAndContinue => 'Save and continue';
+
+  @override
+  String get registrationLanguageHint =>
+      'Choose the language you are most comfortable with';
 }

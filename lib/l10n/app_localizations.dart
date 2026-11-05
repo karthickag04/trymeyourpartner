@@ -2167,6 +2167,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please restart the app to sign in.'**
   String get restartToSignIn;
+
+  /// No description provided for @religionHindu.
+  ///
+  /// In en, this message translates to:
+  /// **'Hindu'**
+  String get religionHindu;
+
+  /// No description provided for @religionMuslim.
+  ///
+  /// In en, this message translates to:
+  /// **'Muslim'**
+  String get religionMuslim;
+
+  /// No description provided for @religionChristian.
+  ///
+  /// In en, this message translates to:
+  /// **'Christian'**
+  String get religionChristian;
+
+  /// No description provided for @religionSikh.
+  ///
+  /// In en, this message translates to:
+  /// **'Sikh'**
+  String get religionSikh;
+
+  /// No description provided for @religionJain.
+  ///
+  /// In en, this message translates to:
+  /// **'Jain'**
+  String get religionJain;
+
+  /// No description provided for @religionBuddhist.
+  ///
+  /// In en, this message translates to:
+  /// **'Buddhist'**
+  String get religionBuddhist;
+
+  /// No description provided for @optionOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get optionOther;
+
+  /// No description provided for @maritalNeverMarried.
+  ///
+  /// In en, this message translates to:
+  /// **'Never married'**
+  String get maritalNeverMarried;
+
+  /// No description provided for @maritalDivorced.
+  ///
+  /// In en, this message translates to:
+  /// **'Divorced'**
+  String get maritalDivorced;
+
+  /// No description provided for @maritalWidowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Widowed'**
+  String get maritalWidowed;
+
+  /// No description provided for @maritalSeparated.
+  ///
+  /// In en, this message translates to:
+  /// **'Separated'**
+  String get maritalSeparated;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// No description provided for @createdBySelf.
+  ///
+  /// In en, this message translates to:
+  /// **'Self'**
+  String get createdBySelf;
+
+  /// No description provided for @createdBySibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get createdBySibling;
+
+  /// No description provided for @createdByParents.
+  ///
+  /// In en, this message translates to:
+  /// **'Parents'**
+  String get createdByParents;
+
+  /// No description provided for @createdByGuardian.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian'**
+  String get createdByGuardian;
+
+  /// No description provided for @workBusiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get workBusiness;
+
+  /// No description provided for @workSalaried.
+  ///
+  /// In en, this message translates to:
+  /// **'Salaried'**
+  String get workSalaried;
+
+  /// No description provided for @workNotWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently not working'**
+  String get workNotWorking;
+
+  /// No description provided for @registrationProfileCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile created'**
+  String get registrationProfileCreated;
+
+  /// No description provided for @registrationSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save your details. Please try again.'**
+  String get registrationSaveFailed;
+
+  /// No description provided for @registrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete registration'**
+  String get registrationTitle;
+
+  /// No description provided for @registrationEmailFromLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (from sign-in)'**
+  String get registrationEmailFromLogin;
+
+  /// No description provided for @fieldFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fieldFullName;
+
+  /// No description provided for @validationNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get validationNameRequired;
+
+  /// No description provided for @fieldGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get fieldGender;
+
+  /// No description provided for @validationSelectGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a gender'**
+  String get validationSelectGender;
+
+  /// No description provided for @fieldDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get fieldDateOfBirth;
+
+  /// No description provided for @validationSelectDob.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your date of birth'**
+  String get validationSelectDob;
+
+  /// No description provided for @fieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get fieldPhone;
+
+  /// No description provided for @validationPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get validationPhone;
+
+  /// No description provided for @fieldWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp number'**
+  String get fieldWhatsapp;
+
+  /// No description provided for @validationWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid WhatsApp number'**
+  String get validationWhatsapp;
+
+  /// No description provided for @fieldProfileCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile created by'**
+  String get fieldProfileCreatedBy;
+
+  /// No description provided for @validationSelectOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose one'**
+  String get validationSelectOne;
+
+  /// No description provided for @fieldWorkStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Work status'**
+  String get fieldWorkStatus;
+
+  /// No description provided for @fieldOccupationCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation category'**
+  String get fieldOccupationCategory;
+
+  /// No description provided for @fieldQualification.
+  ///
+  /// In en, this message translates to:
+  /// **'Qualification'**
+  String get fieldQualification;
+
+  /// No description provided for @fieldDiscipline.
+  ///
+  /// In en, this message translates to:
+  /// **'Discipline / field'**
+  String get fieldDiscipline;
+
+  /// No description provided for @actionAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get actionAdd;
+
+  /// No description provided for @fieldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get fieldCity;
+
+  /// No description provided for @validationReligion.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a religion'**
+  String get validationReligion;
+
+  /// No description provided for @validationCaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a caste'**
+  String get validationCaste;
+
+  /// No description provided for @fieldSubCasteOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-caste (optional)'**
+  String get fieldSubCasteOptional;
+
+  /// No description provided for @fieldState.
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get fieldState;
+
+  /// No description provided for @validationState.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a state'**
+  String get validationState;
+
+  /// No description provided for @fieldDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get fieldDistrict;
+
+  /// No description provided for @validationDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a district'**
+  String get validationDistrict;
+
+  /// No description provided for @actionSaveAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and continue'**
+  String get actionSaveAndContinue;
+
+  /// No description provided for @registrationLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language you are most comfortable with'**
+  String get registrationLanguageHint;
 }
 
 class _AppLocalizationsDelegate

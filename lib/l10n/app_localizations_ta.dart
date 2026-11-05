@@ -1264,4 +1264,159 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get restartToSignIn => 'உள்நுழைய, செயலியை மீண்டும் தொடங்கவும்.';
+
+  @override
+  String get religionHindu => 'இந்து';
+
+  @override
+  String get religionMuslim => 'இஸ்லாம்';
+
+  @override
+  String get religionChristian => 'கிறிஸ்தவம்';
+
+  @override
+  String get religionSikh => 'சீக்கியம்';
+
+  @override
+  String get religionJain => 'சமணம்';
+
+  @override
+  String get religionBuddhist => 'பௌத்தம்';
+
+  @override
+  String get optionOther => 'மற்றவை';
+
+  @override
+  String get maritalNeverMarried => 'திருமணம் ஆகாதவர்';
+
+  @override
+  String get maritalDivorced => 'விவாகரத்தானவர்';
+
+  @override
+  String get maritalWidowed => 'துணையை இழந்தவர்';
+
+  @override
+  String get maritalSeparated => 'பிரிந்து வாழ்பவர்';
+
+  @override
+  String get genderMale => 'ஆண்';
+
+  @override
+  String get genderFemale => 'பெண்';
+
+  @override
+  String get createdBySelf => 'நானே';
+
+  @override
+  String get createdBySibling => 'உடன்பிறந்தவர்';
+
+  @override
+  String get createdByParents => 'பெற்றோர்';
+
+  @override
+  String get createdByGuardian => 'பாதுகாவலர்';
+
+  @override
+  String get workBusiness => 'சொந்தத் தொழில்';
+
+  @override
+  String get workSalaried => 'சம்பளப் பணி';
+
+  @override
+  String get workNotWorking => 'தற்போது பணியில் இல்லை';
+
+  @override
+  String get registrationProfileCreated => 'சுயவிவரம் உருவாக்கப்பட்டது';
+
+  @override
+  String get registrationSaveFailed =>
+      'உங்கள் விவரங்களைச் சேமிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get registrationTitle => 'பதிவை நிறைவு செய்யுங்கள்';
+
+  @override
+  String get registrationEmailFromLogin => 'மின்னஞ்சல் (உள்நுழைவிலிருந்து)';
+
+  @override
+  String get fieldFullName => 'முழுப் பெயர்';
+
+  @override
+  String get validationNameRequired => 'உங்கள் பெயரை உள்ளிடவும்';
+
+  @override
+  String get fieldGender => 'பாலினம்';
+
+  @override
+  String get validationSelectGender => 'பாலினத்தைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get fieldDateOfBirth => 'பிறந்த தேதி';
+
+  @override
+  String get validationSelectDob => 'உங்கள் பிறந்த தேதியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get fieldPhone => 'தொலைபேசி எண்';
+
+  @override
+  String get validationPhone => 'சரியான தொலைபேசி எண்ணை உள்ளிடவும்';
+
+  @override
+  String get fieldWhatsapp => 'WhatsApp எண்';
+
+  @override
+  String get validationWhatsapp => 'சரியான WhatsApp எண்ணை உள்ளிடவும்';
+
+  @override
+  String get fieldProfileCreatedBy => 'சுயவிவரத்தை உருவாக்கியவர்';
+
+  @override
+  String get validationSelectOne => 'ஒன்றைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get fieldWorkStatus => 'பணி நிலை';
+
+  @override
+  String get fieldOccupationCategory => 'தொழில் வகை';
+
+  @override
+  String get fieldQualification => 'கல்வித் தகுதி';
+
+  @override
+  String get fieldDiscipline => 'துறை';
+
+  @override
+  String get actionAdd => 'சேர்';
+
+  @override
+  String get fieldCity => 'நகரம்';
+
+  @override
+  String get validationReligion => 'மதத்தைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get validationCaste => 'சாதியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get fieldSubCasteOptional => 'உட்பிரிவு (விருப்பத்தேர்வு)';
+
+  @override
+  String get fieldState => 'மாநிலம்';
+
+  @override
+  String get validationState => 'மாநிலத்தைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get fieldDistrict => 'மாவட்டம்';
+
+  @override
+  String get validationDistrict => 'மாவட்டத்தைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get actionSaveAndContinue => 'சேமித்துத் தொடரவும்';
+
+  @override
+  String get registrationLanguageHint =>
+      'உங்களுக்கு வசதியான மொழியைத் தேர்ந்தெடுங்கள்';
 }
