@@ -12,6 +12,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - archive/**
+    - apps/**  # separate Flutter packages with their own analysis (see CI)
     - lib/services/messaging_service.dart
     - lib/services/matrimonial_service_OLD.dart
     - lib/services/matrimonial_service_backup.dart
