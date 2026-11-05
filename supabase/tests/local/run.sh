@@ -23,10 +23,13 @@ for pass in 1 2; do
     echo "apply (pass $pass): $(basename "$m")"
     $P -v ON_ERROR_STOP=1 -f "$m"
   done
-  [ "$pass" = 1 ] && $P -v ON_ERROR_STOP=1 -f "$HERE/10_seed.sql"
+  if [ "$pass" = 1 ]; then
+    $P -v ON_ERROR_STOP=1 -f "$HERE/10_seed.sql"
+    $P -v ON_ERROR_STOP=1 -f "$HERE/11_seed_staff.sql"
+  fi
 done
 
-OUT=$($P -At -f "$HERE/20_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
+OUT=$( { $P -At -f "$HERE/20_checks.sql"; $P -At -f "$HERE/21_staff_checks.sql"; } 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
 echo "$OUT"
 
 expect() { grep -qF -- "$1" <<<"$OUT" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
@@ -47,4 +50,44 @@ expect "B views counter|1"
 expect "B still exists|1"
 expect "quota|stopped after 4 new reveals: CONTACT_LIMIT_REACHED"
 expect "archived email|b@x.com"
+# Phase 2: staff tables, scopes, MFA, audit log, access token hook
+for t in staff_accounts branches teams agents permissions role_permissions audit_log; do
+  expect "member $t|0"                                               # members get nothing
+done
+expect "member staff profile|none"
+expect "ERROR:  NOT_STAFF"                                           # members cannot write the audit log
+expect "ERROR:  new row violates row-level security policy for table \"branches\""
+expect "ERROR:  permission denied for function custom_access_token_hook"
+expect "staffY staff_accounts|1|Staff Y"                            # staff: own row only
+expect "staffY branches|BRY"                                         # ... and own branch
+expect "staffY audit_log|0"
+expect "bmX aal1 staff_accounts|1"                                   # before MFA: own row only
+expect "bmX aal1 permissions|[]"
+expect "ERROR:  MFA_REQUIRED"
+expect "bmX staff_accounts|BM X,Staff X"                             # branch manager: own branch
+expect "bmX sees branch Y staff|0"                                   # ... never another branch
+expect "bmX branches|BRX"
+expect "bmX has roles.manage|f"
+expect "bmX profile|branch_manager|Branch X"
+[ "$(grep -cF 'new row violates row-level security policy for table "staff_accounts"' <<<"$OUT")" = 2 ] \
+  || { echo "MISSING EXPECTED: branch manager blocked twice (system_admin, other branch)"; exit 1; }
+expect "bmX created staff|1"
+expect "bmX own role after self-promote|branch_manager"
+expect "ERROR:  new row violates row-level security policy for table \"role_permissions\""
+expect "sysadmin staff_accounts|5"                                   # system_admin: everything
+expect "sysadmin permission count|20|20"
+expect "staff granted reports.operations|1"
+expect "sysadmin grants kept|t"                                      # system_admin grants are locked
+expect "audit pii entry|branch_manager|member_pii.view|bbbbbbbb-0000-0000-0000-000000000002|support call"
+expect "audit rp changes|2"
+expect "audit staff insert by bmX|1"
+[ "$(grep -cF 'ERROR:  permission denied for table audit_log' <<<"$OUT")" = 3 ] \
+  || { echo "MISSING EXPECTED: audit_log rejects UPDATE, DELETE and INSERT through the API"; exit 1; }
+[ "$(grep -cF 'ERROR:  AUDIT_LOG_IS_APPEND_ONLY' <<<"$OUT")" = 2 ] \
+  || { echo "MISSING EXPECTED: audit_log append-only for the table owner"; exit 1; }
+expect "audit tampered rows|0"
+expect '"team_id": null, "branch_id": "0000000a-0000-0000-0000-00000000000a", "staff_role": "branch_manager"'
+expect "hook member unchanged|t"
+expect "hook disabled staff unchanged|t"
+expect "disabled staff sees|0"
 echo "All database checks passed."
