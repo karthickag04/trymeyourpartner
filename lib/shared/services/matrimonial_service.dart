@@ -1010,6 +1010,30 @@ class MatrimonialService {
   }
 
   // Get similar profiles to a given profile id by soft matching caste/state/district
+  /// Loads one active profile by its public code (e.g. TMYP12345) or its id.
+  /// Returns null when it does not exist, is inactive, or is hidden by a block.
+  static Future<MatrimonialUser?> getProfileByCode(String code) async {
+    await initialize();
+    try {
+      final isUuid = RegExp(
+        r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+      ).hasMatch(code);
+      final row = await _supabase
+          .from('matrimonial_profiles')
+          .select(
+            '*, state:states(name), district:districts(name), caste:castes!matrimonial_profiles_caste_id_fkey(name), sub_caste:castes!matrimonial_profiles_sub_caste_id_fkey(name), contact_info(*), family_info(*), partner_preferences(*)',
+          )
+          .eq(isUuid ? 'id' : 'profile_id', code)
+          .eq('is_active', true)
+          .maybeSingle();
+      if (row == null) return null;
+      return MatrimonialUser.fromJson(_normalizeProfileRow(row));
+    } catch (e) {
+      debugPrint('❌ Failed to load profile $code: $e');
+      return null;
+    }
+  }
+
   static Future<List<MatrimonialUser>> getSimilarProfiles(
     MatrimonialUser base, {
     int limit = 10,

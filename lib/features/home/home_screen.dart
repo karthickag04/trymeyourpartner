@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
@@ -6,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/models/matrimonial_user.dart';
 import '../profile/widgets/profile_card.dart';
-import '../profile/profile_detail_screen.dart';
 import '../discovery/search_screen.dart';
 import '../notifications/notifications_pager_screen.dart';
 import '../../shared/models/contact_request.dart';
@@ -304,9 +304,7 @@ class _NewMatrimonialHomeScreenState extends State<NewMatrimonialHomeScreen> {
 
   // Navigation helpers
   void _navigateToProfileDetail(BuildContext context, MatrimonialUser profile) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => ProfileDetailScreen(profile: profile)),
-    );
+    openProfile(context, profile);
   }
 
   void _openMatchesTab(BuildContext context, int index) {

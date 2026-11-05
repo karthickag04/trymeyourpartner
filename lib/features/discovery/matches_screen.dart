@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../app/router.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/models/matrimonial_user.dart';
 import '../../shared/theme/constants.dart';
 import '../profile/widgets/profile_card_horizontal.dart';
-import '../profile/profile_detail_screen.dart';
 import '../profile/profile_edit_screen.dart';
 import 'search_screen.dart';
 
@@ -603,12 +603,7 @@ class _MatchesScreenState extends State<MatchesScreen>
   }
 
   void _navigateToProfileDetail(MatrimonialUser profile) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfileDetailScreen(profile: profile),
-      ),
-    );
+    openProfile(context, profile);
   }
 
   void _sendInterest(MatrimonialUser profile) {

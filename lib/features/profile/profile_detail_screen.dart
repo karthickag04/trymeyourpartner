@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/router.dart';
 import 'package:provider/provider.dart';
 import '../../shared/models/matrimonial_user.dart';
 import '../../shared/theme/constants.dart';
@@ -1200,14 +1201,7 @@ class _SimilarProfilesListState extends State<_SimilarProfilesList> {
             margin: const EdgeInsets.only(right: 12),
             child: Card(
               child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProfileDetailScreen(profile: p),
-                    ),
-                  );
-                },
+                onTap: () => openProfile(context, p),
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(

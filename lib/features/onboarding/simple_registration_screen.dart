@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../app/router.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/services/matrimonial_service.dart';
-import '../home/matrimonial_main_screen.dart';
 import '../../shared/theme/constants.dart';
 
 class SimpleRegistrationScreen extends StatefulWidget {
@@ -258,13 +259,8 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
             return;
           }
           try {
-            debugPrint(
-              '🔁 _save: navigating to MatrimonialMainScreen (postFrame)',
-            );
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const MatrimonialMainScreen()),
-              (route) => false,
-            );
+            debugPrint('🔁 _save: navigating to home (postFrame)');
+            context.go(AppRoutes.home);
           } catch (e) {
             debugPrint('🔁 _save: navigation failed: $e');
           }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../app/router.dart';
 import '../../shared/widgets/storage_image.dart';
 import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../auth/auth_provider.dart';
 import '../profile/widgets/profile_card_horizontal.dart';
-import '../profile/profile_detail_screen.dart';
 
 class InterestsScreen extends StatefulWidget {
   const InterestsScreen({super.key});
@@ -187,14 +187,7 @@ class _InterestsScreenState extends State<InterestsScreen>
               final profile = sentInterests[index];
               return ProfileCardHorizontal(
                 profile: profile,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProfileDetailScreen(profile: profile),
-                    ),
-                  );
-                },
+                onTap: () => openProfile(context, profile),
                 isShortlisted: false,
                 isInterestSent: context
                     .read<MatrimonialProvider>()

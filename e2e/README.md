@@ -11,5 +11,12 @@ node e2e/flow.js <output-dir> <file-with-test-password> b_accepts    # B accepts
 node e2e/flow.js <output-dir> <file-with-test-password> a_reveals    # A sees B's phone/WhatsApp
 ```
 
+Other checks:
+
+```bash
+node e2e/routes.js <output-dir> <password-file> <file-with-B-profile-code>  # URLs, shared profile links, back button
+node e2e/email.js  <output-dir> <password-file>                             # login email on the profile tab
+```
+
 Screenshots for each step are written to `<output-dir>/<step>/`. The test password is not
 stored in the repo. Phase 1 turns these into CI-run tests.

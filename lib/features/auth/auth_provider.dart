@@ -35,8 +35,9 @@ class AuthProvider with ChangeNotifier {
           emailVerified: true,
         );
 
-  AuthProvider() {
-    _auth = sl.authService;
+  /// [auth] can be supplied in tests; the app uses the configured backend.
+  AuthProvider({AuthService? auth}) {
+    _auth = auth ?? sl.authService;
     _initialize();
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
@@ -6,7 +7,6 @@ import '../auth/auth_provider.dart';
 import '../../shared/models/matrimonial_user.dart';
 import '../../shared/models/contact_request.dart';
 import '../../app/di/service_locator.dart';
-import '../profile/profile_detail_screen.dart';
 import '../../shared/models/profile.dart';
 import '../../shared/widgets/storage_image.dart';
 
@@ -459,11 +459,7 @@ class _ProfileTile extends StatelessWidget {
         '${user.age} · ${user.city.isNotEmpty ? user.city : user.district}',
       ),
       trailing: trailing,
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => ProfileDetailScreen(profile: user)),
-        );
-      },
+      onTap: () => openProfile(context, user),
     );
   }
 }

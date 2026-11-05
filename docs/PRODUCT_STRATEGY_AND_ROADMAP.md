@@ -560,10 +560,14 @@ Durations are indicative for a small team (2–3 Flutter, 1–2 backend, 1 QA/de
 
 - [ ] Monorepo with `melos`; move the app to `apps/member_app`; create `packages/tmyp_core`, `tmyp_design_system`, `tmyp_l10n`
 - [ ] `supabase/migrations` baseline from the live schema; delete `sql/`, `archive/sql/`, root `*.sql` after verification
-- [ ] Delete dead code ([section 3.3](#33-dead-and-duplicate-code-safe-to-delete-in-phase-1)); fix the `assets/images/` warning; move the intro video to remote storage
-- [ ] `go_router` with deep links and web URLs; feature-first folders; begin the Riverpod migration (auth, profile first)
+- [x] Delete dead code ([section 3.3](#33-dead-and-duplicate-code-safe-to-delete-in-phase-1)); fix the `assets/images/` warning; stop bundling the unused intro video; remove calls to the non-existent `users`/`matches` tables
+- [x] `go_router` with web URLs per tab and shareable profile links (`/p/<code>`), sign-in redirect that returns to the original link
+- [x] Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`)
+- [ ] Begin the Riverpod migration (auth, profile first)
 - [ ] Design-system tokens, real dark theme, accessibility pass on core screens
-- [ ] CI: analyze, test, build web/apk; Sentry; unit tests for models and services, widget tests for key flows
+- [x] CI: format, analyze, test, web build; database job applies migrations twice and checks access rules
+- [x] Browser end-to-end tests (`e2e/`) against the test project
+- [ ] CI: Android build; Sentry; more unit and widget tests
 - [ ] Backend API skeleton (NestJS or .NET), OpenAPI, generated Dart client, auth middleware validating Supabase JWT, deployed to staging
 
 **Exit:** CI green on every PR; staging environment end to end; no file over ~600 lines in `features/`.

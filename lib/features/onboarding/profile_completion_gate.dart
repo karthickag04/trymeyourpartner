@@ -4,11 +4,13 @@ import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/theme/constants.dart';
 import '../../shared/services/matrimonial_service.dart';
-import '../home/matrimonial_main_screen.dart';
 import 'simple_registration_screen.dart';
 
+/// Shows [child] once the signed-in member's mandatory profile fields are
+/// filled in; until then, shows registration.
 class ProfileCompletionGate extends StatefulWidget {
-  const ProfileCompletionGate({super.key});
+  final Widget child;
+  const ProfileCompletionGate({super.key, required this.child});
 
   @override
   State<ProfileCompletionGate> createState() => _ProfileCompletionGateState();
@@ -53,7 +55,10 @@ class _ProfileCompletionGateState extends State<ProfileCompletionGate> {
         // Lightweight debug to trace routing decisions
         // ignore: invalid_use_of_protected_member
         // debugPrint('Gate: loading auth=${auth.isLoading} data=${matrimony.isLoading}');
-        if (auth.isLoading || matrimony.isLoading) {
+        // Until the sign-in state is known (the router then redirects signed-out
+        // visitors to /login), show a spinner rather than registration, which
+        // would query member data without a session.
+        if (auth.isLoading || !auth.isAuthenticated || matrimony.isLoading) {
           return const Scaffold(
             backgroundColor: AppColors.background,
             body: Center(
@@ -77,7 +82,7 @@ class _ProfileCompletionGateState extends State<ProfileCompletionGate> {
         }
 
         // debugPrint('Gate: complete -> MatrimonialMainScreen');
-        return const MatrimonialMainScreen();
+        return widget.child;
       },
     );
   }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'auth_provider.dart';
+import 'package:go_router/go_router.dart';
+import '../../app/router.dart';
 import '../../shared/theme/constants.dart';
-import 'auth_screen.dart';
-import '../onboarding/profile_completion_gate.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -74,28 +72,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToApp() {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const AuthWrapper(),
-        transitionDuration: const Duration(milliseconds: 1000),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
+    // The router sends signed-out visitors to /login.
+    context.go(AppRoutes.home);
   }
 
   @override
@@ -248,34 +226,6 @@ class _SplashScreenState extends State<SplashScreen>
           ),
         ),
       ),
-    );
-  }
-}
-
-// Auth Wrapper from main.dart (copied here to avoid circular import)
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) {
-        // Show loading while checking auth state
-        if (authProvider.isLoading) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
-            body: Center(
-              child: CircularProgressIndicator(color: AppColors.accent),
-            ),
-          );
-        }
-
-        // Show main app if authenticated, otherwise show auth screen
-        // Route through profile completion gate to enforce mandatory fields
-        return authProvider.isAuthenticated
-            ? const ProfileCompletionGate()
-            : const AuthScreen();
-      },
     );
   }
 }

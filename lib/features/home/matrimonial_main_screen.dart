@@ -1,33 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
-import 'home_screen.dart';
-import '../discovery/matches_screen.dart';
-import '../discovery/search_screen.dart';
-import '../interests/interests_screen.dart';
-import '../profile/profile_screen.dart';
 // Legacy notifications are now hidden in favor of unified notifications.
 // import '../screens/notification_center_screen.dart';
 import '../notifications/notifications_service.dart';
 
+/// The tabbed main screen. Each tab has its own URL; [shell] (from the router)
+/// keeps every tab's state while switching.
 class MatrimonialMainScreen extends StatefulWidget {
-  const MatrimonialMainScreen({super.key});
+  final StatefulNavigationShell shell;
+  const MatrimonialMainScreen({super.key, required this.shell});
 
   @override
   State<MatrimonialMainScreen> createState() => _MatrimonialMainScreenState();
 }
 
 class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
-  int _currentIndex = 0;
   final _notifService = NotificationsService();
-
-  final List<Widget> _screens = [
-    const NewMatrimonialHomeScreen(),
-    const MatchesScreen(),
-    const SearchScreen(),
-    const InterestsScreen(),
-    const ProfileScreen(),
-  ];
 
   List<BottomNavigationBarItem> _buildNavItems(BuildContext context) {
     return [
@@ -93,23 +83,6 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Restore last selected tab if available to prevent jumps back to Home on rebuilds
-    int? stored;
-    try {
-      stored =
-          PageStorage.of(
-                context,
-              ).readState(context, identifier: 'main_tab_index')
-              as int?;
-    } catch (_) {}
-    if (stored != null && stored != _currentIndex) {
-      setState(() => _currentIndex = stored!);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<MatrimonialProvider>(
@@ -128,7 +101,7 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
               );
             });
           }
-          return IndexedStack(index: _currentIndex, children: _screens);
+          return widget.shell;
         },
       ),
       bottomNavigationBar: Container(
@@ -142,20 +115,12 @@ class _MatrimonialMainScreenState extends State<MatrimonialMainScreen> {
           ],
         ),
         child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-            // Persist the selected tab so a rebuild doesn't reset it to 0
-            try {
-              PageStorage.of(context).writeState(
-                context,
-                _currentIndex,
-                identifier: 'main_tab_index',
-              );
-            } catch (_) {}
-          },
+          currentIndex: widget.shell.currentIndex,
+          // Tapping the current tab again returns it to its first page.
+          onTap: (index) => widget.shell.goBranch(
+            index,
+            initialLocation: index == widget.shell.currentIndex,
+          ),
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.pink,
