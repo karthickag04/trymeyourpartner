@@ -50,6 +50,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageLabel => 'Language';
 
   @override
+  String get settingsTextSize => 'Text size';
+
+  @override
+  String get textSizeSmall => 'Small';
+
+  @override
+  String get textSizeStandard => 'Standard';
+
+  @override
+  String get textSizeLarge => 'Large';
+
+  @override
+  String get textSizeExtraLarge => 'Extra large';
+
+  @override
+  String get textSizePreview => 'This is how text will look.';
+
+  @override
   String get languageChooseTooltip => 'Change language';
 
   @override

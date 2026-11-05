@@ -1494,7 +1494,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           _buildInfoRow(
             context.l10n.fieldHeight,
-            matrimonialProfile.heightInFeetInches,
+            (matrimonialProfile.heightInFeetInches ??
+                context.l10n.commonNotSpecified),
           ),
 
           const SizedBox(height: AppDimensions.paddingM),

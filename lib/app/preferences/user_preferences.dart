@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The member's display choices: light/dark/system theme and app language.
+/// How large the member wants text, on top of their phone's own setting.
+enum TextSizeChoice {
+  small(0.9),
+  standard(1.0),
+  large(1.15),
+  extraLarge(1.3);
+
+  const TextSizeChoice(this.factor);
+  final double factor;
+}
+
+/// The member's display choices: light/dark/system theme, app language and
+/// text size.
 ///
 /// Stored on the device with shared_preferences, so they apply before
 /// sign-in (for example on the sign-in and registration screens).
 class UserPreferences extends ChangeNotifier {
   static const themeModeKey = 'prefs.themeMode';
   static const localeKey = 'prefs.locale';
+  static const textSizeKey = 'prefs.textSize';
 
   /// Languages the app is translated into.
   static const supportedLanguageCodes = ['en', 'ta'];
 
   ThemeMode _themeMode;
   Locale? _locale;
+  TextSizeChoice _textSize;
   SharedPreferences? _prefs;
 
-  UserPreferences({ThemeMode themeMode = ThemeMode.system, Locale? locale})
-    : _themeMode = themeMode,
-      _locale = locale;
+  UserPreferences({
+    ThemeMode themeMode = ThemeMode.system,
+    Locale? locale,
+    TextSizeChoice textSize = TextSizeChoice.standard,
+  }) : _themeMode = themeMode,
+       _locale = locale,
+       _textSize = textSize;
 
   /// Reads saved choices. Missing or unknown values fall back to the system
   /// theme and the default language.
@@ -27,12 +45,15 @@ class UserPreferences extends ChangeNotifier {
     final p = UserPreferences(
       themeMode: _parseThemeMode(prefs.getString(themeModeKey)),
       locale: _parseLocale(prefs.getString(localeKey)),
+      textSize: _parseTextSize(prefs.getString(textSizeKey)),
     );
     p._prefs = prefs;
     return p;
   }
 
   ThemeMode get themeMode => _themeMode;
+
+  TextSizeChoice get textSize => _textSize;
 
   /// The language the member chose, or null if they have not chosen one.
   Locale? get locale => _locale;
@@ -69,6 +90,20 @@ class UserPreferences extends ChangeNotifier {
       await prefs.setString(localeKey, _locale!.languageCode);
     }
   }
+
+  Future<void> setTextSize(TextSizeChoice size) async {
+    if (size == _textSize) return;
+    _textSize = size;
+    notifyListeners();
+    final prefs = _prefs ??= await SharedPreferences.getInstance();
+    await prefs.setString(textSizeKey, size.name);
+  }
+
+  static TextSizeChoice _parseTextSize(String? value) =>
+      TextSizeChoice.values.firstWhere(
+        (t) => t.name == value,
+        orElse: () => TextSizeChoice.standard,
+      );
 
   static ThemeMode _parseThemeMode(String? value) => ThemeMode.values
       .firstWhere((m) => m.name == value, orElse: () => ThemeMode.system);

@@ -176,6 +176,42 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get languageLabel;
 
+  /// No description provided for @settingsTextSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get settingsTextSize;
+
+  /// No description provided for @textSizeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get textSizeSmall;
+
+  /// No description provided for @textSizeStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get textSizeStandard;
+
+  /// No description provided for @textSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get textSizeLarge;
+
+  /// No description provided for @textSizeExtraLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra large'**
+  String get textSizeExtraLarge;
+
+  /// No description provided for @textSizePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'This is how text will look.'**
+  String get textSizePreview;
+
   /// No description provided for @languageChooseTooltip.
   ///
   /// In en, this message translates to:

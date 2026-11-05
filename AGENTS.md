@@ -106,6 +106,7 @@ CI (app, Android, database, API, admin console) is green.
 
 - **API on plain PostgreSQL (P2-10):** the API connects as `api_service` and runs each request as the member, so row-level security applies; end-to-end tests run in CI.
 - **Vendor guards (P2-14):** CI blocks new Supabase-specific code in the app, API and migrations.
+- **Text size setting (P1-24):** Settings → Text size; Tamil drawn at 90 % so layouts fit; long titles wrap and dropdowns shorten long values.
 - **No silent failures (P1-22):** no empty `catch` blocks (CI check); save errors reach the member, recovered errors go through `reportError`.
 - **Onboarding fixes (2026-11-05):** duplicate castes merged (live), caste saves reliably; registration only for new or incomplete members, pre-filled with saved details; a failed load shows a retry, never an empty form.
 - **No decorative Profile items (P1-18):** Interests/Matches shortcuts work, Change password, About dialog; Upgrade and Notification settings hidden.
@@ -121,7 +122,7 @@ CI (app, Android, database, API, admin console) is green.
 **Next (in order):**
 1. Quick safety fixes:
    - P1-21 security hygiene (Supabase advisor warnings, dependency and secret scanning)
-   - the two open Tamil UI bugs in the tracker (home section titles overflow, "Not specified" untranslated)
+   - re-check every screen in Tamil at Standard and Extra large text on a phone (`--dart-define=FULL_ERRORS=true`)
 2. Put the API to work:
    - deploy it (P1-11; owner picks the host and sets the `api_service` password)
    - P2-08 move app data access to the API, feature by feature, doing P1-06 Riverpod for each feature as it moves

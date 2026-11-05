@@ -25,7 +25,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 3 |
-| P1 Foundation & restructure | 14 | 4 | 5 | 1 |
+| P1 Foundation & restructure | 15 | 4 | 5 | 1 |
 | P2 Roles, admin console, moderation | 4 | 2 | 8 | 0 |
 | P3 Trust & safety | 0 | 0 | 9 | 0 |
 | P4 Plans & payments | 0 | 0 | 8 | 0 |
@@ -80,6 +80,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P1-21 | Security hygiene: dependency and secret scanning in CI; fixed `search_path` on the 10 flagged functions; members cannot execute trigger/internal functions; drop unused GraphQL exposure and the 3 empty public buckets | ⬜ | — | Supabase advisor 2026-11-05; roadmap §14.3 |
 | P1-22 | No silent failures: all 55 empty `catch` blocks fixed. Save paths report and rethrow, so the member sees "couldn't save" (qualifications, registration extras); a qualification type that cannot be matched stops the save instead of being dropped; caste/state/district lookups pass network errors on instead of reporting "not found"; 49 best-effort sites (presence, unread counts, remembered filters, closing channels …) report through `reportError` (`lib/shared/errors/report_error.dart`, the hook for Sentry in P1-10); date parsing uses `tryParse`. CI: `tool/check_silent_catches.sh` (app + admin console) | ✅ | `200f402` | 0 empty catches left; the check fails on a probe file with `catch (_) {}` and `catch (e, st) { }`; 1 new test (errors reach the sink); 112/112 app tests, analyze clean, format, vendor guards, web build. Phone: cold launch to home, 0 reported errors in the first 30 s |
 | P1-23 | Browser tests (`e2e/`) in CI against dedicated test accounts on the test/staging project, passwords as CI secrets; add the onboarding flows (new member → registration; complete member → home on every launch; incomplete → pre-filled form) | ⬜ | — | Would have caught the registration loop; needs P0-08 |
+| P1-24 | Text size setting: Settings → Text size (Small 90 %, Standard, Large 115 %, Extra large 130 %, saved on the device); multiplies with the phone's own font setting and the language factor (Tamil 90 %); buttons show "A" in four sizes so the control fits in every language; `--dart-define=FULL_ERRORS=true` prints every layout error in full for sweeps | ✅ | this commit | 7 new tests (app-wide scale for Tamil/English × size, saved and restored, unknown value → Standard, tapping Extra large changes the scale); 119/119 app tests. Phone check at Extra large pending |
 
 ## Phase 2: Roles, admin console and moderation
 
@@ -170,13 +171,13 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 
 | Bug | Seen | Notes |
 |---|---|---|
-| Home: in Tamil the "Viewed you" section title (உங்களைப் பார்த்தவர்கள்) and its "See all" link overflow the row by 15–26 px | 2026-11-05, Redmi Note 8 Pro, dark theme | Section headers need the title to wrap or shrink; check every home section in Tamil |
-| Profile cards show "Not specified" in English when the app is in Tamil | 2026-11-05, same device | A hard-coded string missed by P1-13 |
+| (none open) | | |
 
 ## Bugs found and fixed along the way
 
 | Bug | Fixed in | Verified |
 |---|---|---|
+| Tamil screens overflowed (yellow-black stripes): home section titles pushed "See all" off the row (4 sections, 15–87 px), Search sort dropdown 35 px; Tamil letters are larger than Latin ones at the same size; "Not specified" (height) was always English | this commit | Phone sweep (Tamil, all tabs, scrolled, plus bell, messages, profile detail): 4 overflows → 1 after the header fix (titles wrap, "See all" stays); then all 14 dropdowns lacking `isExpanded` fixed; Tamil text drawn at 90 % app-wide; height uses `commonNotSpecified`. Phone re-sweep with these last fixes pending (phone disconnected) |
 | Returning members saw an empty registration form: the profile gate decided before the profile had loaded, treated a failed load (e.g. slow network) as "no profile" (and tried to create one), the form pre-filled only 4 fields, and an empty phone/WhatsApp box erased the stored number | `6dc0e09` | Gate now waits for a real load result (`ProfileLoadState`): spinner while loading, "couldn't load, try again" on failure, registration only for a new member or missing required details; form pre-fills name, DOB, phone, WhatsApp, city, caste, district, occupation, created-by, work status, qualifications; no auto-picked district; blank phone boxes keep stored numbers; profile re-read from the database after saving. 17 new tests (111/111). Phone (Redmi Note 8 Pro, debug build): 3 cold launches, screenshot every 0.4 s: splash → spinner → home each time, no registration frame |
 | Registration reappeared on every launch: 19 caste names were stored twice (list loaded on 2025-08-24 and 2025-09-05), the save looked castes up by name expecting one row, failed silently and stored `caste_id = null` (4 of 60 live profiles); the app still marked the profile complete locally until the next launch | `9ba13e0` (migration `20261107100000_dedupe_castes.sql` + app) | DB suite: duplicates 0, a new duplicate (any case/spacing) refused, members cannot run the merge, a profile pointing at a copy is moved to the kept row and its preferred-castes list de-duplicated. App: lookup takes the oldest match and a chosen caste/state/district with no match now stops the save with an error (3 new tests, 94/94). Live: applied 2026-11-05; 0 duplicates (39 → 20 castes), unique index present, 57/60 profiles keep their caste, none point at a deleted row |
 | Anyone could read all profiles (incl. email, DOB, income) with the public key | `a9bc06e` | Anonymous REST → 401 |

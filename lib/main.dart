@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'features/auth/auth_provider.dart';
 import 'shared/state/matrimonial_provider.dart';
 import 'shared/theme/theme.dart';
+import 'shared/theme/language_text_scale.dart';
 import 'app/config/supabase_config.dart';
 import 'app/preferences/user_preferences.dart';
 import 'l10n/app_localizations.dart';
@@ -15,8 +17,17 @@ import 'app/settings/app_settings.dart';
 import 'app/settings/maintenance_gate.dart';
 import 'core/services/auth_service.dart';
 
+/// `--dart-define=FULL_ERRORS=true` (debug builds) prints every framework
+/// error in full, e.g. each layout overflow with its file and line, instead of
+/// only the first one. Used for the layout sweeps in docs/PROGRESS_TRACKER.md.
+const _fullErrors = bool.fromEnvironment('FULL_ERRORS');
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kDebugMode && _fullErrors) {
+    FlutterError.onError = (details) =>
+        FlutterError.dumpErrorToConsole(details, forceReport: true);
+  }
 
   // Determine backend mode from dart-define and initialize Supabase first if needed
   const backendStr = String.fromEnvironment(
@@ -143,8 +154,10 @@ class _RoutedAppState extends State<_RoutedApp> {
       ],
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      builder: (context, child) =>
-          MaintenanceGate(child: child ?? const SizedBox.shrink()),
+      builder: (context, child) => LanguageTextScale(
+        memberFactor: prefs.textSize.factor,
+        child: MaintenanceGate(child: child ?? const SizedBox.shrink()),
+      ),
     );
   }
 }

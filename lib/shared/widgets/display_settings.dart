@@ -6,8 +6,8 @@ import '../../l10n/l10n.dart';
 import '../theme/constants.dart';
 import 'language_selector.dart';
 
-/// Appearance (System / Light / Dark) and Language (English / தமிழ்)
-/// controls. Both change the app at once and are remembered on the device.
+/// Appearance (System / Light / Dark), Language (English / தமிழ்) and Text
+/// size controls. Each changes the app at once and is remembered on the device.
 class DisplaySettings extends StatelessWidget {
   const DisplaySettings({super.key});
 
@@ -62,10 +62,49 @@ class DisplaySettings extends StatelessWidget {
             onSelectionChanged: (s) => prefs.setLocale(Locale(s.first)),
           ),
         ),
+        const SizedBox(height: AppDimensions.paddingM),
+        _Label(icon: Icons.format_size, text: l.settingsTextSize),
+        SizedBox(
+          width: double.infinity,
+          // "A" in four sizes: no words, so it fits in every language.
+          child: SegmentedButton<TextSizeChoice>(
+            showSelectedIcon: false,
+            segments: [
+              for (final t in TextSizeChoice.values)
+                ButtonSegment(
+                  value: t,
+                  tooltip: _textSizeName(l, t),
+                  label: Text(
+                    'A',
+                    semanticsLabel: _textSizeName(l, t),
+                    textScaler: TextScaler.noScaling,
+                    style: TextStyle(
+                      fontSize: 14 * t.factor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+            ],
+            selected: {prefs.textSize},
+            onSelectionChanged: (s) => prefs.setTextSize(s.first),
+          ),
+        ),
+        const SizedBox(height: AppDimensions.paddingS),
+        Text(
+          '${_textSizeName(l, prefs.textSize)} · ${l.textSizePreview}',
+          style: context.styles.body2,
+        ),
       ],
     );
   }
 }
+
+String _textSizeName(AppLocalizations l, TextSizeChoice t) => switch (t) {
+  TextSizeChoice.small => l.textSizeSmall,
+  TextSizeChoice.standard => l.textSizeStandard,
+  TextSizeChoice.large => l.textSizeLarge,
+  TextSizeChoice.extraLarge => l.textSizeExtraLarge,
+};
 
 class _Label extends StatelessWidget {
   final IconData icon;

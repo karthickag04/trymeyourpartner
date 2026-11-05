@@ -384,6 +384,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _gender,
                         items: [
                           DropdownMenuItem(
@@ -396,7 +397,6 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           ),
                         ],
                         onChanged: (v) => setState(() => _gender = v),
-                        isExpanded: true,
                         decoration: InputDecoration(
                           labelText: context.l10n.fieldGender,
                         ),
@@ -463,6 +463,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       const SizedBox(height: 8),
                       // Created by
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _createdBy,
                         items: [
                           DropdownMenuItem(
@@ -483,7 +484,6 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           ),
                         ],
                         onChanged: (v) => setState(() => _createdBy = v),
-                        isExpanded: true,
                         decoration: InputDecoration(
                           labelText: context.l10n.fieldProfileCreatedBy,
                         ),
@@ -493,6 +493,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       const SizedBox(height: 8),
                       // Work status
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _workStatus,
                         items: [
                           DropdownMenuItem(
@@ -509,7 +510,6 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           ),
                         ],
                         onChanged: (v) => setState(() => _workStatus = v),
-                        isExpanded: true,
                         decoration: InputDecoration(
                           labelText: context.l10n.fieldWorkStatus,
                         ),
@@ -517,6 +517,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       const SizedBox(height: 8),
                       // Occupation category
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _occupationCategory,
                         items: _occupationCategories
                             .map(
@@ -525,7 +526,6 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                             .toList(),
                         onChanged: (v) =>
                             setState(() => _occupationCategory = v),
-                        isExpanded: true,
                         decoration: InputDecoration(
                           labelText: context.l10n.fieldOccupationCategory,
                         ),
@@ -537,6 +537,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                           Expanded(
                             flex: 2,
                             child: DropdownButtonFormField<String>(
+                              isExpanded: true,
                               value: _selectedQualificationType,
                               items: _qualificationTypes
                                   .map(
@@ -552,7 +553,6 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                                   if (v != null) _qualificationCtrl.text = v;
                                 });
                               },
-                              isExpanded: true,
                               decoration: InputDecoration(
                                 labelText: context.l10n.fieldQualification,
                               ),
@@ -619,6 +619,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _religion,
                         items: AppConstants.religionCategories
                             .map(
@@ -637,6 +638,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _caste,
                         items: _casteOptions
                             .map(
@@ -659,6 +661,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _state,
                         items: _stateOptions
                             .map(
@@ -674,6 +677,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
                       ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: _district,
                         items: _districtOptions
                             .map(

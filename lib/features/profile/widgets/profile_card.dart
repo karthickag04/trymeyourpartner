@@ -189,7 +189,8 @@ class ProfileCard extends StatelessWidget {
                       Text(
                         context.l10n.profileAgeHeight(
                           profile.age,
-                          profile.heightInFeetInches,
+                          (profile.heightInFeetInches ??
+                              context.l10n.commonNotSpecified),
                         ),
                         style: context.styles.micro,
                         maxLines: 1,

@@ -228,7 +228,7 @@ class ProfileCardHorizontal extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                profile.heightInFeetInches,
+                (profile.heightInFeetInches ?? context.l10n.commonNotSpecified),
                 style: context.styles.caption.copyWith(
                   color: context.palette.textSecondary,
                 ),

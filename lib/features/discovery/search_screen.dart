@@ -486,6 +486,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // State dropdown
             DropdownButtonFormField<LocationData>(
+              isExpanded: true,
               value: _selectedState,
               decoration: InputDecoration(
                 labelText: context.l10n.fieldState,
@@ -507,6 +508,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // District dropdown
             DropdownButtonFormField<LocationData>(
+              isExpanded: true,
               value: _selectedDistrict,
               decoration: InputDecoration(
                 labelText: context.l10n.fieldDistrict,
@@ -572,6 +574,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Education dropdown
             DropdownButtonFormField<String>(
+              isExpanded: true,
               value: _selectedEducation,
               decoration: InputDecoration(
                 labelText: context.l10n.fieldEducation,
@@ -596,6 +599,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             // Occupation dropdown
             DropdownButtonFormField<String>(
+              isExpanded: true,
               value: _selectedOccupation,
               decoration: InputDecoration(
                 labelText: context.l10n.fieldOccupation,
@@ -787,6 +791,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
+              isExpanded: true,
               value: _sortBy,
               decoration: InputDecoration(
                 labelText: context.l10n.sortBy,

@@ -189,8 +189,9 @@ class MatrimonialUser {
 
   String get displayName => name.split(' ').first;
 
-  String get heightInFeetInches {
-    if (height == null) return 'Not specified';
+  /// e.g. 5'8"; null when unknown (screens show the translated "Not specified").
+  String? get heightInFeetInches {
+    if (height == null) return null;
     final totalInches = height! / 2.54;
     final feet = (totalInches / 12).floor();
     final inches = (totalInches % 12).round();

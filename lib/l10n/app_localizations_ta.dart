@@ -50,6 +50,24 @@ class AppLocalizationsTa extends AppLocalizations {
   String get languageLabel => 'மொழி';
 
   @override
+  String get settingsTextSize => 'எழுத்து அளவு';
+
+  @override
+  String get textSizeSmall => 'சிறியது';
+
+  @override
+  String get textSizeStandard => 'இயல்பு';
+
+  @override
+  String get textSizeLarge => 'பெரியது';
+
+  @override
+  String get textSizeExtraLarge => 'மிகப் பெரியது';
+
+  @override
+  String get textSizePreview => 'எழுத்துகள் இப்படித் தெரியும்.';
+
+  @override
   String get languageChooseTooltip => 'மொழியை மாற்று';
 
   @override

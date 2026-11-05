@@ -416,7 +416,7 @@ class ProfileDetailScreen extends StatelessWidget {
         _buildInfoRow(
           context,
           context.l10n.fieldHeight,
-          profile.heightInFeetInches,
+          (profile.heightInFeetInches ?? context.l10n.commonNotSpecified),
         ),
         if (profile.weight != null)
           _buildInfoRow(
