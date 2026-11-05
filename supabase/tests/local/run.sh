@@ -47,4 +47,13 @@ expect "B views counter|1"
 expect "B still exists|1"
 expect "quota|stopped after 4 new reveals: CONTACT_LIMIT_REACHED"
 expect "archived email|b@x.com"
+OUT2=$($P -At -f "$HERE/30_app_settings_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
+echo "$OUT2"
+expect2() { grep -qF -- "$1" <<<"$OUT2" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
+expect2 "anon reads settings|5"
+expect2 "ERROR:  permission denied for table app_settings"
+expect2 "maintenance still off|false"
+expect2 "raised quota|1 more, then CONTACT_LIMIT_REACHED"
+expect2 "feature off|FEATURE_DISABLED"
+
 echo "All database checks passed."

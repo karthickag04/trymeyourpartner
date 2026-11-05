@@ -33,7 +33,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** Track A: P1-12 unified settings; P1-10 Android CI fix. Track B: P1-07 + P1-13. Track C: Phase 2.
+**Now working on:** Track A: P1-12 unified settings (core done), vendor-portability plan; P1-10 Android CI fix. Track B: P1-07 + P1-13. Track C: Phase 2.
 **Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
@@ -64,7 +64,7 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
 | P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f` | Widget tests for splash and signed-out → sign-in added. Android debug APK job added; first run failed because the runner lacks the pinned NDK and its licence (fix: accept licences and install the NDK in CI, *this commit*). Sentry not yet. |
-| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | — | Track A |
+| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | *(this commit)* | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
@@ -153,6 +153,8 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | 404 errors on every login (`users`, `matches` tables don't exist) | `655d5ee` | Browser: no API errors |
 | "Similar Profiles" listed the viewer | `655d5ee` | Query excludes the viewer, same gender as viewed profile |
 | Registration queried member data before sign-in was known (401 at start-up) | `fa24b94` | Browser: no API errors |
+| Android CI build failed: pinned NDK not installed on the runner | `8fd3174` | Waiting for the next CI run |
+| Sign-in screen tagline "Your Educational Streaming Platform" left over from the old project | Track B (with i18n) | — |
 
 ## Test accounts and data
 
