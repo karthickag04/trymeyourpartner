@@ -253,7 +253,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     if (p == null) return;
     _suspendAutoSave = true;
     _nameCtrl.text = p.name;
-    _emailCtrl.text = p.email;
+    _emailCtrl.text = context.read<AuthProvider>().userEmail ?? '';
     _cityCtrl.text = p.city;
     _education = p.education;
     _occupation = p.occupation;
@@ -499,6 +499,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           'Email',
                           _emailCtrl,
                           keyboardType: TextInputType.emailAddress,
+                          readOnly: true,
+                          helperText:
+                              'Your login email. Only you can see it.',
                         ),
                         _rowDropdown('Gender', ['Male', 'Female'], _gender, (
                           v,
@@ -1039,16 +1042,20 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
     TextInputType keyboardType = TextInputType.text,
     bool requiredField = false,
     int maxLines = 1,
+    bool readOnly = false,
+    String? helperText,
     void Function(String)? onChanged,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
         controller: ctrl,
+        readOnly: readOnly,
         keyboardType: keyboardType,
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
+          helperText: helperText,
           border: const OutlineInputBorder(),
         ),
         validator: requiredField

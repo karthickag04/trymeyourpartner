@@ -6,7 +6,6 @@ import '../utils/constants.dart';
 import '../services/matrimonial_service.dart';
 import 'matrimonial_main_screen.dart';
 import 'simple_registration_screen.dart';
-import '../services/subscription_service.dart';
 
 class ProfileCompletionGate extends StatefulWidget {
   const ProfileCompletionGate({super.key});
@@ -36,15 +35,7 @@ class _ProfileCompletionGateState extends State<ProfileCompletionGate> {
                 await MatrimonialService.ensureProfileForCurrentUser();
             if (created) {
               await matrimony.forceRefreshUserData(uid);
-              // Ensure a default free subscription exists for this new profile
-              final p = matrimony.currentUserProfile;
-              if (p != null) {
-                try {
-                  // lazily ensure free tier for new accounts
-                  // ignore: unawaited_futures
-                  SubscriptionService.ensureDefaultFree(p.id);
-                } catch (_) {}
-              }
+              // The server creates the Free plan for new profiles.
             }
           } catch (e) {
             // Policies might not be ready yet; defer creation to registration screen

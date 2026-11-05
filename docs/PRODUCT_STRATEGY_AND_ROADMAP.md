@@ -65,6 +65,7 @@ These were verified against the live project and the SQL in this repo.
 | C3 | **Members can grant themselves a paid plan.** `subscriptions` has a `FOR ALL` owner policy, and the client inserts rows itself. | `sql/subscriptions_and_contacts.sql:16`, `lib/services/subscription_service.dart:31` | Free premium; revenue leakage once payments exist. |
 | C4 | **Members can insert their own phone/email verifications.** | `sql/verifications.sql:23` (`FOR ALL … WITH CHECK owner`) | Fake "phone verified" badges. |
 | C5 | **Development runs against the production Supabase project.** The dashboard shows `main · PRODUCTION`, and there is no staging. | Supabase dashboard; `lib/config/supabase_config.dart` | Test data and experiments land in production. |
+| C7 | **Any caller could delete any member's profile.** `delete_profile_and_related(p_profile_id)` and `restore_profile_from_deleted(p_deleted_id)` run with elevated rights and never check who is calling. | `sql/deleted_users.sql:14, 67` | Account destruction by any user (and possibly anonymous visitors, under Supabase's default function grants). |
 | C6 | **A legacy anon JWT is hard-coded as the default key.** Legacy keys are being retired by Supabase in early 2027. | `lib/config/supabase_config.dart:3-6` | The app breaks when legacy keys are switched off. |
 
 **Immediate remediation (Phase 0):**
@@ -74,6 +75,9 @@ These were verified against the live project and the SQL in this repo.
   - Make `subscriptions` and `verifications` **read-only** to members; only server code (service role / API) writes them.
 - **C5:** Create a separate `staging` Supabase project. Move schema to versioned migrations (see [section 9](#9-folder-and-repository-restructuring)).
 - **C6:** Switch to the publishable key (`sb_publishable_…`) passed via `--dart-define`.
+- **C7:** Move the original functions to a private schema behind public wrappers that check the caller; revoke function execution from anonymous visitors.
+
+**Status:** C1–C4, C6 and C7 are implemented in `supabase/migrations/20261105120000_phase0_security_hardening.sql` plus app changes, tested on a local copy of the schema. They take effect once the migration is applied (see `supabase/README.md`). C5 (staging project) needs the owner to create it. Dates of birth, income and `auth_user_id` remain visible to logged-in members until the Phase 2 safe-profile view.
 
 ---
 
@@ -536,10 +540,12 @@ Durations are indicative for a small team (2–3 Flutter, 1–2 backend, 1 QA/de
 
 **Goal:** no data exposure, no self-granted trust or plans.
 
-- [ ] Restrict `matrimonial_profiles` SELECT to `authenticated`; create a `public_profiles` view without email, exact DOB or `auth_user_id`; repoint client reads (C1)
-- [ ] Block member writes to `is_verified`, counters and moderation fields with a trigger and column grants (C2)
-- [ ] Make `subscriptions`, `verifications` and `contact_reveals` member-read-only; move default-free-plan creation to a DB trigger on profile insert (C3, C4)
-- [ ] Switch the client to the publishable key via `--dart-define`; remove the hard-coded legacy JWT (C6)
+- [x] Revoke anonymous access to member tables and functions; restrict all member-table policies to `authenticated`; stop storing email in the shared profile row (C1, part). The `public_profiles` view without exact DOB and `auth_user_id` moves to Phase 2 with the API.
+- [x] Block member writes to `is_verified` and counters with a trigger; make the counter triggers work (C2)
+- [x] Make `subscriptions`, `verifications` and `contact_reveals` member-read-only; server creates the Free plan; contact reveal and its quota decided by the `reveal_contact` RPC, which also returns the numbers (C3, C4)
+- [x] Caller checks on the delete/restore functions (C7)
+- [x] Switch the client to the publishable key via `--dart-define-from-file=.env`; remove the hard-coded legacy JWT (C6)
+- [ ] Apply the migration to staging, then production
 - [ ] Create a **staging** Supabase project; stop developing against prod (C5)
 - [ ] Rotate keys if any secret key was ever shipped; review Supabase Auth settings (email confirmation, redirect URLs)
 

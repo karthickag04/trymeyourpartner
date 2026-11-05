@@ -1,9 +1,9 @@
 class SupabaseConfig {
   static const String supabaseUrl = 'https://lngpmjxiqfskpxbncfgl.supabase.co';
-  static const String supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_KEY',
-    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuZ3BtanhpcWZza3B4Ym5jZmdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwMzAxMzYsImV4cCI6MjA3MTYwNjEzNn0.kr-_z4Nubwd6k8zbfjH6czuaXUVt-060s2tKFQIO2KY',
-  );
+  /// Supabase publishable key (sb_publishable_...), passed at build time:
+  ///   flutter run --dart-define-from-file=.env
+  /// See .env.example. There is deliberately no default.
+  static const String supabaseAnonKey = String.fromEnvironment('SUPABASE_KEY');
   
   // Database table names
   static const String usersTable = 'users';

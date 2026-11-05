@@ -841,17 +841,7 @@ class ProfileDetailScreen extends StatelessWidget {
     try {
       final my = context.read<MatrimonialProvider>().currentUserProfile;
       if (my == null) throw Exception('Please login');
-      final ok = await SubscriptionService.canRevealContact(my.id);
-      if (!ok) {
-        messenger.showSnackBar(
-          const SnackBar(
-            content: Text('Contact reveal limit reached. Upgrade your plan.'),
-            backgroundColor: AppColors.warning,
-          ),
-        );
-        return;
-      }
-      await SubscriptionService.recordContactReveal(my.id, profile.id);
+      final contact = await SubscriptionService.revealContact(profile.id);
       if (!nav.mounted) return;
       showModalBottomSheet(
         context: nav.context,
@@ -863,26 +853,34 @@ class ProfileDetailScreen extends StatelessWidget {
             children: [
               const Text('Contact details', style: AppTextStyles.subtitle1),
               const SizedBox(height: 8),
-              if ((profile.contactInfo.phoneNumber ?? '').isNotEmpty)
-                Text('Phone: ${profile.contactInfo.phoneNumber}')
-              else
-                const SizedBox.shrink(),
-              if ((profile.contactInfo.whatsappNumber ?? '').isNotEmpty)
-                Text('WhatsApp: ${profile.contactInfo.whatsappNumber}')
-              else
-                const SizedBox.shrink(),
-              if ((profile.contactInfo.currentAddress ?? '').isNotEmpty)
-                Text('Address: ${profile.contactInfo.currentAddress}')
-              else
-                const SizedBox.shrink(),
+              if (contact.isEmpty)
+                const Text('This member has not added a phone number yet.'),
+              if ((contact.phoneNumber ?? '').isNotEmpty)
+                Text('Phone: ${contact.phoneNumber}'),
+              if ((contact.whatsappNumber ?? '').isNotEmpty)
+                Text('WhatsApp: ${contact.whatsappNumber}'),
             ],
           ),
         ),
       );
+    } on ContactLimitReached {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Contact reveal limit reached. Upgrade your plan.'),
+          backgroundColor: AppColors.warning,
+        ),
+      );
+    } on ContactUnavailable {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('This profile is not available.'),
+          backgroundColor: AppColors.error,
+        ),
+      );
     } catch (e) {
       messenger.showSnackBar(
-        SnackBar(
-          content: Text('Failed to reveal contact: $e'),
+        const SnackBar(
+          content: Text('Could not reveal contact. Please try again.'),
           backgroundColor: AppColors.error,
         ),
       );

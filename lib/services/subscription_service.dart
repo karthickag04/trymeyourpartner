@@ -5,42 +5,6 @@ class SubscriptionService {
   // Lazily access the Supabase client to avoid early initialization issues
   static SupabaseClient get _supabase => Supabase.instance.client;
 
-  static Future<Subscription> ensureDefaultFree(String profileId) async {
-    // Look up active subscription
-    final now = DateTime.now().toIso8601String();
-    final existing = await _supabase
-        .from('subscriptions')
-        .select()
-        .eq('profile_id', profileId)
-        .lte('start_at', now)
-        .or('end_at.is.null,end_at.gt.$now')
-        .limit(1)
-        .maybeSingle();
-
-    if (existing != null) {
-      return Subscription.fromJson(existing);
-    }
-
-    // Create a free subscription starting now with endAt = end of current month
-    final startAt = DateTime.now();
-    final endAt = DateTime(
-      startAt.year,
-      startAt.month + 1,
-      1,
-    ).subtract(const Duration(seconds: 1));
-    final insert = await _supabase
-        .from('subscriptions')
-        .insert({
-          'profile_id': profileId,
-          'tier': 'free',
-          'start_at': startAt.toIso8601String(),
-          'end_at': endAt.toIso8601String(),
-        })
-        .select()
-        .single();
-    return Subscription.fromJson(insert);
-  }
-
   static Future<Subscription?> getActive(String profileId) async {
     final now = DateTime.now().toIso8601String();
     final row = await _supabase
@@ -69,40 +33,52 @@ class SubscriptionService {
     return (resp as List).length;
   }
 
-  static Future<bool> canRevealContact(String viewerProfileId) async {
-    final sub = await getActive(viewerProfileId);
-    if (sub == null)
-      return false; // should not happen; call ensureDefaultFree first
-
-    final int? limit = PlanRules.contactLimitFor(
-      sub.tier,
-      sub.startAt,
-      sub.endAt,
-    );
-    if (limit == null) return true; // unlimited
-    if (sub.tier == PlanTier.free) {
-      final used = await getMonthlyContactReveals(viewerProfileId);
-      return used < PlanRules.freeMonthlyContactLimit;
+  /// Reveals another member's phone numbers.
+  ///
+  /// The server checks the plan quota, blocks and profile status, records the
+  /// reveal and returns the numbers (see `reveal_contact` in
+  /// supabase/migrations). Repeat reveals of the same member use no quota.
+  /// Throws [ContactLimitReached] when the plan's quota is used up.
+  static Future<RevealedContact> revealContact(String targetProfileId) async {
+    try {
+      final res = await _supabase.rpc(
+        'reveal_contact',
+        params: {'p_target_profile_id': targetProfileId},
+      );
+      final map = Map<String, dynamic>.from(res as Map);
+      return RevealedContact(
+        phoneNumber: map['phone_number'] as String?,
+        whatsappNumber: map['whatsapp_number'] as String?,
+      );
+    } on PostgrestException catch (e) {
+      if (e.message.contains('CONTACT_LIMIT_REACHED')) {
+        throw const ContactLimitReached();
+      }
+      if (e.message.contains('PROFILE_NOT_AVAILABLE')) {
+        throw const ContactUnavailable();
+      }
+      rethrow;
     }
-    // Paid with finite limit
-    final List resp = await _supabase
-        .from('contact_reveals')
-        .select('id')
-        .eq('profile_id', viewerProfileId)
-        .gte('created_at', sub.startAt.toIso8601String())
-        .lt('created_at', (sub.endAt ?? DateTime.now()).toIso8601String());
-    final used = resp.length;
-    return used < limit; // limit is non-null here
   }
+}
 
-  static Future<void> recordContactReveal(
-    String viewerProfileId,
-    String viewedProfileId,
-  ) async {
-    // Use upsert to avoid duplicate key error if already recorded (e.g., via accept RPC)
-    await _supabase.from('contact_reveals').upsert({
-      'profile_id': viewerProfileId,
-      'viewed_profile_id': viewedProfileId,
-    }, onConflict: 'profile_id,viewed_profile_id');
-  }
+class RevealedContact {
+  final String? phoneNumber;
+  final String? whatsappNumber;
+  const RevealedContact({this.phoneNumber, this.whatsappNumber});
+
+  bool get isEmpty =>
+      (phoneNumber ?? '').isEmpty && (whatsappNumber ?? '').isEmpty;
+}
+
+class ContactLimitReached implements Exception {
+  const ContactLimitReached();
+  @override
+  String toString() => 'Contact reveal limit reached for your plan.';
+}
+
+class ContactUnavailable implements Exception {
+  const ContactUnavailable();
+  @override
+  String toString() => 'This profile is not available.';
 }

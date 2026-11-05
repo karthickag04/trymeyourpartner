@@ -24,6 +24,12 @@ Future<void> main() async {
       : BackendMode.supabase;
 
   if (mode == BackendMode.supabase) {
+    if (SupabaseConfig.supabaseAnonKey.isEmpty) {
+      throw StateError(
+        'SUPABASE_KEY is not set. Copy .env.example to .env, add the '
+        'publishable key, and run with --dart-define-from-file=.env',
+      );
+    }
     await Supabase.initialize(
       url: SupabaseConfig.supabaseUrl,
       anonKey: SupabaseConfig.supabaseAnonKey,
