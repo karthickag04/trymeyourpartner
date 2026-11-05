@@ -14,7 +14,12 @@ database's access rules always apply; it holds no secret keys today.
 | POST | `/v1/profiles/:profileId/contact-reveal` | Reveal phone/WhatsApp through the database's quota and block checks |
 | GET | `/docs`, `/docs/openapi.json` | API documentation |
 
-Clients send their Supabase access token: `Authorization: Bearer <token>`.
+Clients send their access token: `Authorization: Bearer <token>`.
+
+Tokens are verified by `TokenVerifier` (`TOKEN_VERIFICATION`, default `auto`): by **issuer and
+public keys (JWKS)** when the issuer publishes them, which works with any OIDC provider, or
+otherwise by asking the provider (Supabase today). See
+[ADR 0001](../docs/adr/0001-vendor-portability.md).
 
 ## Run
 

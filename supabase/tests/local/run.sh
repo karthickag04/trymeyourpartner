@@ -90,4 +90,16 @@ expect '"team_id": null, "branch_id": "0000000a-0000-0000-0000-00000000000a", "s
 expect "hook member unchanged|t"
 expect "hook disabled staff unchanged|t"
 expect "disabled staff sees|0"
+OUT2=$($P -At -f "$HERE/30_app_settings_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
+echo "$OUT2"
+expect2() { grep -qF -- "$1" <<<"$OUT2" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
+expect2 "anon reads settings|5"
+expect2 "ERROR:  permission denied for table app_settings"
+expect2 "maintenance still off|false"
+expect2 "raised quota|1 more, then CONTACT_LIMIT_REACHED"
+expect2 "feature off|FEATURE_DISABLED"
+expect2 "identity helper|t"
+expect2 "identity helper signed out|t"
+expect2 "auth.uid remaining|0"
+
 echo "All database checks passed."

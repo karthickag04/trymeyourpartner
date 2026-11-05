@@ -875,6 +875,12 @@ class ProfileDetailScreen extends StatelessWidget {
           backgroundColor: AppColors.warning,
         ),
       );
+    } on FeatureUnavailable {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Contact reveal is not available right now.'),
+        ),
+      );
     } on ContactUnavailable {
       messenger.showSnackBar(
         const SnackBar(

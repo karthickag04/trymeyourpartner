@@ -94,6 +94,29 @@ class SupabaseRealtimeService implements RealtimeService {
   }
 
   @override
+  Future<Object?> subscribeNotifications(
+    String profileId, {
+    RealtimeCallback? onInsert,
+  }) async {
+    final ch = _client.channel('notifications:$profileId');
+    ch.onPostgresChanges(
+      event: PostgresChangeEvent.insert,
+      schema: 'public',
+      table: 'notifications',
+      filter: PostgresChangeFilter(
+        type: PostgresChangeFilterType.eq,
+        column: 'profile_id',
+        value: profileId,
+      ),
+      callback: (payload) async {
+        if (onInsert != null) await onInsert(payload.newRecord);
+      },
+    );
+    ch.subscribe();
+    return ch;
+  }
+
+  @override
   Future<Object?> subscribeThreadMessages(
     String myProfileId,
     String otherProfileId, {

@@ -25,15 +25,15 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 7 | 3 | 3 | 0 |
-| P2 Roles, admin console, moderation | 0 | 0 | 7 | 0 |
+| P1 Foundation & restructure | 10 | 4 | 3 | 1 |
+| P2 Roles, admin console, moderation | 0 | 0 | 9 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
 | P5 Market-parity features | 0 | 0 | 9 | 0 |
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** Track A: P1-12 unified settings; P1-10 Android CI fix. Track B: P1-07 + P1-13. Track C: Phase 2.
+**Now working on:** Track A: integrating tracks B and C when ready; next P1-06 Riverpod (after track B lands). Track B: P1-07 + P1-13. Track C: Phase 2.
 **Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
@@ -63,8 +63,12 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P1-07 | Design-system tokens, light/dark/system themes with per-user choice, accessibility pass | ⬜ | — | Track B |
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
-| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f` | Widget tests for splash and signed-out → sign-in added. Android debug APK job added; first run failed because the runner lacks the pinned NDK and its licence (fix: accept licences and install the NDK in CI, *this commit*). Sentry not yet. |
-| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | — | Track A |
+| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f`, `8fd3174` | Widget tests for splash and signed-out → sign-in added. Android debug APK builds green in CI (run 8) and is attached to each run for 7 days. Sentry not yet. |
+| P1-14 | Portability guard: no `supabase_flutter` imports outside `lib/data/supabase/` (CI check; legacy list may only shrink) | ✅ | `5ec49c2` | `tool/check_vendor_imports.sh` in CI; 5 legacy exceptions listed ([ADR 0001](adr/0001-vendor-portability.md)) |
+| P1-15 | Database identity helper `app_current_user_id()`; rewrite the 83 `auth.uid()` uses in policies/functions to it | ✅ | `5ec49c2`, `5470fbd` | Live: 0 uses of `auth.uid()` left; 51 policies use the helper; 12/12 live member checks and the browser contact flow unchanged; full local DB suite passes |
+| P1-16 | Realtime behind `RealtimeService` (move `notifications_service.dart`) | ✅ | *(this commit)* | `subscribeNotifications` added to the interface (Supabase channels; HTTP polling); notifications code no longer imports Supabase (allowlist 5 → 4). Live browser: a notification inserted in the database showed as a toast within seconds |
+| P1-17 | API verifies tokens by issuer/JWKS (any OIDC provider), not by calling Supabase | 🙋 | `e44595e` | Built: `TokenVerifier` (auto/jwks/provider), 7 new tests (valid token; wrong key, issuer, audience; expired; garbage). Live: real token 200, tampered 401 (provider fallback, because the project has no public keys yet). **Owner:** in Supabase → Settings → JWT Keys, migrate to asymmetric signing keys; the API then switches to JWKS automatically. |
+| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | `479c645` | `app_settings` table live (readable by all, writable by no member); server reads the free quota and the contact-reveal switch from it; app: `AppSettings` service (cached, refreshed on resume), maintenance screen, real Help & Support screen. Verified: 8 Flutter tests, DB checks (raised quota allows exactly one more; switch off → FEATURE_DISABLED), live browser test of maintenance on/off, contact flow. Left: minimum app version, editing from the admin console (Track C), user preferences (Track B). |
 | P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
@@ -78,6 +82,8 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | P2-04 | Moderation queues: reports, profiles, photos; actions with reasons | ⬜ | — | |
 | P2-05 | Verification queue with maker–checker | ⬜ | — | |
 | P2-06 | Admin API (`/admin/v1`) with scope checks; PII views audited | ⬜ | — | Track C |
+| P2-08 | Move the app's data access from direct Supabase calls (`matrimonial_service.dart`, ~75 calls) to the backend API; shrink the vendor allowlist to zero | ⬜ | — | Track A, after P1-06 |
+| P2-09 | Exit runbook: steps and checks to move database, auth, storage and realtime to another provider | ⬜ | — | |
 | P2-07 | Master data management (castes, locations, qualifications, occupations) | ⬜ | — | |
 
 ## Phase 3: Trust & safety for members
@@ -153,6 +159,9 @@ Tracks B and C start from track A's branch; the coordinator merges them back aft
 | 404 errors on every login (`users`, `matches` tables don't exist) | `655d5ee` | Browser: no API errors |
 | "Similar Profiles" listed the viewer | `655d5ee` | Query excludes the viewer, same gender as viewed profile |
 | Registration queried member data before sign-in was known (401 at start-up) | `fa24b94` | Browser: no API errors |
+| "Mark as read" in the Notification Center always failed (wrote a non-existent `is_read` column) | *(this commit)* | Live: old call → 400 "Could not find the 'is_read' column"; fixed call → 200 |
+| Android CI build failed: pinned NDK not installed on the runner | `8fd3174` | CI run 8: Android job green |
+| Sign-in screen tagline "Your Educational Streaming Platform" left over from the old project | Track B (with i18n) | — |
 
 ## Test accounts and data
 

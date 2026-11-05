@@ -20,7 +20,7 @@ class SupabaseNotificationService implements NotificationService {
   Future<void> markRead(String notificationId) async {
     await _client
         .from('notifications')
-        .update({'is_read': true})
+        .update({'read_at': DateTime.now().toUtc().toIso8601String()})
         .eq('id', notificationId);
   }
 
@@ -28,7 +28,8 @@ class SupabaseNotificationService implements NotificationService {
   Future<void> markAllRead(String profileId) async {
     await _client
         .from('notifications')
-        .update({'is_read': true})
-        .eq('profile_id', profileId);
+        .update({'read_at': DateTime.now().toUtc().toIso8601String()})
+        .eq('profile_id', profileId)
+        .filter('read_at', 'is', null);
   }
 }

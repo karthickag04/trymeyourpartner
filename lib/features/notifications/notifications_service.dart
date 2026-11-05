@@ -1,74 +1,47 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../app/di/service_locator.dart';
+
+/// Notifications for the signed-in member, through the backend-neutral
+/// RealtimeService and NotificationService (docs/adr/0001-vendor-portability.md).
 class NotificationsService {
-  // Lazily access client to avoid premature Supabase.instance usage
-  static SupabaseClient get _client => Supabase.instance.client;
-  RealtimeChannel? _channel;
+  Object? _handle;
 
   void dispose() {
-    if (_channel != null) {
-      try {
-        Supabase.instance.client.removeChannel(_channel!);
-      } catch (_) {}
-      _channel = null;
-    }
+    final h = _handle;
+    _handle = null;
+    if (h != null) sl.realtimeService.unsubscribe(h);
   }
 
-  // Subscribe to notifications rows for the current user's profile
+  /// Calls [onInsert] for each new notification for [profileId].
   Future<void> subscribeForProfile({
     required String profileId,
     required void Function(Map<String, dynamic> row) onInsert,
   }) async {
-    // tear down if exists
     dispose();
-
-    final ch = _client.channel('notifications:$profileId');
-    ch.onPostgresChanges(
-      event: PostgresChangeEvent.insert,
-      schema: 'public',
-      table: 'notifications',
-      filter: PostgresChangeFilter(
-        type: PostgresChangeFilterType.eq,
-        column: 'profile_id',
-        value: profileId,
-      ),
-      callback: (payload) {
+    _handle = await sl.realtimeService.subscribeNotifications(
+      profileId,
+      onInsert: (row) async {
         try {
-          onInsert(payload.newRecord);
+          onInsert(row);
         } catch (e) {
           debugPrint('notifications callback error: $e');
         }
       },
     );
-    ch.subscribe();
-    _channel = ch;
   }
 
   Future<List<Map<String, dynamic>>> listNotifications({
     required String profileId,
     int limit = 50,
   }) async {
-    return await _client
-        .from('notifications')
-        .select()
-        .eq('profile_id', profileId)
-        .order('created_at', ascending: false)
-        .limit(limit);
+    final all = await sl.notificationService.fetchNotifications(profileId);
+    return all.take(limit).toList();
   }
 
-  Future<void> markRead({required String notificationId}) async {
-    await _client
-        .from('notifications')
-        .update({'read_at': DateTime.now().toIso8601String()})
-        .eq('id', notificationId);
-  }
+  Future<void> markRead({required String notificationId}) =>
+      sl.notificationService.markRead(notificationId);
 
-  Future<void> markAllRead({required String profileId}) async {
-    await _client
-        .from('notifications')
-        .update({'read_at': DateTime.now().toIso8601String()})
-        .eq('profile_id', profileId)
-        .filter('read_at', 'is', null);
-  }
+  Future<void> markAllRead({required String profileId}) =>
+      sl.notificationService.markAllRead(profileId);
 }

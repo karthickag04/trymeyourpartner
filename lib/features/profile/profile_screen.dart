@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../settings/help_screen.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
@@ -1187,9 +1188,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _navigateToHelp() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Help & Support coming soon!')),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const HelpScreen()));
   }
 
   void _navigateToAbout() {
