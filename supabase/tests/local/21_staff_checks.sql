@@ -91,3 +91,22 @@ reset role;
 set role authenticated; select pg_temp.act_as('55555555-5555-5555-5555-555555555555','aal2');
 select 'disabled staff sees', count(*) from public.branches;
 reset role;
+
+\echo '--- app settings: system_admin edits, others cannot; every change audited'
+set role authenticated; select pg_temp.act_as('44444444-4444-4444-4444-444444444444','aal2');
+update public.app_settings set value = '{"enabled": true, "message": "bm"}' where key = 'maintenance';
+reset role;
+select 'bmX settings change', value ->> 'enabled' from public.app_settings where key = 'maintenance';
+set role authenticated; select pg_temp.act_as('33333333-3333-3333-3333-333333333333','aal1');
+update public.app_settings set value = '{"enabled": true, "message": "aal1"}' where key = 'maintenance';
+reset role;
+select 'sysadmin aal1 settings change', value ->> 'enabled' from public.app_settings where key = 'maintenance';
+set role authenticated; select pg_temp.act_as('33333333-3333-3333-3333-333333333333','aal2');
+update public.app_settings set value = '{"enabled": true, "message": "Back soon"}' where key = 'maintenance';
+update public.app_settings set description = 'renamed' where key = 'maintenance';
+select 'sysadmin settings change', value ->> 'message', updated_by from public.app_settings where key = 'maintenance';
+select 'settings audit', actor_role, entity_id, before -> 'value' ->> 'enabled', after -> 'value' ->> 'message'
+  from public.audit_log where entity = 'app_settings' order by id desc limit 1;
+update public.app_settings set value = '{"enabled": false, "message": ""}' where key = 'maintenance';
+reset role;
+select 'settings audit entries', count(*) from public.audit_log where entity = 'app_settings';

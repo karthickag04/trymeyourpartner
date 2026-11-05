@@ -34,19 +34,9 @@ const PERMISSION_KEY = 'tmyp:permission';
 /** Requires the signed-in staff member to hold this permission (see public.permissions). */
 export const RequirePermission = (permission: string) => SetMetadata(PERMISSION_KEY, permission);
 
-/** Reads the claims of a token that Supabase Auth has already accepted. */
-export function tokenClaims(token: string): Record<string, unknown> {
-  try {
-    const payload = token.split('.')[1] ?? '';
-    return JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
-
 /**
  * Staff/admin API access:
- *  1. a valid Supabase access token (checked with Supabase Auth),
+ *  1. a valid access token (checked by TokenVerifier: JWKS or the auth provider),
  *  2. an MFA-verified session (claim aal = aal2),
  *  3. an active staff account (public.current_staff_profile(), called as the user),
  *  4. the permission named by @RequirePermission, if any.
@@ -64,9 +54,12 @@ export class StaffGuard implements CanActivate {
     await this.auth.canActivate(context);
     const req = context.switchToHttp().getRequest<StaffRequest>();
     const token = req.accessToken;
-    if (!token) throw new UnauthorizedException({ code: 'NO_TOKEN', message: 'Sign in required' });
+    if (!token || !req.user) {
+      throw new UnauthorizedException({ code: 'NO_TOKEN', message: 'Sign in required' });
+    }
 
-    if (tokenClaims(token).aal !== 'aal2') {
+    // Provider-neutral: the verified token's claims (TokenVerifier), not a provider user object.
+    if (req.user.aal !== 'aal2') {
       throw new ForbiddenException({
         code: 'MFA_REQUIRED',
         message: 'Verify your sign-in with your authenticator app first',

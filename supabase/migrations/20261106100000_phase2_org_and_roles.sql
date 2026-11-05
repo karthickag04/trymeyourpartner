@@ -18,6 +18,11 @@
 -- aal = aal2), except each staff member's own staff_accounts row, which the
 -- console reads right after password sign-in to decide whether to ask for MFA.
 --
+-- Portability (docs/adr/0001-vendor-portability.md): plain PostgreSQL, the
+-- signed-in user comes from public.app_current_user_id(). Everything that
+-- touches Supabase-managed objects (auth.users, supabase_auth_admin, the
+-- access token hook) is in the block marked SUPABASE-SPECIFIC (section 4).
+--
 -- After applying, enable the access token hook in the dashboard:
 -- Authentication -> Hooks -> Customize Access Token -> public.custom_access_token_hook
 -- =============================================================================
@@ -50,7 +55,7 @@ create table if not exists public.teams (
 
 create table if not exists public.staff_accounts (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null unique references auth.users(id) on delete cascade,
+  user_id uuid not null unique,   -- the login; foreign key to auth.users in the Supabase block
   role text not null check (role in
     ('system_admin', 'super_admin', 'admin', 'branch_manager', 'team_lead', 'staff', 'agent')),
   branch_id uuid references public.branches(id) on delete restrict,
@@ -70,7 +75,7 @@ create index if not exists staff_accounts_team_idx on public.staff_accounts(team
 
 create table if not exists public.agents (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null unique references auth.users(id) on delete cascade,
+  user_id uuid not null unique,   -- the login; foreign key to auth.users in the Supabase block
   branch_id uuid references public.branches(id) on delete restrict,
   -- commission plans arrive in Phase 6; no foreign key until that table exists
   commission_plan_id uuid,
@@ -95,7 +100,7 @@ create table if not exists public.role_permissions (
 
 create table if not exists public.audit_log (
   id bigint generated always as identity primary key,
-  actor uuid,            -- auth.users id; null for changes made by migrations or the system
+  actor uuid,            -- the signed-in user; null for changes made by migrations or the system
   actor_role text,
   action text not null,
   entity text not null,
@@ -177,19 +182,19 @@ on conflict do nothing;
 create or replace function public.current_staff_role()
 returns text language sql stable security definer set search_path = public, pg_temp as $$
   select s.role from public.staff_accounts s
-  where s.user_id = auth.uid() and s.status = 'active'
+  where s.user_id = public.app_current_user_id() and s.status = 'active'
 $$;
 
 create or replace function public.current_staff_branch()
 returns uuid language sql stable security definer set search_path = public, pg_temp as $$
   select s.branch_id from public.staff_accounts s
-  where s.user_id = auth.uid() and s.status = 'active'
+  where s.user_id = public.app_current_user_id() and s.status = 'active'
 $$;
 
 create or replace function public.current_staff_team()
 returns uuid language sql stable security definer set search_path = public, pg_temp as $$
   select s.team_id from public.staff_accounts s
-  where s.user_id = auth.uid() and s.status = 'active'
+  where s.user_id = public.app_current_user_id() and s.status = 'active'
 $$;
 
 -- 1 = highest. Used so nobody can create or edit an account at or above their own level.
@@ -201,10 +206,12 @@ returns int language sql immutable set search_path = public, pg_temp as $$
     when 'staff' then 6 when 'agent' then 6 end
 $$;
 
--- True when the session passed MFA (Supabase puts aal2 in the JWT after a TOTP check).
+-- True when the session passed MFA: the request's JWT claims carry aal = aal2
+-- (Supabase sets it after a TOTP check; any OIDC provider can issue the same claim).
+-- Reads the claims the same way as public.app_current_user_id().
 create or replace function public.session_is_mfa_verified()
 returns boolean language sql stable set search_path = public, pg_temp as $$
-  select coalesce(auth.jwt() ->> 'aal', '') = 'aal2'
+  select coalesce(nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'aal', '') = 'aal2'
 $$;
 
 -- True when the signed-in user is active staff, has passed MFA and holds the permission.
@@ -216,7 +223,7 @@ returns boolean language sql stable security definer set search_path = public, p
          or exists (select 1 from public.role_permissions rp
                     where rp.role = s.role and rp.permission = p)
      from public.staff_accounts s
-     where s.user_id = auth.uid() and s.status = 'active'),
+     where s.user_id = public.app_current_user_id() and s.status = 'active'),
     false)
 $$;
 
@@ -230,7 +237,7 @@ returns boolean language sql stable security definer set search_path = public, p
        when s.role = 'team_lead' then p_team is not null and p_team = s.team_id
        else false end
      from public.staff_accounts s
-     where s.user_id = auth.uid() and s.status = 'active'),
+     where s.user_id = public.app_current_user_id() and s.status = 'active'),
     false)
 $$;
 
@@ -258,7 +265,7 @@ returns jsonb language sql stable security definer set search_path = public, pg_
   from public.staff_accounts s
   left join public.branches b on b.id = s.branch_id
   left join public.teams t on t.id = s.team_id
-  where s.user_id = auth.uid() and s.status = 'active'
+  where s.user_id = public.app_current_user_id() and s.status = 'active'
 $$;
 
 -- Caller IP as forwarded by the Supabase gateway, if any.
@@ -280,8 +287,8 @@ returns bigint language plpgsql security definer set search_path = public, pg_te
 declare v_id bigint;
 begin
   insert into public.audit_log(actor, actor_role, action, entity, entity_id, before, after, reason, ip)
-  values (auth.uid(),
-          (select s.role from public.staff_accounts s where s.user_id = auth.uid()),
+  values (public.app_current_user_id(),
+          (select s.role from public.staff_accounts s where s.user_id = public.app_current_user_id()),
           p_action, p_entity, p_entity_id, p_before, p_after, nullif(trim(p_reason), ''),
           private.request_ip())
   returning id into v_id;
@@ -316,11 +323,20 @@ declare
   v_row jsonb := coalesce(v_new, v_old);
   v_id text := case when tg_table_name = 'role_permissions'
                     then (v_row ->> 'role') || ':' || (v_row ->> 'permission')
-                    else v_row ->> 'id' end;
+                    else coalesce(v_row ->> 'id', v_row ->> 'key') end;
 begin
   perform private.write_audit(tg_table_name || '.' || lower(tg_op), tg_table_name, v_id, v_old, v_new, null);
   return null;
 end $$;
+
+-- Records who changed a row (app_settings.updated_by).
+create or replace function private.stamp_updated_by()
+returns trigger language plpgsql set search_path = public, pg_temp as $$
+begin
+  new.updated_by := public.app_current_user_id();
+  return new;
+end $$;
+revoke execute on function private.stamp_updated_by() from public, anon, authenticated;
 
 -- audit_log is append-only, even for the table owner.
 create or replace function private.audit_log_is_append_only()
@@ -347,11 +363,27 @@ begin
   end loop;
 end $$;
 
--- -----------------------------------------------------------------------------
--- 4. Custom access token hook: adds staff_role, branch_id and team_id claims
---    for active staff. Members' tokens are returned unchanged.
---    Runs as supabase_auth_admin (not exposed through the API).
--- -----------------------------------------------------------------------------
+-- =============================================================================
+-- 4. SUPABASE-SPECIFIC (vendor-managed objects; replace this block on another provider)
+--    a) staff_accounts.user_id and agents.user_id reference Supabase's auth.users
+--    b) custom access token hook: adds staff_role, branch_id and team_id claims
+--       to the tokens of active staff; members' tokens are returned unchanged.
+--       Runs as supabase_auth_admin and is not exposed through the API.
+-- =============================================================================
+do $$
+begin
+  if to_regclass('auth.users') is not null then
+    if not exists (select 1 from pg_constraint where conname = 'staff_accounts_user_id_fkey') then
+      alter table public.staff_accounts add constraint staff_accounts_user_id_fkey
+        foreign key (user_id) references auth.users(id) on delete cascade;
+    end if;
+    if not exists (select 1 from pg_constraint where conname = 'agents_user_id_fkey') then
+      alter table public.agents add constraint agents_user_id_fkey
+        foreign key (user_id) references auth.users(id) on delete cascade;
+    end if;
+  end if;
+end $$;
+
 create or replace function public.custom_access_token_hook(event jsonb)
 returns jsonb language plpgsql stable set search_path = public, pg_temp as $$
 declare
@@ -368,6 +400,7 @@ begin
     || jsonb_build_object('staff_role', s.role, 'branch_id', s.branch_id, 'team_id', s.team_id);
   return jsonb_set(event, '{claims}', claims);
 end $$;
+revoke execute on function public.custom_access_token_hook(jsonb) from public, anon, authenticated, service_role;
 
 do $$
 begin
@@ -375,8 +408,12 @@ begin
     grant usage on schema public to supabase_auth_admin;
     grant select on public.staff_accounts to supabase_auth_admin;
     grant execute on function public.custom_access_token_hook(jsonb) to supabase_auth_admin;
+    execute 'drop policy if exists "Auth hook reads staff accounts" on public.staff_accounts';
+    execute 'create policy "Auth hook reads staff accounts" on public.staff_accounts
+             for select to supabase_auth_admin using (true)';
   end if;
 end $$;
+-- ============================ end SUPABASE-SPECIFIC ===========================
 
 -- -----------------------------------------------------------------------------
 -- 5. Privileges
@@ -392,7 +429,6 @@ grant select on public.audit_log to authenticated;
 -- Nobody writes audit_log directly through the API; log_audit is the way in.
 revoke insert, update, delete, truncate on public.audit_log from service_role;
 
-revoke execute on function public.custom_access_token_hook(jsonb) from public, anon, authenticated, service_role;
 revoke execute on function private.write_audit(text, text, text, jsonb, jsonb, text) from public, anon, authenticated;
 revoke execute on function private.request_ip() from public, anon, authenticated;
 revoke execute on function private.audit_row_change() from public, anon, authenticated;
@@ -453,7 +489,7 @@ create policy "Org managers edit teams" on public.teams for update to authentica
 -- staff.manage holders create/edit accounts below their own level, in scope.
 drop policy if exists "Staff read own account" on public.staff_accounts;
 create policy "Staff read own account" on public.staff_accounts for select to authenticated
-  using (user_id = auth.uid());
+  using (user_id = public.app_current_user_id());
 drop policy if exists "Staff managers read accounts in scope" on public.staff_accounts;
 create policy "Staff managers read accounts in scope" on public.staff_accounts for select to authenticated
   using (public.staff_has_permission('staff.view') and public.staff_in_scope(branch_id, team_id));
@@ -477,21 +513,12 @@ create policy "Staff managers edit accounts" on public.staff_accounts for update
 drop policy if exists "System admins delete accounts" on public.staff_accounts;
 create policy "System admins delete accounts" on public.staff_accounts for delete to authenticated
   using (public.session_is_mfa_verified() and public.current_staff_role() = 'system_admin'
-         and user_id <> auth.uid());
--- The access token hook reads staff accounts as supabase_auth_admin.
-do $$
-begin
-  if exists (select 1 from pg_roles where rolname = 'supabase_auth_admin') then
-    execute 'drop policy if exists "Auth hook reads staff accounts" on public.staff_accounts';
-    execute 'create policy "Auth hook reads staff accounts" on public.staff_accounts
-             for select to supabase_auth_admin using (true)';
-  end if;
-end $$;
+         and user_id <> public.app_current_user_id());
 
 -- agents: in scope, or the agent's own row
 drop policy if exists "Staff read agents in scope" on public.agents;
 create policy "Staff read agents in scope" on public.agents for select to authenticated
-  using ((public.session_is_mfa_verified() and user_id = auth.uid())
+  using ((public.session_is_mfa_verified() and user_id = public.app_current_user_id())
          or (public.staff_has_permission('staff.view') and public.staff_in_scope(branch_id, null)));
 drop policy if exists "Staff managers create agents" on public.agents;
 create policy "Staff managers create agents" on public.agents for insert to authenticated
@@ -523,5 +550,35 @@ create policy "Role managers revoke permissions" on public.role_permissions for 
 drop policy if exists "Auditors read audit log" on public.audit_log;
 create policy "Auditors read audit log" on public.audit_log for select to authenticated
   using (public.staff_has_permission('audit.view'));
+
+-- -----------------------------------------------------------------------------
+-- 7. App settings (P1-12): holders of platform.settings (system_admin by
+--    default) read every setting and change values from the console. Keys
+--    are defined by migrations, because code reads them. Every change is
+--    written to the audit log (before/after) by the audit trigger.
+-- -----------------------------------------------------------------------------
+do $$
+begin
+  if to_regclass('public.app_settings') is null then
+    return;
+  end if;
+
+  drop policy if exists "Settings managers read all settings" on public.app_settings;
+  create policy "Settings managers read all settings" on public.app_settings for select to authenticated
+    using (public.staff_has_permission('platform.settings'));
+  drop policy if exists "Settings managers edit settings" on public.app_settings;
+  create policy "Settings managers edit settings" on public.app_settings for update to authenticated
+    using (public.staff_has_permission('platform.settings'))
+    with check (public.staff_has_permission('platform.settings'));
+  -- Only the value can be changed; key, description and visibility stay as migrated.
+  grant update (value) on public.app_settings to authenticated;
+
+  drop trigger if exists app_settings_stamp_actor on public.app_settings;
+  create trigger app_settings_stamp_actor before update on public.app_settings
+    for each row execute function private.stamp_updated_by();
+  drop trigger if exists audit_changes on public.app_settings;
+  create trigger audit_changes after insert or update or delete on public.app_settings
+    for each row execute function private.audit_row_change();
+end $$;
 
 commit;

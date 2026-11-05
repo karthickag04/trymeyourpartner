@@ -90,11 +90,18 @@ expect '"team_id": null, "branch_id": "0000000a-0000-0000-0000-00000000000a", "s
 expect "hook member unchanged|t"
 expect "hook disabled staff unchanged|t"
 expect "disabled staff sees|0"
+expect "bmX settings change|false"                                    # only platform.settings may edit
+expect "sysadmin aal1 settings change|false"                         # ... and only after MFA
+expect "ERROR:  permission denied for table app_settings"            # only the value column is editable
+expect "sysadmin settings change|Back soon|33333333-3333-3333-3333-333333333333"
+expect "settings audit|system_admin|maintenance|false|Back soon"
+expect "settings audit entries|2"
 OUT2=$($P -At -f "$HERE/30_app_settings_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
 echo "$OUT2"
 expect2() { grep -qF -- "$1" <<<"$OUT2" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
 expect2 "anon reads settings|5"
-expect2 "ERROR:  permission denied for table app_settings"
+# A member's update matches no rows: staff with platform.settings may edit values (Phase 2),
+# so the column is granted and row-level security decides; "maintenance still off" checks it.
 expect2 "maintenance still off|false"
 expect2 "raised quota|1 more, then CONTACT_LIMIT_REACHED"
 expect2 "feature off|FEATURE_DISABLED"

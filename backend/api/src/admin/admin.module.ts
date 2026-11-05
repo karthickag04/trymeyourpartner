@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { SupabaseAuthGuard } from '../auth/auth.guard';
+import { TokenVerifier } from '../auth/token-verifier';
 import { API_CONFIG, ApiConfig } from '../config';
 import { SupabaseClient } from '../supabase/supabase.client';
 import { AdminController } from './admin.controller';
@@ -16,6 +17,7 @@ export class AdminModule {
       providers: [
         { provide: API_CONFIG, useValue: config },
         SupabaseClient,
+        TokenVerifier,
         SupabaseAuthGuard,
         StaffGuard,
         AuditService,
