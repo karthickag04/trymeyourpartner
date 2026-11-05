@@ -12,13 +12,14 @@ const OUT = process.argv[2], PW = pw(process.argv[3]), CODE = fs.readFileSync(pr
     await a.snap('link_signed_out');
     // 2. Sign in on that page
     const ph = await p.$('flt-semantics-placeholder'); if (ph) { await ph.evaluate(e => e.click()); await p.waitForTimeout(800); }
-    await p.locator('flt-semantics input').nth(0).fill('tmyp.test.a@example.com');
-    await p.locator('flt-semantics input').nth(1).fill(PW);
+    const em = p.locator('flt-semantics input[type=email]').first(); await em.click(); await em.fill('tmyp.test.a@example.com');
+    const pwb = p.locator('flt-semantics input[type=password]').first(); await pwb.click(); await pwb.fill(PW);
+    await p.waitForTimeout(300);
     await p.locator('flt-semantics [role=button]', { hasText: 'Sign In' }).last().click();
     await p.waitForTimeout(10000);
     console.log('2 after sign-in ->', p.url().replace('http://127.0.0.1:8088', ''));
     const L = await a.labels();
-    console.log('  shows profile B:', L.some(x => x.includes('Claude Test B')), '| reveal button:', L.some(x => x.includes('Reveal / Request Contact')));
+    console.log('  shows profile B:', L.some(x => x.includes('Claude Test B')), '| reveal button:', L.some(x => x.includes('Reveal / request contact')));
     await a.snap('link_after_login');
     // 3. Go to the app and switch tabs
     await p.goto('http://127.0.0.1:8088/#/home'); await p.waitForTimeout(7000);

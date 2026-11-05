@@ -27,9 +27,13 @@ async function start(out) {
     async login(email, pw) {
       await p.goto('http://127.0.0.1:8088/'); await p.waitForTimeout(9000);
       const ph = await p.$('flt-semantics-placeholder'); if (ph) { await ph.evaluate(e => e.click()); await p.waitForTimeout(800); }
-      await p.locator('flt-semantics input').nth(0).fill(email);
-      await p.locator('flt-semantics input').nth(1).fill(pw);
-      await p.locator('flt-semantics [role=button]', { hasText: 'Sign In' }).last().click();
+      // Select fields by type: the sign-in form now also has a language switcher.
+      const emailBox = p.locator('flt-semantics input[type=email]').first();
+      await emailBox.click(); await emailBox.fill(email);
+      const pwBox = p.locator('flt-semantics input[type=password]').first();
+      await pwBox.click(); await pwBox.fill(pw);
+      await p.waitForTimeout(300);
+      await p.locator('flt-semantics [role=button]', { hasText: /^Sign In$/ }).last().click();
       await p.waitForTimeout(11000);
     },
   };

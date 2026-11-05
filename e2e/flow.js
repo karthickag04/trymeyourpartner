@@ -10,7 +10,7 @@ const OUT = process.argv[2], PW = pw(process.argv[3]), step = process.argv[4];
     const span = a.p.locator('flt-semantics span', { hasText: /^Claude$/ }).first();
     const bb = await span.boundingBox(); await a.p.mouse.click(bb.x + bb.width / 2, bb.y + bb.height / 2); await a.p.waitForTimeout(5000);
     await a.snap('profile');
-    await a.tap(/Reveal \/ Request Contact/, { wait: 7000 });
+    await a.tap(/Reveal \/ request contact/i, { wait: 7000 });
     await a.snap('after_tap');
     const L = await a.labels();
     console.log('TAIL:', JSON.stringify(L.slice(-12)));
