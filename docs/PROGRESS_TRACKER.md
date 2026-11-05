@@ -15,7 +15,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 6 | 2 | 3 | 0 |
+| P1 Foundation & restructure | 7 | 2 | 2 | 0 |
 | P2 Roles, admin console, moderation | 0 | 0 | 7 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
@@ -24,7 +24,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
 **Now working on:** P1-10 Android build in CI (job added; first run pending).
-**Next up:** P1-02 baseline migration, P1-07 design tokens and dark theme, P1-06 Riverpod.
+**Next up:** P1-07 design tokens and dark theme, P1-06 Riverpod, P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
 
@@ -45,7 +45,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | ID | Item | Status | Commit | How it was verified |
 |---|---|---|---|---|
 | P1-01 | Monorepo (`apps/`, `packages/`, melos) | ⬜ | — | Deferred until the admin console (P2-02) needs shared packages |
-| P1-02 | Baseline migration from the live schema; retire `sql/`, `archive/sql/`, root `*.sql` | ⬜ | — | |
+| P1-02 | Baseline migration from the live schema; retire `sql/`, `archive/sql/`, root `*.sql` | ✅ | *(this commit)* | Database built from the baseline matches live object for object (27 tables, 58 policies, 21 triggers, 4 views, 83 constraints, 66 indexes, 27 functions, 86 reference rows); CI database job now builds from it; old scripts moved to `archive/legacy-sql/` |
 | P1-03 | Delete dead code; fix asset warning; stop bundling the unused intro video; remove calls to non-existent `users`/`matches` tables | ✅ | `655d5ee`, `92e2736` | `flutter analyze`: no issues; browser login shows no API errors |
 | P1-04 | `go_router`: URL per tab, shareable `/p/<code>` profile links, sign-in redirect back to the link | ✅ | `fa24b94` | Browser: link while signed out → `/login?from=/p/…` → profile after sign-in; tab URLs; back button |
 | P1-05 | Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`) | ✅ | `92e2736` | Analyze, tests, build and browser flows unchanged |
@@ -53,7 +53,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P1-07 | Design-system tokens, real dark theme, accessibility pass | ⬜ | — | |
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
-| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, *(this commit)* | Widget tests for splash and signed-out → sign-in added. Android debug APK job added (waiting for its first CI run). Sentry not yet. |
+| P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f` | Widget tests for splash and signed-out → sign-in added. Android debug APK job added (waiting for its first CI run). Sentry not yet. |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
 ## Phase 2: Roles, admin console and moderation

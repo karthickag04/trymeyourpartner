@@ -559,7 +559,7 @@ Durations are indicative for a small team (2–3 Flutter, 1–2 backend, 1 QA/de
 **Goal:** a codebase and pipeline that can carry a professional product.
 
 - [ ] Monorepo with `melos`; move the app to `apps/member_app`; create `packages/tmyp_core`, `tmyp_design_system`, `tmyp_l10n`
-- [ ] `supabase/migrations` baseline from the live schema; delete `sql/`, `archive/sql/`, root `*.sql` after verification
+- [x] `supabase/migrations` baseline from the live schema (matches live object for object); old scripts moved to `archive/legacy-sql/`
 - [x] Delete dead code ([section 3.3](#33-dead-and-duplicate-code-safe-to-delete-in-phase-1)); fix the `assets/images/` warning; stop bundling the unused intro video; remove calls to the non-existent `users`/`matches` tables
 - [x] `go_router` with web URLs per tab and shareable profile links (`/p/<code>`), sign-in redirect that returns to the original link
 - [x] Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`)

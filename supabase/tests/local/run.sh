@@ -1,33 +1,29 @@
 #!/usr/bin/env bash
-# Builds the schema in a plain Postgres, applies every migration twice
+# Builds the schema in a plain Postgres from the migrations (baseline first),
+# applies every migration twice
 # (they must be re-runnable), then runs the access-rule checks.
 # Usage: PGHOST=... PGPORT=... PGUSER=postgres supabase/tests/local/run.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 HERE="$ROOT/supabase/tests/local"
 DB="${TEST_DB:-tmyp_ci}"
+export PGOPTIONS="-c client_min_messages=warning"
 psql -q -v ON_ERROR_STOP=1 -d postgres -c "drop database if exists $DB" -c "create database $DB"
 P="psql -q -X -d $DB"
 
 $P -v ON_ERROR_STOP=1 -f "$HERE/00_supabase_stub.sql" 2>&1 | grep -v -i "wal_level\|logical" || true
 
-# Historical schema scripts. Some reference Supabase-only objects (storage
-# buckets) and fail harmlessly here, so errors are reported but not fatal.
-load() { $P -f "$1" 2>&1 | grep ERROR | sed "s#^#  [schema] #" || true; }
-load "$ROOT/supabase_matrimonial_complete.sql"
-for f in registration_extensions subscriptions_and_contacts contact_exchange verifications \
-         reports_and_blocks saved_searches notifications message_receipts presence icebreakers \
-         deleted_users insert_or_increment_view insert_shortlist upsert_contact_info \
-         allow_multiple_messages fix_shortlist_select_target block_rls_enforcement; do
-  load "$ROOT/sql/$f.sql"
-done
-$P -v ON_ERROR_STOP=1 -f "$HERE/10_seed.sql"
+$P -c "alter database $DB set search_path = \"\$user\", public, extensions"
+P="psql -q -X -d $DB -v VERBOSITY=terse"   # reconnect so the search path applies
 
+# Pass 1 builds the schema from the baseline; seed test data; pass 2 re-applies
+# everything on top of data (every migration must be re-runnable).
 for pass in 1 2; do
   for m in "$ROOT"/supabase/migrations/*.sql; do
     echo "apply (pass $pass): $(basename "$m")"
     $P -v ON_ERROR_STOP=1 -f "$m"
   done
+  [ "$pass" = 1 ] && $P -v ON_ERROR_STOP=1 -f "$HERE/10_seed.sql"
 done
 
 OUT=$($P -At -f "$HERE/20_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
@@ -49,6 +45,6 @@ expect "CANNOT_REVEAL_SELF"
 expect "NOT_AUTHORIZED"
 expect "B views counter|1"
 expect "B still exists|1"
-expect "stopped after 4 new reveals: CONTACT_LIMIT_REACHED"
+expect "quota|stopped after 4 new reveals: CONTACT_LIMIT_REACHED"
 expect "archived email|b@x.com"
 echo "All database checks passed."

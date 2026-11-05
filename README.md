@@ -53,7 +53,7 @@ flutter build web --dart-define-from-file=.env
 | `lib/data/supabase/`, `lib/data/http/` | Supabase and HTTP implementations of those interfaces (see `docs/BACKEND_SWITCH.md`) |
 | `supabase/migrations/` | Versioned database changes, applied in order |
 | `supabase/tests/` | SQL checks of the access rules |
-| `sql/`, `archive/sql/`, `supabase_*.sql` | How the current schema was first built; replaced by a baseline migration in Phase 1 |
+| `archive/` | Superseded SQL scripts kept for reference (the baseline migration replaces them) |
 | `backend/api/` | NestJS backend API (Supabase token auth, OpenAPI at `/docs`) |
 | `e2e/` | Playwright tests that drive the web build |
 | `docs/` | Product and architecture documents |

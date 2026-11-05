@@ -32,8 +32,9 @@ set role authenticated; select set_config('request.jwt.claim.sub','11111111-1111
 do $$ declare r record; n int:=0; begin
   for r in select id from public.matrimonial_profiles where name='X' loop
     begin perform public.reveal_contact(r.id); n:=n+1;
-    exception when others then raise notice 'stopped after % new reveals: %', n, sqlerrm; exit; end;
+    exception when others then perform set_config('test.quota', format('stopped after %s new reveals: %s', n, sqlerrm), false); exit; end;
   end loop; end $$;
+select 'quota', current_setting('test.quota', true);
 \echo '--- member B deletes own profile'
 select set_config('request.jwt.claim.sub','22222222-2222-2222-2222-222222222222',false);
 select public.delete_profile_and_related('bbbbbbbb-0000-0000-0000-000000000002');
