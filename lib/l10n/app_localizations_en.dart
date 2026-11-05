@@ -1947,4 +1947,239 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get langHindi => 'Hindi';
+
+  @override
+  String get editSectionLocationCareer => 'Location & career';
+
+  @override
+  String get editTabLocationCareer => 'Location & career';
+
+  @override
+  String get editProfileTitle => 'Edit profile';
+
+  @override
+  String get editTabBasic => 'Basic';
+
+  @override
+  String get editTabContact => 'Contact';
+
+  @override
+  String get editTabFamily => 'Family';
+
+  @override
+  String get editTabPartner => 'Partner preferences';
+
+  @override
+  String get editTabPhotos => 'Photos';
+
+  @override
+  String get profileLoadingYours => 'Loading your profile…';
+
+  @override
+  String get editEmailHelper => 'Your sign-in email. Only you can see it.';
+
+  @override
+  String get fieldDobRequired => 'Date of birth *';
+
+  @override
+  String get fieldReligionRequired => 'Religion *';
+
+  @override
+  String get fieldCasteRequired => 'Caste *';
+
+  @override
+  String get fieldStateRequired => 'State *';
+
+  @override
+  String get fieldDistrictRequired => 'District *';
+
+  @override
+  String get fieldEducationRequired => 'Education *';
+
+  @override
+  String get fieldHeightCm => 'Height (cm)';
+
+  @override
+  String get fieldWeightKg => 'Weight (kg)';
+
+  @override
+  String get sectionContactInfo => 'Contact information';
+
+  @override
+  String get fieldPhoneShort => 'Phone';
+
+  @override
+  String get fieldAltPhone => 'Alternate phone';
+
+  @override
+  String get fieldCurrentAddress => 'Current address';
+
+  @override
+  String get fieldPermanentAddress => 'Permanent address';
+
+  @override
+  String get showPhoneNumber => 'Show phone number';
+
+  @override
+  String get showAddress => 'Show address';
+
+  @override
+  String get fieldFamilyDetails => 'Family details';
+
+  @override
+  String get fieldMinAge => 'Min age';
+
+  @override
+  String get fieldMaxAge => 'Max age';
+
+  @override
+  String get fieldMinHeight => 'Min height (cm)';
+
+  @override
+  String get fieldMaxHeight => 'Max height (cm)';
+
+  @override
+  String get fieldPreferredDistricts => 'Preferred districts';
+
+  @override
+  String get fieldPreferredOccupations => 'Preferred occupations';
+
+  @override
+  String get fieldMinIncome => 'Min income';
+
+  @override
+  String get fieldMaxIncome => 'Max income';
+
+  @override
+  String get fieldPreferredMaritalStatus => 'Preferred marital status';
+
+  @override
+  String get profilePhotosTitle => 'Profile photos';
+
+  @override
+  String get actionPrevious => 'Previous';
+
+  @override
+  String get profileSavedLoadingMatches =>
+      'Profile saved. Loading your matches…';
+
+  @override
+  String get fillMandatoryFields =>
+      'Please fill in all fields marked with * to continue.';
+
+  @override
+  String get actionFinish => 'Finish';
+
+  @override
+  String get actionNext => 'Next';
+
+  @override
+  String get mandatoryBanner =>
+      'Fields marked with * are needed to show you relevant matches.';
+
+  @override
+  String get selectDate => 'Select date';
+
+  @override
+  String get chipsInputHint => 'Type and press + to add';
+
+  @override
+  String get actionEdit => 'Edit';
+
+  @override
+  String get savedBasic => 'Basic information saved';
+
+  @override
+  String get savedBasicAuto => 'Basic information auto-saved';
+
+  @override
+  String get savedLocation => 'Location & career saved';
+
+  @override
+  String get savedLocationAuto => 'Location & career auto-saved';
+
+  @override
+  String get savedContact => 'Contact information saved';
+
+  @override
+  String get savedContactAuto => 'Contact information auto-saved';
+
+  @override
+  String get savedFamily => 'Family information saved';
+
+  @override
+  String get savedFamilyAuto => 'Family information auto-saved';
+
+  @override
+  String get savedPartner => 'Partner preferences saved';
+
+  @override
+  String get savedPartnerAuto => 'Partner preferences auto-saved';
+
+  @override
+  String get savedPhotos => 'Photos updated';
+
+  @override
+  String get profileStillLoading =>
+      'Your profile is still loading. Please try again in a moment.';
+
+  @override
+  String get fillDobReligionCaste =>
+      'Please fill in your date of birth, religion and caste';
+
+  @override
+  String get photosGuidance =>
+      'Add up to 3 clear photos. Crop to show your face. Avoid filters and group photos.';
+
+  @override
+  String get removePhotoTitle => 'Remove photo?';
+
+  @override
+  String get removePhotoBody => 'This will delete the photo from storage.';
+
+  @override
+  String autoSavedPrefix(Object message) {
+    return 'Saved automatically: $message';
+  }
+
+  @override
+  String get autoSaveFailed =>
+      'Couldn\'t save automatically. Your changes are still here; tap Save to try again.';
+
+  @override
+  String get saveFailed => 'We couldn\'t save your changes. Please try again.';
+
+  @override
+  String fieldRequired(Object field) {
+    return '$field is required';
+  }
+
+  @override
+  String photoSlot(int number) {
+    return 'Photo $number';
+  }
+
+  @override
+  String get familyNuclear => 'Nuclear';
+
+  @override
+  String get familyJoint => 'Joint';
+
+  @override
+  String get valuesTraditional => 'Traditional';
+
+  @override
+  String get valuesModern => 'Modern';
+
+  @override
+  String get valuesModerate => 'Moderate';
+
+  @override
+  String get statusMiddleClass => 'Middle class';
+
+  @override
+  String get statusUpperMiddleClass => 'Upper middle class';
+
+  @override
+  String get statusRich => 'Affluent';
 }

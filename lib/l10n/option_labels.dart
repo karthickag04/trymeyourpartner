@@ -56,6 +56,23 @@ extension OptionLabels on BuildContext {
         return l.workSalaried;
       case 'not_working':
         return l.workNotWorking;
+      // Family
+      case 'Nuclear':
+        return l.familyNuclear;
+      case 'Joint':
+        return l.familyJoint;
+      case 'Traditional':
+        return l.valuesTraditional;
+      case 'Modern':
+        return l.valuesModern;
+      case 'Moderate':
+        return l.valuesModerate;
+      case 'Middle Class':
+        return l.statusMiddleClass;
+      case 'Upper Middle Class':
+        return l.statusUpperMiddleClass;
+      case 'Rich':
+        return l.statusRich;
       // Languages
       case 'Tamil':
         return l.langTamil;

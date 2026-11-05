@@ -1978,4 +1978,243 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get langHindi => 'இந்தி';
+
+  @override
+  String get editSectionLocationCareer => 'இருப்பிடம் & பணி';
+
+  @override
+  String get editTabLocationCareer => 'இருப்பிடம் & பணி';
+
+  @override
+  String get editProfileTitle => 'சுயவிவரத்தைத் திருத்து';
+
+  @override
+  String get editTabBasic => 'அடிப்படை';
+
+  @override
+  String get editTabContact => 'தொடர்பு';
+
+  @override
+  String get editTabFamily => 'குடும்பம்';
+
+  @override
+  String get editTabPartner => 'துணை எதிர்பார்ப்புகள்';
+
+  @override
+  String get editTabPhotos => 'புகைப்படங்கள்';
+
+  @override
+  String get profileLoadingYours => 'உங்கள் சுயவிவரத்தை ஏற்றுகிறது…';
+
+  @override
+  String get editEmailHelper =>
+      'உங்கள் உள்நுழைவு மின்னஞ்சல். இதை நீங்கள் மட்டுமே பார்க்க முடியும்.';
+
+  @override
+  String get fieldDobRequired => 'பிறந்த தேதி *';
+
+  @override
+  String get fieldReligionRequired => 'மதம் *';
+
+  @override
+  String get fieldCasteRequired => 'சாதி *';
+
+  @override
+  String get fieldStateRequired => 'மாநிலம் *';
+
+  @override
+  String get fieldDistrictRequired => 'மாவட்டம் *';
+
+  @override
+  String get fieldEducationRequired => 'கல்வி *';
+
+  @override
+  String get fieldHeightCm => 'உயரம் (செ.மீ.)';
+
+  @override
+  String get fieldWeightKg => 'எடை (கி.கி.)';
+
+  @override
+  String get sectionContactInfo => 'தொடர்புத் தகவல்கள்';
+
+  @override
+  String get fieldPhoneShort => 'தொலைபேசி';
+
+  @override
+  String get fieldAltPhone => 'மாற்றுத் தொலைபேசி';
+
+  @override
+  String get fieldCurrentAddress => 'தற்போதைய முகவரி';
+
+  @override
+  String get fieldPermanentAddress => 'நிரந்தர முகவரி';
+
+  @override
+  String get showPhoneNumber => 'தொலைபேசி எண்ணைக் காட்டு';
+
+  @override
+  String get showAddress => 'முகவரியைக் காட்டு';
+
+  @override
+  String get fieldFamilyDetails => 'குடும்ப விவரங்கள்';
+
+  @override
+  String get fieldMinAge => 'குறைந்தபட்ச வயது';
+
+  @override
+  String get fieldMaxAge => 'அதிகபட்ச வயது';
+
+  @override
+  String get fieldMinHeight => 'குறைந்தபட்ச உயரம் (செ.மீ.)';
+
+  @override
+  String get fieldMaxHeight => 'அதிகபட்ச உயரம் (செ.மீ.)';
+
+  @override
+  String get fieldPreferredDistricts => 'விரும்பும் மாவட்டங்கள்';
+
+  @override
+  String get fieldPreferredOccupations => 'விரும்பும் தொழில்கள்';
+
+  @override
+  String get fieldMinIncome => 'குறைந்தபட்ச வருமானம்';
+
+  @override
+  String get fieldMaxIncome => 'அதிகபட்ச வருமானம்';
+
+  @override
+  String get fieldPreferredMaritalStatus => 'விரும்பும் திருமண நிலை';
+
+  @override
+  String get profilePhotosTitle => 'சுயவிவரப் புகைப்படங்கள்';
+
+  @override
+  String get actionPrevious => 'முந்தையது';
+
+  @override
+  String get profileSavedLoadingMatches =>
+      'சுயவிவரம் சேமிக்கப்பட்டது. உங்கள் வரன்களை ஏற்றுகிறது…';
+
+  @override
+  String get fillMandatoryFields =>
+      'தொடர, * குறியிட்ட அனைத்துப் புலங்களையும் நிரப்பவும்.';
+
+  @override
+  String get actionFinish => 'முடி';
+
+  @override
+  String get actionNext => 'அடுத்து';
+
+  @override
+  String get mandatoryBanner =>
+      'பொருத்தமான வரன்களைக் காட்ட, * குறியிட்ட புலங்கள் அவசியம்.';
+
+  @override
+  String get selectDate => 'தேதியைத் தேர்ந்தெடு';
+
+  @override
+  String get chipsInputHint => 'தட்டச்சு செய்து + அழுத்திச் சேர்க்கவும்';
+
+  @override
+  String get actionEdit => 'திருத்து';
+
+  @override
+  String get savedBasic => 'அடிப்படைத் தகவல்கள் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedBasicAuto => 'அடிப்படைத் தகவல்கள் தானாகச் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedLocation => 'இருப்பிடம் & பணி விவரங்கள் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedLocationAuto =>
+      'இருப்பிடம் & பணி விவரங்கள் தானாகச் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedContact => 'தொடர்புத் தகவல்கள் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedContactAuto => 'தொடர்புத் தகவல்கள் தானாகச் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedFamily => 'குடும்பத் தகவல்கள் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedFamilyAuto => 'குடும்பத் தகவல்கள் தானாகச் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedPartner => 'துணை எதிர்பார்ப்புகள் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedPartnerAuto => 'துணை எதிர்பார்ப்புகள் தானாகச் சேமிக்கப்பட்டன';
+
+  @override
+  String get savedPhotos => 'புகைப்படங்கள் புதுப்பிக்கப்பட்டன';
+
+  @override
+  String get profileStillLoading =>
+      'உங்கள் சுயவிவரம் இன்னும் ஏற்றப்படுகிறது. சிறிது நேரம் கழித்து மீண்டும் முயலவும்.';
+
+  @override
+  String get fillDobReligionCaste =>
+      'உங்கள் பிறந்த தேதி, மதம், சாதி ஆகியவற்றை நிரப்பவும்';
+
+  @override
+  String get photosGuidance =>
+      'தெளிவான 3 புகைப்படங்கள் வரை சேர்க்கலாம். முகம் தெரியும்படி செதுக்குங்கள். வடிகட்டிகளும் குழுப் புகைப்படங்களும் வேண்டாம்.';
+
+  @override
+  String get removePhotoTitle => 'புகைப்படத்தை நீக்கவா?';
+
+  @override
+  String get removePhotoBody =>
+      'இந்தப் புகைப்படம் சேமிப்பகத்திலிருந்து நீக்கப்படும்.';
+
+  @override
+  String autoSavedPrefix(Object message) {
+    return 'தானாகச் சேமிக்கப்பட்டது: $message';
+  }
+
+  @override
+  String get autoSaveFailed =>
+      'தானாகச் சேமிக்க முடியவில்லை. உங்கள் மாற்றங்கள் அப்படியே உள்ளன; மீண்டும் முயல சேமி என்பதைத் தட்டவும்.';
+
+  @override
+  String get saveFailed =>
+      'உங்கள் மாற்றங்களைச் சேமிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String fieldRequired(Object field) {
+    return '$field அவசியம்';
+  }
+
+  @override
+  String photoSlot(int number) {
+    return 'புகைப்படம் $number';
+  }
+
+  @override
+  String get familyNuclear => 'தனிக் குடும்பம்';
+
+  @override
+  String get familyJoint => 'கூட்டுக் குடும்பம்';
+
+  @override
+  String get valuesTraditional => 'பாரம்பரியம்';
+
+  @override
+  String get valuesModern => 'நவீனம்';
+
+  @override
+  String get valuesModerate => 'மிதமானது';
+
+  @override
+  String get statusMiddleClass => 'நடுத்தர வர்க்கம்';
+
+  @override
+  String get statusUpperMiddleClass => 'உயர் நடுத்தர வர்க்கம்';
+
+  @override
+  String get statusRich => 'வசதியானவர்';
 }

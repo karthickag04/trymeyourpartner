@@ -3415,6 +3415,450 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hindi'**
   String get langHindi;
+
+  /// No description provided for @editSectionLocationCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & career'**
+  String get editSectionLocationCareer;
+
+  /// No description provided for @editTabLocationCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & career'**
+  String get editTabLocationCareer;
+
+  /// No description provided for @editProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get editProfileTitle;
+
+  /// No description provided for @editTabBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get editTabBasic;
+
+  /// No description provided for @editTabContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get editTabContact;
+
+  /// No description provided for @editTabFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get editTabFamily;
+
+  /// No description provided for @editTabPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner preferences'**
+  String get editTabPartner;
+
+  /// No description provided for @editTabPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get editTabPhotos;
+
+  /// No description provided for @profileLoadingYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your profile…'**
+  String get profileLoadingYours;
+
+  /// No description provided for @editEmailHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Your sign-in email. Only you can see it.'**
+  String get editEmailHelper;
+
+  /// No description provided for @fieldDobRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth *'**
+  String get fieldDobRequired;
+
+  /// No description provided for @fieldReligionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Religion *'**
+  String get fieldReligionRequired;
+
+  /// No description provided for @fieldCasteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Caste *'**
+  String get fieldCasteRequired;
+
+  /// No description provided for @fieldStateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'State *'**
+  String get fieldStateRequired;
+
+  /// No description provided for @fieldDistrictRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'District *'**
+  String get fieldDistrictRequired;
+
+  /// No description provided for @fieldEducationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Education *'**
+  String get fieldEducationRequired;
+
+  /// No description provided for @fieldHeightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get fieldHeightCm;
+
+  /// No description provided for @fieldWeightKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get fieldWeightKg;
+
+  /// No description provided for @sectionContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact information'**
+  String get sectionContactInfo;
+
+  /// No description provided for @fieldPhoneShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get fieldPhoneShort;
+
+  /// No description provided for @fieldAltPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate phone'**
+  String get fieldAltPhone;
+
+  /// No description provided for @fieldCurrentAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Current address'**
+  String get fieldCurrentAddress;
+
+  /// No description provided for @fieldPermanentAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanent address'**
+  String get fieldPermanentAddress;
+
+  /// No description provided for @showPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Show phone number'**
+  String get showPhoneNumber;
+
+  /// No description provided for @showAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Show address'**
+  String get showAddress;
+
+  /// No description provided for @fieldFamilyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Family details'**
+  String get fieldFamilyDetails;
+
+  /// No description provided for @fieldMinAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Min age'**
+  String get fieldMinAge;
+
+  /// No description provided for @fieldMaxAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Max age'**
+  String get fieldMaxAge;
+
+  /// No description provided for @fieldMinHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Min height (cm)'**
+  String get fieldMinHeight;
+
+  /// No description provided for @fieldMaxHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Max height (cm)'**
+  String get fieldMaxHeight;
+
+  /// No description provided for @fieldPreferredDistricts.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred districts'**
+  String get fieldPreferredDistricts;
+
+  /// No description provided for @fieldPreferredOccupations.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred occupations'**
+  String get fieldPreferredOccupations;
+
+  /// No description provided for @fieldMinIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Min income'**
+  String get fieldMinIncome;
+
+  /// No description provided for @fieldMaxIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Max income'**
+  String get fieldMaxIncome;
+
+  /// No description provided for @fieldPreferredMaritalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred marital status'**
+  String get fieldPreferredMaritalStatus;
+
+  /// No description provided for @profilePhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photos'**
+  String get profilePhotosTitle;
+
+  /// No description provided for @actionPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get actionPrevious;
+
+  /// No description provided for @profileSavedLoadingMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved. Loading your matches…'**
+  String get profileSavedLoadingMatches;
+
+  /// No description provided for @fillMandatoryFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all fields marked with * to continue.'**
+  String get fillMandatoryFields;
+
+  /// No description provided for @actionFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get actionFinish;
+
+  /// No description provided for @actionNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get actionNext;
+
+  /// No description provided for @mandatoryBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields marked with * are needed to show you relevant matches.'**
+  String get mandatoryBanner;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
+  /// No description provided for @chipsInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type and press + to add'**
+  String get chipsInputHint;
+
+  /// No description provided for @actionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get actionEdit;
+
+  /// No description provided for @savedBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic information saved'**
+  String get savedBasic;
+
+  /// No description provided for @savedBasicAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic information auto-saved'**
+  String get savedBasicAuto;
+
+  /// No description provided for @savedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & career saved'**
+  String get savedLocation;
+
+  /// No description provided for @savedLocationAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & career auto-saved'**
+  String get savedLocationAuto;
+
+  /// No description provided for @savedContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact information saved'**
+  String get savedContact;
+
+  /// No description provided for @savedContactAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact information auto-saved'**
+  String get savedContactAuto;
+
+  /// No description provided for @savedFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family information saved'**
+  String get savedFamily;
+
+  /// No description provided for @savedFamilyAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Family information auto-saved'**
+  String get savedFamilyAuto;
+
+  /// No description provided for @savedPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner preferences saved'**
+  String get savedPartner;
+
+  /// No description provided for @savedPartnerAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner preferences auto-saved'**
+  String get savedPartnerAuto;
+
+  /// No description provided for @savedPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos updated'**
+  String get savedPhotos;
+
+  /// No description provided for @profileStillLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is still loading. Please try again in a moment.'**
+  String get profileStillLoading;
+
+  /// No description provided for @fillDobReligionCaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in your date of birth, religion and caste'**
+  String get fillDobReligionCaste;
+
+  /// No description provided for @photosGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Add up to 3 clear photos. Crop to show your face. Avoid filters and group photos.'**
+  String get photosGuidance;
+
+  /// No description provided for @removePhotoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo?'**
+  String get removePhotoTitle;
+
+  /// No description provided for @removePhotoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will delete the photo from storage.'**
+  String get removePhotoBody;
+
+  /// No description provided for @autoSavedPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved automatically: {message}'**
+  String autoSavedPrefix(Object message);
+
+  /// No description provided for @autoSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save automatically. Your changes are still here; tap Save to try again.'**
+  String get autoSaveFailed;
+
+  /// No description provided for @saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save your changes. Please try again.'**
+  String get saveFailed;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{field} is required'**
+  String fieldRequired(Object field);
+
+  /// No description provided for @photoSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo {number}'**
+  String photoSlot(int number);
+
+  /// No description provided for @familyNuclear.
+  ///
+  /// In en, this message translates to:
+  /// **'Nuclear'**
+  String get familyNuclear;
+
+  /// No description provided for @familyJoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Joint'**
+  String get familyJoint;
+
+  /// No description provided for @valuesTraditional.
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional'**
+  String get valuesTraditional;
+
+  /// No description provided for @valuesModern.
+  ///
+  /// In en, this message translates to:
+  /// **'Modern'**
+  String get valuesModern;
+
+  /// No description provided for @valuesModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get valuesModerate;
+
+  /// No description provided for @statusMiddleClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle class'**
+  String get statusMiddleClass;
+
+  /// No description provided for @statusUpperMiddleClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper middle class'**
+  String get statusUpperMiddleClass;
+
+  /// No description provided for @statusRich.
+  ///
+  /// In en, this message translates to:
+  /// **'Affluent'**
+  String get statusRich;
 }
 
 class _AppLocalizationsDelegate
