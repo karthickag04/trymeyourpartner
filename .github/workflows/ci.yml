@@ -59,6 +59,16 @@ jobs:
 
       - run: flutter pub get --enforce-lockfile
 
+      - name: Accept Android SDK licences and install the pinned NDK
+        # android/app/build.gradle.kts pins ndkVersion; the runner does not
+        # ship it, and Gradle cannot fetch it until the licences are accepted.
+        run: |
+          NDK=$(sed -nE 's/.*ndkVersion *= *"([^"]+)".*/\1/p' android/app/build.gradle.kts)
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null
+          "$SDKM" --install "ndk;$NDK" > /dev/null
+          echo "Installed NDK $NDK"
+
       - name: Build debug APK
         # The publishable key is only needed at run time; CI builds with a placeholder.
         run: flutter build apk --debug --dart-define=SUPABASE_KEY=ci-placeholder
