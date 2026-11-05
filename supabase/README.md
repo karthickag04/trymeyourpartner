@@ -13,6 +13,12 @@ With the Supabase CLI linked to a project, `supabase db push` applies pending fi
 
 ## Tests
 
+`tests/local/run.sh` builds the schema in a plain Postgres (with a small stand-in for the
+Supabase-managed parts), applies every migration **twice** (they must be re-runnable) and
+checks the access rules as an anonymous visitor and as two members. CI runs it on every
+push; locally: `PGHOST=... PGUSER=postgres supabase/tests/local/run.sh`.
+
+
 `tests/phase0_member_checks.sql` signs in (inside the database) as two test members and
 checks the Phase 0 rules: no emails visible, no self-verification, no self-granted plans,
 contact reveal through the server only, no deleting other members. It needs two login

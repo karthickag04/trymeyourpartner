@@ -500,8 +500,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen>
                           _emailCtrl,
                           keyboardType: TextInputType.emailAddress,
                           readOnly: true,
-                          helperText:
-                              'Your login email. Only you can see it.',
+                          helperText: 'Your login email. Only you can see it.',
                         ),
                         _rowDropdown('Gender', ['Male', 'Female'], _gender, (
                           v,
