@@ -3,6 +3,19 @@
 Migrations in `migrations/` are plain SQL, named `<timestamp>_<description>.sql`, and
 safe to run more than once. Apply them in timestamp order.
 
+Write portable PostgreSQL ([ADR 0001](../docs/adr/0001-vendor-portability.md)). Anything that
+only exists on Supabase (`auth.users`, `storage.*`, the `supabase_realtime` publication, vault …)
+goes between marker lines, so another provider can skip or replace exactly that part:
+
+```sql
+-- [supabase-only]
+alter publication supabase_realtime add table public.messages;
+-- [/supabase-only]
+```
+
+Use `public.app_current_user_id()` instead of `auth.uid()`. CI checks this with
+`tool/check_sql_vendor.sh`.
+
 ## Baseline
 
 `20261105000000_baseline.sql` is the complete schema of the live project, generated from its

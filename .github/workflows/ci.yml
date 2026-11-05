@@ -137,6 +137,8 @@ jobs:
       PGPASSWORD: postgres
     steps:
       - uses: actions/checkout@v4
+      - name: Supabase-only SQL only in marked blocks (ADR 0001)
+        run: tool/check_sql_vendor.sh
       - name: Apply migrations twice and check access rules
         run: supabase/tests/local/run.sh
 
@@ -154,6 +156,8 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: backend/api/package-lock.json
+      - name: Provider code only in src/supabase (ADR 0001)
+        run: ../../tool/check_api_vendor.sh
       - run: npm ci
       - run: npm run typecheck
       - run: npm test

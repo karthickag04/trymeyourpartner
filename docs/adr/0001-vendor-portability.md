@@ -1,9 +1,9 @@
 # ADR 0001: Stay portable away from Supabase
 
 - **Status:** Accepted (2026-11-05). Revised 2026-11-05: re-measured, added the gaps found
-  (API through PostgREST, `auth.users` links, storage not in code, table-change realtime,
-  admin console not guarded), the database-engine decision, rules for future integrations
-  and items P2-10 to P2-14.
+  (API through PostgREST, `auth.users` links, storage not in code, table-change realtime),
+  the database-engine decision, rules for future integrations and items P2-10 to P2-14.
+  P2-14 done: CI guards for the API and for migrations.
 - **Decision owner:** product owner; enforced by CI and code review
 - **Related:** roadmap §8 (target architecture), [`PROGRESS_TRACKER.md`](../PROGRESS_TRACKER.md) items P1-14 to P1-17, P2-08 to P2-14
 
@@ -26,7 +26,8 @@ written exit path.
    (all in `lib/core/services/`, implemented in `lib/data/supabase/`). No code may import
    `supabase_flutter` outside `lib/data/supabase/`. **CI enforces this** with
    `tool/check_vendor_imports.sh`; its legacy list must only shrink. The same rule applies to the
-   admin console (`apps/admin_console/lib/data/supabase/`) and the API (one `supabase/` module).
+   admin console (`apps/admin_console/tool/check_vendor_imports.sh`) and the API
+   (`tool/check_api_vendor.sh`: provider code only in `src/supabase/`).
 2. **The API talks to PostgreSQL, not to Supabase.** It connects with a standard Postgres driver
    and sets the caller's identity per transaction, so the same row-level security applies
    whoever hosts the database. It does not call PostgREST (`/rest/v1`).
@@ -37,7 +38,9 @@ written exit path.
 4. **Plain, portable SQL.** Migrations are standard PostgreSQL. No Supabase-only extensions, no
    Edge Functions, no logic in the dashboard. Vendor-managed objects (`auth`, `storage`, the
    realtime publication, the `anon`/`authenticated`/`service_role` roles) are touched only in
-   blocks marked `-- [supabase-only]`, which a new provider skips or replaces.
+   blocks between `-- [supabase-only]` and `-- [/supabase-only]`, which a new provider skips or
+   replaces. `tool/check_sql_vendor.sh` enforces this in CI for every migration after the six
+   applied before the check existed.
 5. **Everything as code.** Buckets, their access rules, auth settings, hooks and realtime
    publications are created by migrations or a checked-in script, never only by clicking in the
    dashboard. If it is not in the repo, it does not survive a move.
@@ -90,11 +93,11 @@ screens or business rules:
 |---|---|---|---|---|
 | **Database** | Plain PostgreSQL (CI rebuilds it on stock Postgres 16). `auth.uid()` replaced by `app_current_user_id()` in every live policy and function (P1-15). Still Supabase-specific: links to `auth.users` (18 places), the `anon`/`authenticated`/`service_role` roles, the `supabase_realtime` publication, the access-token hook | Easy for data (`pg_dump`/restore); medium for identity links | P2-11 own `app_users` table; marked blocks | Easy: hours |
 | **App data access** | 4 files still import Supabase (was 5). `matrimonial_service.dart` alone makes about 85 direct calls; `subscription_service.dart` 5; `app_settings.dart` 4; `main.dart` start-up | Hard: every screen's data path | P2-08 move to the API | Easy: no app change |
-| **Backend API** | Verifies tokens by JWKS (P1-17), but reads and writes data **through PostgREST** (`backend/api/src/supabase/supabase.client.ts`) | Medium | P2-10 direct Postgres connection | Easy |
+| **Backend API** | Verifies tokens by JWKS (P1-17), but reads and writes data **through PostgREST** (`backend/api/src/supabase/supabase.client.ts`); 8 files use that client directly (CI list, may only shrink) | Medium | P2-10 direct Postgres connection | Easy |
 | **Auth** | Supabase Auth: email/password (bcrypt hashes, exportable), Google sign-in, staff TOTP MFA, a Supabase-only access-token hook for staff claims | Medium | P2-11 identity table, roles from our tables; P2-09 export/import steps | Medium (inherent): 1–3 days, staff re-enrol MFA, no app change |
 | **Storage** | Bucket `profiles` and its access rules exist only in the dashboard; the app stores paths, not URLs | Easy to copy, but the rules would be lost | P2-12 buckets and rules as code; signed URLs from one place | Easy |
 | **Realtime** | Behind `RealtimeService` (P1-16), but 24 subscriptions listen to Supabase **table changes**; presence and typing use Supabase channels | Medium–hard: needs a change feed | P2-13 outbox events + our gateway | Easy: swap the adapter |
-| **Admin console** | Supabase code kept in `apps/admin_console/lib/data/supabase/` (4 files), but not checked by CI | Medium | P2-14 extend the guard | Easy |
+| **Admin console** | Supabase code kept in `apps/admin_console/lib/data/supabase/` (4 files), checked by CI | Easy | — | Easy |
 
 ## Consequences
 

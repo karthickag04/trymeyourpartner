@@ -42,7 +42,9 @@ Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
 1. **Run the checks before every commit** (CI runs the same on every push and PR):
    ```bash
    dart format --output=none --set-exit-if-changed lib test
-   tool/check_vendor_imports.sh
+   tool/check_vendor_imports.sh        # app: Supabase only in lib/data/supabase/
+   tool/check_api_vendor.sh            # API: Supabase only in src/supabase/
+   tool/check_sql_vendor.sh            # migrations: Supabase objects only in marked blocks
    flutter analyze            # must report: No issues found!
    flutter test
    flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
@@ -63,7 +65,8 @@ Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
    - New integrations (OTP, payments, push, messaging, video, search) go behind our own interface in the API (table in ADR 0001).
    - No `package:supabase_flutter` imports outside `lib/data/supabase/` (CI enforces it; the legacy allowlist in `tool/check_vendor_imports.sh` may only shrink).
    - New SQL uses `public.app_current_user_id()`, never `auth.uid()`.
-   - Supabase-only objects go in clearly marked blocks.
+   - Supabase-only objects (`auth.users`, `storage.*`, the realtime publication …) go between
+     `-- [supabase-only]` and `-- [/supabase-only]` lines (CI enforces it).
    - Files are stored by storage path, not provider URL.
 6. **Security:**
    - Members must never be able to write trust or money fields (verification, plans, quotas, counters). Those go through `SECURITY DEFINER` functions or the API.
@@ -113,7 +116,6 @@ CI (app, Android, database, API, admin console) is green.
 **Next (in order):**
 1. P1-06 Riverpod (feature by feature, auth and profile first).
 2. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)), in this order:
-   - P2-14 extend the vendor guard to the admin console and API, plus a SQL guard
    - P2-10 the API talks to PostgreSQL directly, not through PostgREST
    - P2-08 move app data access to the API
    - P2-11 own `app_users` identity table, P2-12 storage as code, P2-13 realtime as our own events
