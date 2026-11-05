@@ -34,7 +34,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
 **Status:** Phase 0 done (2 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
-**Next up:** P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
+**Next up:** replace the remaining "coming soon" Profile items (Upgrade, Notification settings, Security, About, Interests/Matches quick actions); P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
 **Owner steps:** enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
 ## Phase 0: Stop the bleeding

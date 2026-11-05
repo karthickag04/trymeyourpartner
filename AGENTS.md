@@ -104,17 +104,20 @@ CI (app, Android, database, API, admin console) is green.
 **Branches:**
 - `claude/tender-volta-6ujx4z` is the integration branch (all work merged here).
 - `claude/ui-foundation` and `claude/admin-console` are merged; don't reuse them.
-- `claude/admin-console-2` holds only an older draft of this file; ignore it.
+- `claude/admin-console-2` (draft PR #4) holds only an older draft of this file; close it.
 
 **Next (in order):**
-1. P1-06 Riverpod (feature by feature, auth and profile first).
-2. P2-08 move app data access to the API.
-3. The rest of Phase 2:
+1. Replace the remaining "coming soon" Profile items with real screens or hide them (roadmap §10.1):
+   Upgrade (paywall, Phase 4), Notification settings, Security, About, and the Interests/Matches
+   quick actions. They are translated but still decorative.
+2. P1-06 Riverpod (feature by feature, auth and profile first).
+3. P2-08 move app data access to the API.
+4. The rest of Phase 2:
    - moderation queues (P2-04)
    - maker–checker verification (P2-05)
    - Member 360
    - creating and disabling staff in the console
-4. Phases 3–7 per the tracker.
+5. Phases 3–7 per the tracker.
 
 **Owner steps (Supabase dashboard):**
 1. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
