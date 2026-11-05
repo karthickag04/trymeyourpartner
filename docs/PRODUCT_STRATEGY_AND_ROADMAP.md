@@ -1,6 +1,6 @@
 # TryMeYourPartner: Product Strategy, Gap Analysis and Phased Roadmap
 
-> **Status:** Draft v1 · **Date:** 2026-11-05 · **Scope:** member apps (Android, iOS, Web), staff/admin console, backend, data, security, monetization
+> **Status:** Draft v1 · **Progress:** see [`PROGRESS_TRACKER.md`](PROGRESS_TRACKER.md) · **Date:** 2026-11-05 · **Scope:** member apps (Android, iOS, Web), staff/admin console, backend, data, security, monetization
 >
 > This document has two inputs:
 > 1. **A code-level audit** of this repository (`lib/`, `sql/`, `supabase_*.sql`) as of commit `fa22a92`.
@@ -568,7 +568,8 @@ Durations are indicative for a small team (2–3 Flutter, 1–2 backend, 1 QA/de
 - [x] CI: format, analyze, test, web build; database job applies migrations twice and checks access rules
 - [x] Browser end-to-end tests (`e2e/`) against the test project
 - [ ] CI: Android build; Sentry; more unit and widget tests
-- [ ] Backend API skeleton (NestJS or .NET), OpenAPI, generated Dart client, auth middleware validating Supabase JWT, deployed to staging
+- [x] Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; tests and CI
+- [ ] Generated Dart client for the API; deploy the API to staging
 
 **Exit:** CI green on every PR; staging environment end to end; no file over ~600 lines in `features/`.
 

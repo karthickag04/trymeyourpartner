@@ -4,6 +4,8 @@ Matrimony platform for the Tamil and wider Indian diaspora. One Flutter codebase
 Android, iOS and Web, on a Supabase backend (Postgres, Auth, Storage, Realtime).
 
 - Product strategy, gap analysis and the phased plan: [`docs/PRODUCT_STRATEGY_AND_ROADMAP.md`](docs/PRODUCT_STRATEGY_AND_ROADMAP.md)
+- **What's done and what's next:** [`docs/PROGRESS_TRACKER.md`](docs/PROGRESS_TRACKER.md)
+- Backend API: [`backend/README.md`](backend/README.md)
 - Database migrations and how to apply them: [`supabase/README.md`](supabase/README.md)
 - Browser end-to-end tests: [`e2e/README.md`](e2e/README.md)
 
@@ -52,5 +54,6 @@ flutter build web --dart-define-from-file=.env
 | `supabase/migrations/` | Versioned database changes, applied in order |
 | `supabase/tests/` | SQL checks of the access rules |
 | `sql/`, `archive/sql/`, `supabase_*.sql` | How the current schema was first built; replaced by a baseline migration in Phase 1 |
+| `backend/api/` | NestJS backend API (Supabase token auth, OpenAPI at `/docs`) |
 | `e2e/` | Playwright tests that drive the web build |
 | `docs/` | Product and architecture documents |
