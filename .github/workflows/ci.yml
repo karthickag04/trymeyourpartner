@@ -42,6 +42,41 @@ jobs:
         # The publishable key is only needed at run time; CI builds with a placeholder.
         run: flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
 
+  admin_console:
+    name: Admin console (analyze, test, web build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: apps/admin_console
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.32.8
+          channel: stable
+          cache: true
+
+      - name: Install packages (exactly as locked)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Provider code only in lib/data (ADR 0001)
+        run: tool/check_vendor_imports.sh
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build web
+        # The publishable key is only needed at run time; CI builds with a placeholder.
+        run: flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
+
   android:
     name: Android (debug APK)
     runs-on: ubuntu-latest
