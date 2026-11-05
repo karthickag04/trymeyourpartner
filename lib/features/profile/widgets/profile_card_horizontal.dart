@@ -214,10 +214,15 @@ class ProfileCardHorizontal extends StatelessWidget {
             children: [
               Icon(Icons.cake, size: 14, color: context.palette.textSecondary),
               const SizedBox(width: 4),
-              Text(
-                context.l10n.ageYearsLong(profile.age),
-                style: context.styles.caption.copyWith(
-                  color: context.palette.textSecondary,
+              // Both shrink with "…" so long translations never overflow.
+              Flexible(
+                child: Text(
+                  context.l10n.ageYearsLong(profile.age),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.textSecondary,
+                  ),
                 ),
               ),
               const SizedBox(width: AppDimensions.paddingS),
@@ -227,10 +232,14 @@ class ProfileCardHorizontal extends StatelessWidget {
                 color: context.palette.textSecondary,
               ),
               const SizedBox(width: 4),
-              Text(
-                (profile.heightInFeetInches ?? context.l10n.commonNotSpecified),
-                style: context.styles.caption.copyWith(
-                  color: context.palette.textSecondary,
+              Flexible(
+                child: Text(
+                  profile.heightInFeetInches ?? context.l10n.commonNotSpecified,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.styles.caption.copyWith(
+                    color: context.palette.textSecondary,
+                  ),
                 ),
               ),
             ],
