@@ -109,4 +109,15 @@ expect2 "identity helper|t"
 expect2 "identity helper signed out|t"
 expect2 "auth.uid remaining|0"
 
+OUT3=$($P -At -f "$HERE/40_caste_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
+echo "$OUT3"
+expect3() { grep -qF -- "$1" <<<"$OUT3" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
+expect3 "duplicate castes|0"                                          # the double-loaded list is merged
+expect3 'duplicate key value violates unique constraint "castes_unique_name_per_religion"'
+expect3 "permission denied for schema private"                        # members cannot merge
+expect3 "merged rows|1"
+expect3 "A caste after merge|Pillai|t"                                # reference moved to the kept row
+expect3 "A preferred castes after merge|1"                            # list de-duplicated
+expect3 "copy deleted|0"
+
 echo "All database checks passed."

@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/matrimonial_user.dart';
 import '../models/location_data.dart';
 import '../models/caste_data.dart' as models;
+import 'lookup_ids.dart';
 
 class MatrimonialService {
   // Lazily access the Supabase client to avoid early initialization issues
@@ -601,7 +602,10 @@ class MatrimonialService {
       if (religion != null && religion.isNotEmpty) {
         query = query.eq('religion', religion);
       }
-      final res = await query.maybeSingle();
+      // Oldest row first, matching the kept row of migration
+      // 20261107100000_dedupe_castes; never fails on more than one match.
+      final rows = await query.order('created_at').limit(1);
+      final res = rows.isEmpty ? null : rows.first;
       if (res != null) {
         final id = res['id'] as String;
         _casteIdCache[key] = id;
@@ -1365,15 +1369,21 @@ class MatrimonialService {
         '💾 saveProfile(flags: contact=$saveContact, family=$saveFamily, partner=$savePartner)',
       );
 
-      // Resolve names -> ids
-      final stateId = await _resolveStateIdByName(profile.state);
-      final districtId = await _resolveDistrictIdByName(
+      // Resolve names -> ids. A chosen name without a match stops the save.
+      final stateId = requireLookupId(
+        'state',
         profile.state,
-        profile.district,
+        await _resolveStateIdByName(profile.state),
       );
-      final casteId = await _resolveCasteIdByName(
-        profile.religion,
+      final districtId = requireLookupId(
+        'district',
+        profile.district,
+        await _resolveDistrictIdByName(profile.state, profile.district),
+      );
+      final casteId = requireLookupId(
+        'caste',
         profile.caste,
+        await _resolveCasteIdByName(profile.religion, profile.caste),
       );
 
       // Upsert core profile

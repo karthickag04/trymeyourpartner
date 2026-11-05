@@ -168,6 +168,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 
 | Bug | Fixed in | Verified |
 |---|---|---|
+| Registration reappeared on every launch: 19 caste names were stored twice (list loaded on 2025-08-24 and 2025-09-05), the save looked castes up by name expecting one row, failed silently and stored `caste_id = null` (4 of 60 live profiles); the app still marked the profile complete locally until the next launch | this commit (migration `20261107100000_dedupe_castes.sql` + app) | DB suite: duplicates 0, a new duplicate (any case/spacing) refused, members cannot run the merge, a profile pointing at a copy is moved to the kept row and its preferred-castes list de-duplicated. App: lookup takes the oldest match and a chosen caste/state/district with no match now stops the save with an error (3 new tests, 94/94). **Live migration not yet applied** (needs the owner's approval) |
 | Anyone could read all profiles (incl. email, DOB, income) with the public key | `a9bc06e` | Anonymous REST → 401 |
 | Anyone could delete any profile via `delete_profile_and_related` | `a9bc06e` | Anonymous → 401; other member → NOT_AUTHORIZED |
 | `deleted_users` / `auth_user_profile` readable by anyone; views bypassed access rules | `bc79f96` | Member → 403 / own row only |
