@@ -58,6 +58,9 @@ Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
    (SQL editor, or `supabase db push`), never by parallel agents. After a migration that adds tables or
    functions, run `notify pgrst, 'reload schema';`.
 5. **Vendor portability (ADR 0001):**
+   - Commit to PostgreSQL, not to Supabase. The API talks to Postgres directly; no PostgREST, Edge Functions or dashboard-only setup.
+   - Buckets, access rules, hooks and publications are created in migrations, never only in the dashboard.
+   - New integrations (OTP, payments, push, messaging, video, search) go behind our own interface in the API (table in ADR 0001).
    - No `package:supabase_flutter` imports outside `lib/data/supabase/` (CI enforces it; the legacy allowlist in `tool/check_vendor_imports.sh` may only shrink).
    - New SQL uses `public.app_current_user_id()`, never `auth.uid()`.
    - Supabase-only objects go in clearly marked blocks.
@@ -109,7 +112,12 @@ CI (app, Android, database, API, admin console) is green.
 
 **Next (in order):**
 1. P1-06 Riverpod (feature by feature, auth and profile first).
-2. P2-08 move app data access to the API.
+2. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)), in this order:
+   - P2-14 extend the vendor guard to the admin console and API, plus a SQL guard
+   - P2-10 the API talks to PostgreSQL directly, not through PostgREST
+   - P2-08 move app data access to the API
+   - P2-11 own `app_users` identity table, P2-12 storage as code, P2-13 realtime as our own events
+   - P2-09 exit runbook and restore drill
 3. The rest of Phase 2:
    - moderation queues (P2-04)
    - maker–checker verification (P2-05)

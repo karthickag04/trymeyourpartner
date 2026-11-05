@@ -26,7 +26,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
 | P1 Foundation & restructure | 13 | 4 | 1 | 1 |
-| P2 Roles, admin console, moderation | 2 | 2 | 5 | 0 |
+| P2 Roles, admin console, moderation | 2 | 2 | 10 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
 | P5 Market-parity features | 0 | 0 | 9 | 0 |
@@ -34,7 +34,7 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
 **Status:** Phase 0 done (2 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
-**Next up:** P1-06 Riverpod; P2-08 app data via the API; rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
+**Next up:** P1-06 Riverpod; P2-14 vendor guards; P2-10 API on plain Postgres, then P2-08 app data via the API; P2-11–P2-13 identity, storage and realtime portability ([ADR 0001](adr/0001-vendor-portability.md)); rest of Phase 2 (P2-04, P2-05, Member 360, staff create/disable).
 **Owner steps:** enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
 ## Phase 0: Stop the bleeding
@@ -85,7 +85,12 @@ Tracks B and C started from track A's branch and are merged back after review an
 | P2-05 | Verification queue with maker–checker | ⬜ | — | |
 | P2-06 | Admin API (`/admin/v1`) with scope checks; PII views audited | 🟡 | `5f88004`, `facd62f` | `/admin/v1/me`, `/admin/v1/staff`: valid token + MFA (aal2) + active staff; PII reads audited. 31 API tests incl. JWKS-signed tokens. More endpoints follow with the console sections |
 | P2-08 | Move the app's data access from direct Supabase calls (`matrimonial_service.dart`, ~75 calls) to the backend API; shrink the vendor allowlist to zero | ⬜ | — | Track A, after P1-06 |
-| P2-09 | Exit runbook: steps and checks to move database, auth, storage and realtime to another provider | ⬜ | — | |
+| P2-09 | Exit runbook (`docs/runbooks/switch-provider.md`): steps and checks to move database, auth, storage and realtime; **exit drill**: restore a data copy onto plain Postgres, run the API and browser tests against it (before launch, then twice a year) | ⬜ | — | |
+| P2-10 | API reaches PostgreSQL with a standard driver and sets the caller per transaction (same row-level security), instead of calling PostgREST `/rest/v1`; prerequisite for P2-08 | ⬜ | — | ADR 0001 rule 2 |
+| P2-11 | Own identity: `app_users` table (our id ↔ provider + subject); tables link to it instead of `auth.users` (18 places); staff roles read from our tables, access-token hook optional | ⬜ | — | ADR 0001 rule 3 |
+| P2-12 | Storage as code: `profiles` bucket and its access rules in a migration (`[supabase-only]` block); signed per-viewer URLs produced in one place; S3-compatible adapter | ⬜ | — | ADR 0001 rules 5, 8; with P3-03 |
+| P2-13 | Realtime as our events: outbox table written with each change; app subscribes to `message.created`, `notification.created`, `presence.changed` instead of 24 table-change listeners; Supabase adapter plus a WebSocket/SSE gateway in the API | ⬜ | — | ADR 0001 rule 6 |
+| P2-14 | Extend the vendor guard to `apps/admin_console` and `backend/api`; SQL guard in CI: no new `auth.uid()`, `auth.users` or `storage.` outside `[supabase-only]` blocks | ⬜ | — | ADR 0001 rules 1, 4 |
 | P2-07 | Master data management (castes, locations, qualifications, occupations) | ⬜ | — | |
 
 ## Phase 3: Trust & safety for members
