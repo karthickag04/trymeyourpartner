@@ -658,4 +658,373 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whyMatchGeneral => 'Good compatibility based on your preferences';
+
+  @override
+  String get maintenanceTitle => 'Under maintenance';
+
+  @override
+  String get maintenanceDefaultMessage =>
+      'We are making improvements. Please check back soon.';
+
+  @override
+  String get helpTitle => 'Help & Support';
+
+  @override
+  String get helpIntro =>
+      'Need help with your account, a profile or a payment? Contact our support team.';
+
+  @override
+  String get helpNoContacts => 'Support contacts are not available right now.';
+
+  @override
+  String get helpEmail => 'Email';
+
+  @override
+  String get helpPhone => 'Phone';
+
+  @override
+  String get helpWhatsapp => 'WhatsApp';
+
+  @override
+  String get helpCopy => 'Copy';
+
+  @override
+  String helpCopied(Object label) {
+    return '$label copied';
+  }
+
+  @override
+  String get contactRevealUnavailable =>
+      'Contact reveal is not available right now.';
+
+  @override
+  String get sectionBasicInfo => 'Basic information';
+
+  @override
+  String get sectionAboutMe => 'About me';
+
+  @override
+  String get sectionFamilyInfo => 'Family information';
+
+  @override
+  String get sectionPartnerPreferences => 'Partner preferences';
+
+  @override
+  String get sectionSimilarProfiles => 'Similar profiles';
+
+  @override
+  String get fieldReligion => 'Religion';
+
+  @override
+  String get fieldCaste => 'Caste';
+
+  @override
+  String get fieldSubCaste => 'Sub-caste';
+
+  @override
+  String get fieldEducation => 'Education';
+
+  @override
+  String get fieldOccupation => 'Occupation';
+
+  @override
+  String get fieldWorkingLocation => 'Working location';
+
+  @override
+  String get fieldAnnualIncome => 'Annual income';
+
+  @override
+  String get fieldHeight => 'Height';
+
+  @override
+  String get fieldWeight => 'Weight';
+
+  @override
+  String get fieldMaritalStatus => 'Marital status';
+
+  @override
+  String get fieldLanguages => 'Languages';
+
+  @override
+  String get fieldHobbies => 'Hobbies';
+
+  @override
+  String get fieldFatherName => 'Father\'s name';
+
+  @override
+  String get fieldFatherOccupation => 'Father\'s occupation';
+
+  @override
+  String get fieldMotherName => 'Mother\'s name';
+
+  @override
+  String get fieldMotherOccupation => 'Mother\'s occupation';
+
+  @override
+  String get fieldBrothers => 'Brothers';
+
+  @override
+  String get fieldSisters => 'Sisters';
+
+  @override
+  String get fieldFamilyType => 'Family type';
+
+  @override
+  String get fieldFamilyValues => 'Family values';
+
+  @override
+  String get fieldFamilyStatus => 'Family status';
+
+  @override
+  String get fieldPreferredAge => 'Preferred age';
+
+  @override
+  String get fieldPreferredHeight => 'Preferred height';
+
+  @override
+  String get fieldPreferredStates => 'Preferred states';
+
+  @override
+  String get fieldPreferredCastes => 'Preferred castes';
+
+  @override
+  String get fieldPreferredEducation => 'Preferred education';
+
+  @override
+  String get fieldPreferredOccupation => 'Preferred occupation';
+
+  @override
+  String get fieldPreferredIncome => 'Preferred income';
+
+  @override
+  String get fieldOtherPreferences => 'Other preferences';
+
+  @override
+  String get actionMessage => 'Message';
+
+  @override
+  String get actionRevealContact => 'Reveal / request contact';
+
+  @override
+  String get pleaseSignIn => 'Please sign in first';
+
+  @override
+  String get blockedNoReveal =>
+      'You can\'t view contact details of a blocked profile';
+
+  @override
+  String get contactRequestPending => 'Contact request pending';
+
+  @override
+  String get signInToMessage => 'Please sign in to send a message';
+
+  @override
+  String get profileInactiveTitle => 'Profile inactive';
+
+  @override
+  String get profileInactiveReactivatePrompt =>
+      'Your profile is deactivated. Reactivate it now to send messages?';
+
+  @override
+  String get actionNotNow => 'Not now';
+
+  @override
+  String get actionReactivate => 'Reactivate';
+
+  @override
+  String get profileReactivated => 'Profile reactivated';
+
+  @override
+  String get profileReactivateFailed =>
+      'We couldn\'t reactivate your profile. Please try again.';
+
+  @override
+  String get messagingDisabledInactive =>
+      'This profile is not active. Messaging is turned off for now.';
+
+  @override
+  String get messagingDisabledBlocked =>
+      'Messaging is turned off for blocked profiles';
+
+  @override
+  String get contactRequestSent => 'Contact request sent';
+
+  @override
+  String get contactRequestFailed =>
+      'We couldn\'t send the request. Please try again.';
+
+  @override
+  String get acceptContactTitle => 'Accept contact request?';
+
+  @override
+  String acceptContactBody(Object name) {
+    return 'Share contact details with $name?';
+  }
+
+  @override
+  String get commonNo => 'No';
+
+  @override
+  String get contactRequestAccepted => 'Contact request accepted';
+
+  @override
+  String get contactAcceptFailed =>
+      'We couldn\'t accept the request. Please try again.';
+
+  @override
+  String interestSentTo(Object name) {
+    return 'Interest sent to $name';
+  }
+
+  @override
+  String get interestSendFailed =>
+      'We couldn\'t send your interest. Please try again.';
+
+  @override
+  String get shortlistRemoved => 'Removed from shortlist';
+
+  @override
+  String get shortlistAdded => 'Added to shortlist';
+
+  @override
+  String get shortlistFailed =>
+      'We couldn\'t update your shortlist. Please try again.';
+
+  @override
+  String get contactDetailsTitle => 'Contact details';
+
+  @override
+  String get contactNoPhone => 'This member has not added a phone number yet.';
+
+  @override
+  String contactPhone(Object number) {
+    return 'Phone: $number';
+  }
+
+  @override
+  String contactWhatsapp(Object number) {
+    return 'WhatsApp: $number';
+  }
+
+  @override
+  String get contactLimitUpgrade =>
+      'You\'ve reached your plan\'s contact limit. Upgrade your plan to see more.';
+
+  @override
+  String get contactRevealFailed =>
+      'We couldn\'t show the contact details. Please try again.';
+
+  @override
+  String messageTo(Object name) {
+    return 'Message $name';
+  }
+
+  @override
+  String get messageHintLong => 'Type your message…';
+
+  @override
+  String get messageSent => 'Message sent';
+
+  @override
+  String get messageSendFailed =>
+      'We couldn\'t send your message. Please try again.';
+
+  @override
+  String get blockProfileAction => 'Block profile';
+
+  @override
+  String get reportProfileAction => 'Report profile';
+
+  @override
+  String get blockProfileTitle => 'Block profile?';
+
+  @override
+  String blockProfileBody(Object name) {
+    return 'You will no longer see $name, and they won\'t be able to contact you.';
+  }
+
+  @override
+  String get profileBlocked => 'Profile blocked';
+
+  @override
+  String get blockFailed =>
+      'We couldn\'t block this profile. Please try again.';
+
+  @override
+  String get actionBlock => 'Block';
+
+  @override
+  String get reportProfileTitle => 'Report profile';
+
+  @override
+  String get reportReason => 'Reason';
+
+  @override
+  String get reportDetails => 'Details (optional)';
+
+  @override
+  String get reportSubmitted =>
+      'Report submitted. Thank you for helping keep the community safe.';
+
+  @override
+  String get reportFailed =>
+      'We couldn\'t submit your report. Please try again.';
+
+  @override
+  String get actionSubmit => 'Submit';
+
+  @override
+  String get similarEmpty => 'No similar profiles found yet.';
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get previousPhoto => 'Previous photo';
+
+  @override
+  String get nextPhoto => 'Next photo';
+
+  @override
+  String photoCounter(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String ageYearsOld(int age) {
+    return '$age years old';
+  }
+
+  @override
+  String incomeLpa(String amount) {
+    return '₹$amount LPA';
+  }
+
+  @override
+  String weightKg(String weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String ageRange(int min, int max) {
+    return '$min - $max years';
+  }
+
+  @override
+  String heightRangeCm(String min, String max) {
+    return '$min - $max cm';
+  }
+
+  @override
+  String incomeRangeLpa(String min, String max) {
+    return '₹$min - $max LPA';
+  }
+
+  @override
+  String get noLimit => 'No limit';
+
+  @override
+  String ageCityShort(int age, String city) {
+    return '$age • $city';
+  }
 }

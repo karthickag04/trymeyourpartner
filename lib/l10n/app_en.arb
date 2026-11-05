@@ -383,5 +383,218 @@
       "languages": {}
     }
   },
-  "whyMatchGeneral": "Good compatibility based on your preferences"
+  "whyMatchGeneral": "Good compatibility based on your preferences",
+  "maintenanceTitle": "Under maintenance",
+  "maintenanceDefaultMessage": "We are making improvements. Please check back soon.",
+  "helpTitle": "Help & Support",
+  "helpIntro": "Need help with your account, a profile or a payment? Contact our support team.",
+  "helpNoContacts": "Support contacts are not available right now.",
+  "helpEmail": "Email",
+  "helpPhone": "Phone",
+  "helpWhatsapp": "WhatsApp",
+  "helpCopy": "Copy",
+  "helpCopied": "{label} copied",
+  "@helpCopied": {
+    "placeholders": {
+      "label": {}
+    }
+  },
+  "contactRevealUnavailable": "Contact reveal is not available right now.",
+  "sectionBasicInfo": "Basic information",
+  "sectionAboutMe": "About me",
+  "sectionFamilyInfo": "Family information",
+  "sectionPartnerPreferences": "Partner preferences",
+  "sectionSimilarProfiles": "Similar profiles",
+  "fieldReligion": "Religion",
+  "fieldCaste": "Caste",
+  "fieldSubCaste": "Sub-caste",
+  "fieldEducation": "Education",
+  "fieldOccupation": "Occupation",
+  "fieldWorkingLocation": "Working location",
+  "fieldAnnualIncome": "Annual income",
+  "fieldHeight": "Height",
+  "fieldWeight": "Weight",
+  "fieldMaritalStatus": "Marital status",
+  "fieldLanguages": "Languages",
+  "fieldHobbies": "Hobbies",
+  "fieldFatherName": "Father's name",
+  "fieldFatherOccupation": "Father's occupation",
+  "fieldMotherName": "Mother's name",
+  "fieldMotherOccupation": "Mother's occupation",
+  "fieldBrothers": "Brothers",
+  "fieldSisters": "Sisters",
+  "fieldFamilyType": "Family type",
+  "fieldFamilyValues": "Family values",
+  "fieldFamilyStatus": "Family status",
+  "fieldPreferredAge": "Preferred age",
+  "fieldPreferredHeight": "Preferred height",
+  "fieldPreferredStates": "Preferred states",
+  "fieldPreferredCastes": "Preferred castes",
+  "fieldPreferredEducation": "Preferred education",
+  "fieldPreferredOccupation": "Preferred occupation",
+  "fieldPreferredIncome": "Preferred income",
+  "fieldOtherPreferences": "Other preferences",
+  "actionMessage": "Message",
+  "actionRevealContact": "Reveal / request contact",
+  "pleaseSignIn": "Please sign in first",
+  "blockedNoReveal": "You can't view contact details of a blocked profile",
+  "contactRequestPending": "Contact request pending",
+  "signInToMessage": "Please sign in to send a message",
+  "profileInactiveTitle": "Profile inactive",
+  "profileInactiveReactivatePrompt": "Your profile is deactivated. Reactivate it now to send messages?",
+  "actionNotNow": "Not now",
+  "actionReactivate": "Reactivate",
+  "profileReactivated": "Profile reactivated",
+  "profileReactivateFailed": "We couldn't reactivate your profile. Please try again.",
+  "messagingDisabledInactive": "This profile is not active. Messaging is turned off for now.",
+  "messagingDisabledBlocked": "Messaging is turned off for blocked profiles",
+  "contactRequestSent": "Contact request sent",
+  "contactRequestFailed": "We couldn't send the request. Please try again.",
+  "acceptContactTitle": "Accept contact request?",
+  "acceptContactBody": "Share contact details with {name}?",
+  "@acceptContactBody": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "commonNo": "No",
+  "contactRequestAccepted": "Contact request accepted",
+  "contactAcceptFailed": "We couldn't accept the request. Please try again.",
+  "interestSentTo": "Interest sent to {name}",
+  "@interestSentTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "interestSendFailed": "We couldn't send your interest. Please try again.",
+  "shortlistRemoved": "Removed from shortlist",
+  "shortlistAdded": "Added to shortlist",
+  "shortlistFailed": "We couldn't update your shortlist. Please try again.",
+  "contactDetailsTitle": "Contact details",
+  "contactNoPhone": "This member has not added a phone number yet.",
+  "contactPhone": "Phone: {number}",
+  "@contactPhone": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "contactWhatsapp": "WhatsApp: {number}",
+  "@contactWhatsapp": {
+    "placeholders": {
+      "number": {}
+    }
+  },
+  "contactLimitUpgrade": "You've reached your plan's contact limit. Upgrade your plan to see more.",
+  "contactRevealFailed": "We couldn't show the contact details. Please try again.",
+  "messageTo": "Message {name}",
+  "@messageTo": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "messageHintLong": "Type your message…",
+  "messageSent": "Message sent",
+  "messageSendFailed": "We couldn't send your message. Please try again.",
+  "blockProfileAction": "Block profile",
+  "reportProfileAction": "Report profile",
+  "blockProfileTitle": "Block profile?",
+  "blockProfileBody": "You will no longer see {name}, and they won't be able to contact you.",
+  "@blockProfileBody": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "profileBlocked": "Profile blocked",
+  "blockFailed": "We couldn't block this profile. Please try again.",
+  "actionBlock": "Block",
+  "reportProfileTitle": "Report profile",
+  "reportReason": "Reason",
+  "reportDetails": "Details (optional)",
+  "reportSubmitted": "Report submitted. Thank you for helping keep the community safe.",
+  "reportFailed": "We couldn't submit your report. Please try again.",
+  "actionSubmit": "Submit",
+  "similarEmpty": "No similar profiles found yet.",
+  "moreOptions": "More options",
+  "previousPhoto": "Previous photo",
+  "nextPhoto": "Next photo",
+  "photoCounter": "{current}/{total}",
+  "@photoCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ageYearsOld": "{age} years old",
+  "@ageYearsOld": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeLpa": "₹{amount} LPA",
+  "@incomeLpa": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "weightKg": "{weight} kg",
+  "@weightKg": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "ageRange": "{min} - {max} years",
+  "@ageRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "heightRangeCm": "{min} - {max} cm",
+  "@heightRangeCm": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeRangeLpa": "₹{min} - {max} LPA",
+  "@incomeRangeLpa": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "noLimit": "No limit",
+  "ageCityShort": "{age} • {city}",
+  "@ageCityShort": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      },
+      "city": {
+        "type": "String"
+      }
+    }
+  }
 }

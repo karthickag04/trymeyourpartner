@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/settings/app_settings.dart';
+import '../../l10n/l10n.dart';
+import '../../shared/theme/constants.dart';
 
 /// Help & Support: contacts come from the admin-controlled settings.
 class HelpScreen extends StatelessWidget {
@@ -11,27 +13,26 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = context.watch<AppSettings>();
+    final l = context.l10n;
     final items = <(IconData, String, String)>[
       if (s.supportEmail.isNotEmpty)
-        (Icons.email_outlined, 'Email', s.supportEmail),
+        (Icons.email_outlined, l.helpEmail, s.supportEmail),
       if (s.supportPhone.isNotEmpty)
-        (Icons.phone_outlined, 'Phone', s.supportPhone),
+        (Icons.phone_outlined, l.helpPhone, s.supportPhone),
       if (s.supportWhatsapp.isNotEmpty)
-        (Icons.chat_outlined, 'WhatsApp', s.supportWhatsapp),
+        (Icons.chat_outlined, l.helpWhatsapp, s.supportWhatsapp),
     ];
     return Scaffold(
-      appBar: AppBar(title: const Text('Help & Support')),
+      appBar: AppBar(title: Text(l.helpTitle)),
       body: RefreshIndicator(
         onRefresh: s.refresh,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppDimensions.paddingM),
           children: [
-            const Text(
-              'Need help with your account, a profile or a payment? Contact our support team.',
-            ),
-            const SizedBox(height: 16),
+            Text(l.helpIntro),
+            const SizedBox(height: AppDimensions.paddingM),
             if (items.isEmpty)
-              const Text('Support contacts are not available right now.'),
+              Text(l.helpNoContacts),
             for (final (icon, label, value) in items)
               Card(
                 child: ListTile(
@@ -39,13 +40,13 @@ class HelpScreen extends StatelessWidget {
                   title: Text(label),
                   subtitle: SelectableText(value),
                   trailing: IconButton(
-                    tooltip: 'Copy',
+                    tooltip: l.helpCopy,
                     icon: const Icon(Icons.copy),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
                       ScaffoldMessenger.of(
                         context,
-                      ).showSnackBar(SnackBar(content: Text('$label copied')));
+                      ).showSnackBar(SnackBar(content: Text(l.helpCopied(label))));
                     },
                   ),
                 ),

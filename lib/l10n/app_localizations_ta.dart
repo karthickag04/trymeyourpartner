@@ -669,4 +669,376 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get whyMatchGeneral =>
       'உங்கள் விருப்பங்களின் அடிப்படையில் நல்ல பொருத்தம்';
+
+  @override
+  String get maintenanceTitle => 'பராமரிப்புப் பணி நடைபெறுகிறது';
+
+  @override
+  String get maintenanceDefaultMessage =>
+      'சேவையை மேம்படுத்திக்கொண்டிருக்கிறோம். சிறிது நேரம் கழித்து மீண்டும் வாருங்கள்.';
+
+  @override
+  String get helpTitle => 'உதவி & ஆதரவு';
+
+  @override
+  String get helpIntro =>
+      'உங்கள் கணக்கு, சுயவிவரம் அல்லது கட்டணம் தொடர்பாக உதவி வேண்டுமா? எங்கள் ஆதரவுக் குழுவைத் தொடர்புகொள்ளுங்கள்.';
+
+  @override
+  String get helpNoContacts =>
+      'ஆதரவுத் தொடர்பு விவரங்கள் தற்போது கிடைக்கவில்லை.';
+
+  @override
+  String get helpEmail => 'மின்னஞ்சல்';
+
+  @override
+  String get helpPhone => 'தொலைபேசி';
+
+  @override
+  String get helpWhatsapp => 'WhatsApp';
+
+  @override
+  String get helpCopy => 'நகலெடு';
+
+  @override
+  String helpCopied(Object label) {
+    return '$label நகலெடுக்கப்பட்டது';
+  }
+
+  @override
+  String get contactRevealUnavailable =>
+      'தொடர்பு விவரங்களைப் பார்க்கும் வசதி தற்போது கிடைக்கவில்லை.';
+
+  @override
+  String get sectionBasicInfo => 'அடிப்படைத் தகவல்கள்';
+
+  @override
+  String get sectionAboutMe => 'என்னைப் பற்றி';
+
+  @override
+  String get sectionFamilyInfo => 'குடும்பத் தகவல்கள்';
+
+  @override
+  String get sectionPartnerPreferences =>
+      'வாழ்க்கைத் துணை குறித்த எதிர்பார்ப்புகள்';
+
+  @override
+  String get sectionSimilarProfiles => 'இதே போன்ற சுயவிவரங்கள்';
+
+  @override
+  String get fieldReligion => 'மதம்';
+
+  @override
+  String get fieldCaste => 'சாதி';
+
+  @override
+  String get fieldSubCaste => 'உட்பிரிவு';
+
+  @override
+  String get fieldEducation => 'கல்வி';
+
+  @override
+  String get fieldOccupation => 'தொழில்';
+
+  @override
+  String get fieldWorkingLocation => 'பணிபுரியும் இடம்';
+
+  @override
+  String get fieldAnnualIncome => 'ஆண்டு வருமானம்';
+
+  @override
+  String get fieldHeight => 'உயரம்';
+
+  @override
+  String get fieldWeight => 'எடை';
+
+  @override
+  String get fieldMaritalStatus => 'திருமண நிலை';
+
+  @override
+  String get fieldLanguages => 'மொழிகள்';
+
+  @override
+  String get fieldHobbies => 'பொழுதுபோக்குகள்';
+
+  @override
+  String get fieldFatherName => 'தந்தையின் பெயர்';
+
+  @override
+  String get fieldFatherOccupation => 'தந்தையின் தொழில்';
+
+  @override
+  String get fieldMotherName => 'தாயின் பெயர்';
+
+  @override
+  String get fieldMotherOccupation => 'தாயின் தொழில்';
+
+  @override
+  String get fieldBrothers => 'சகோதரர்கள்';
+
+  @override
+  String get fieldSisters => 'சகோதரிகள்';
+
+  @override
+  String get fieldFamilyType => 'குடும்ப வகை';
+
+  @override
+  String get fieldFamilyValues => 'குடும்ப விழுமியங்கள்';
+
+  @override
+  String get fieldFamilyStatus => 'குடும்ப நிலை';
+
+  @override
+  String get fieldPreferredAge => 'விரும்பும் வயது';
+
+  @override
+  String get fieldPreferredHeight => 'விரும்பும் உயரம்';
+
+  @override
+  String get fieldPreferredStates => 'விரும்பும் மாநிலங்கள்';
+
+  @override
+  String get fieldPreferredCastes => 'விரும்பும் சாதிகள்';
+
+  @override
+  String get fieldPreferredEducation => 'விரும்பும் கல்வித் தகுதி';
+
+  @override
+  String get fieldPreferredOccupation => 'விரும்பும் தொழில்';
+
+  @override
+  String get fieldPreferredIncome => 'விரும்பும் வருமானம்';
+
+  @override
+  String get fieldOtherPreferences => 'பிற எதிர்பார்ப்புகள்';
+
+  @override
+  String get actionMessage => 'செய்தி அனுப்பு';
+
+  @override
+  String get actionRevealContact => 'தொடர்பு விவரம் பார் / கோரு';
+
+  @override
+  String get pleaseSignIn => 'முதலில் உள்நுழையவும்';
+
+  @override
+  String get blockedNoReveal =>
+      'தடுக்கப்பட்ட சுயவிவரத்தின் தொடர்பு விவரங்களைப் பார்க்க இயலாது';
+
+  @override
+  String get contactRequestPending => 'தொடர்புக் கோரிக்கை நிலுவையில் உள்ளது';
+
+  @override
+  String get signInToMessage => 'செய்தி அனுப்ப உள்நுழையவும்';
+
+  @override
+  String get profileInactiveTitle => 'சுயவிவரம் செயலில் இல்லை';
+
+  @override
+  String get profileInactiveReactivatePrompt =>
+      'உங்கள் சுயவிவரம் செயலிழக்கப்பட்டுள்ளது. செய்திகள் அனுப்ப இப்போதே மீண்டும் செயல்படுத்தவா?';
+
+  @override
+  String get actionNotNow => 'இப்போது வேண்டாம்';
+
+  @override
+  String get actionReactivate => 'மீண்டும் செயல்படுத்து';
+
+  @override
+  String get profileReactivated => 'சுயவிவரம் மீண்டும் செயல்படுத்தப்பட்டது';
+
+  @override
+  String get profileReactivateFailed =>
+      'உங்கள் சுயவிவரத்தை மீண்டும் செயல்படுத்த முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get messagingDisabledInactive =>
+      'இந்தச் சுயவிவரம் செயலில் இல்லை. தற்போது செய்தி அனுப்ப இயலாது.';
+
+  @override
+  String get messagingDisabledBlocked =>
+      'தடுக்கப்பட்ட சுயவிவரங்களுக்குச் செய்தி அனுப்ப இயலாது';
+
+  @override
+  String get contactRequestSent => 'தொடர்புக் கோரிக்கை அனுப்பப்பட்டது';
+
+  @override
+  String get contactRequestFailed =>
+      'கோரிக்கையை அனுப்ப முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get acceptContactTitle => 'தொடர்புக் கோரிக்கையை ஏற்கவா?';
+
+  @override
+  String acceptContactBody(Object name) {
+    return '$name அவர்களுடன் தொடர்பு விவரங்களைப் பகிரவா?';
+  }
+
+  @override
+  String get commonNo => 'இல்லை';
+
+  @override
+  String get contactRequestAccepted => 'தொடர்புக் கோரிக்கை ஏற்கப்பட்டது';
+
+  @override
+  String get contactAcceptFailed =>
+      'கோரிக்கையை ஏற்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String interestSentTo(Object name) {
+    return '$name அவர்களுக்கு விருப்பம் அனுப்பப்பட்டது';
+  }
+
+  @override
+  String get interestSendFailed =>
+      'உங்கள் விருப்பத்தை அனுப்ப முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get shortlistRemoved => 'விருப்பப் பட்டியலிலிருந்து நீக்கப்பட்டது';
+
+  @override
+  String get shortlistAdded => 'விருப்பப் பட்டியலில் சேர்க்கப்பட்டது';
+
+  @override
+  String get shortlistFailed =>
+      'விருப்பப் பட்டியலைப் புதுப்பிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get contactDetailsTitle => 'தொடர்பு விவரங்கள்';
+
+  @override
+  String get contactNoPhone =>
+      'இந்த உறுப்பினர் இன்னும் தொலைபேசி எண்ணைச் சேர்க்கவில்லை.';
+
+  @override
+  String contactPhone(Object number) {
+    return 'தொலைபேசி: $number';
+  }
+
+  @override
+  String contactWhatsapp(Object number) {
+    return 'WhatsApp: $number';
+  }
+
+  @override
+  String get contactLimitUpgrade =>
+      'உங்கள் திட்டத்தின் தொடர்பு விவர வரம்பை எட்டிவிட்டீர்கள். மேலும் பார்க்க உங்கள் திட்டத்தை மேம்படுத்துங்கள்.';
+
+  @override
+  String get contactRevealFailed =>
+      'தொடர்பு விவரங்களைக் காட்ட முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String messageTo(Object name) {
+    return '$name அவர்களுக்குச் செய்தி';
+  }
+
+  @override
+  String get messageHintLong => 'உங்கள் செய்தியைத் தட்டச்சு செய்யவும்…';
+
+  @override
+  String get messageSent => 'செய்தி அனுப்பப்பட்டது';
+
+  @override
+  String get messageSendFailed =>
+      'உங்கள் செய்தியை அனுப்ப முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get blockProfileAction => 'சுயவிவரத்தைத் தடு';
+
+  @override
+  String get reportProfileAction => 'சுயவிவரத்தைப் புகாரளி';
+
+  @override
+  String get blockProfileTitle => 'சுயவிவரத்தைத் தடுக்கவா?';
+
+  @override
+  String blockProfileBody(Object name) {
+    return 'இனி $name அவர்களை நீங்கள் பார்க்க மாட்டீர்கள்; அவர்களாலும் உங்களைத் தொடர்புகொள்ள இயலாது.';
+  }
+
+  @override
+  String get profileBlocked => 'சுயவிவரம் தடுக்கப்பட்டது';
+
+  @override
+  String get blockFailed =>
+      'இந்தச் சுயவிவரத்தைத் தடுக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get actionBlock => 'தடு';
+
+  @override
+  String get reportProfileTitle => 'சுயவிவரத்தைப் புகாரளி';
+
+  @override
+  String get reportReason => 'காரணம்';
+
+  @override
+  String get reportDetails => 'விவரங்கள் (விருப்பத்தேர்வு)';
+
+  @override
+  String get reportSubmitted =>
+      'புகார் சமர்ப்பிக்கப்பட்டது. சமூகத்தைப் பாதுகாப்பாக வைக்க உதவியதற்கு நன்றி.';
+
+  @override
+  String get reportFailed =>
+      'உங்கள் புகாரைச் சமர்ப்பிக்க முடியவில்லை. மீண்டும் முயலவும்.';
+
+  @override
+  String get actionSubmit => 'சமர்ப்பி';
+
+  @override
+  String get similarEmpty => 'இதே போன்ற சுயவிவரங்கள் இதுவரை கிடைக்கவில்லை.';
+
+  @override
+  String get moreOptions => 'மேலும் விருப்பங்கள்';
+
+  @override
+  String get previousPhoto => 'முந்தைய புகைப்படம்';
+
+  @override
+  String get nextPhoto => 'அடுத்த புகைப்படம்';
+
+  @override
+  String photoCounter(int current, int total) {
+    return '$current/$total';
+  }
+
+  @override
+  String ageYearsOld(int age) {
+    return '$age வயது';
+  }
+
+  @override
+  String incomeLpa(String amount) {
+    return 'ஆண்டுக்கு ₹$amount லட்சம்';
+  }
+
+  @override
+  String weightKg(String weight) {
+    return '$weight கி.கி.';
+  }
+
+  @override
+  String ageRange(int min, int max) {
+    return '$min - $max வயது';
+  }
+
+  @override
+  String heightRangeCm(String min, String max) {
+    return '$min - $max செ.மீ.';
+  }
+
+  @override
+  String incomeRangeLpa(String min, String max) {
+    return 'ஆண்டுக்கு ₹$min - $max லட்சம்';
+  }
+
+  @override
+  String get noLimit => 'வரம்பு இல்லை';
+
+  @override
+  String ageCityShort(int age, String city) {
+    return '$age • $city';
+  }
 }

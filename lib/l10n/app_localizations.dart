@@ -1135,6 +1135,648 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Good compatibility based on your preferences'**
   String get whyMatchGeneral;
+
+  /// No description provided for @maintenanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Under maintenance'**
+  String get maintenanceTitle;
+
+  /// No description provided for @maintenanceDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We are making improvements. Please check back soon.'**
+  String get maintenanceDefaultMessage;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpTitle;
+
+  /// No description provided for @helpIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Need help with your account, a profile or a payment? Contact our support team.'**
+  String get helpIntro;
+
+  /// No description provided for @helpNoContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Support contacts are not available right now.'**
+  String get helpNoContacts;
+
+  /// No description provided for @helpEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get helpEmail;
+
+  /// No description provided for @helpPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get helpPhone;
+
+  /// No description provided for @helpWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get helpWhatsapp;
+
+  /// No description provided for @helpCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get helpCopy;
+
+  /// No description provided for @helpCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} copied'**
+  String helpCopied(Object label);
+
+  /// No description provided for @contactRevealUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact reveal is not available right now.'**
+  String get contactRevealUnavailable;
+
+  /// No description provided for @sectionBasicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic information'**
+  String get sectionBasicInfo;
+
+  /// No description provided for @sectionAboutMe.
+  ///
+  /// In en, this message translates to:
+  /// **'About me'**
+  String get sectionAboutMe;
+
+  /// No description provided for @sectionFamilyInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Family information'**
+  String get sectionFamilyInfo;
+
+  /// No description provided for @sectionPartnerPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner preferences'**
+  String get sectionPartnerPreferences;
+
+  /// No description provided for @sectionSimilarProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar profiles'**
+  String get sectionSimilarProfiles;
+
+  /// No description provided for @fieldReligion.
+  ///
+  /// In en, this message translates to:
+  /// **'Religion'**
+  String get fieldReligion;
+
+  /// No description provided for @fieldCaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Caste'**
+  String get fieldCaste;
+
+  /// No description provided for @fieldSubCaste.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-caste'**
+  String get fieldSubCaste;
+
+  /// No description provided for @fieldEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get fieldEducation;
+
+  /// No description provided for @fieldOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation'**
+  String get fieldOccupation;
+
+  /// No description provided for @fieldWorkingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Working location'**
+  String get fieldWorkingLocation;
+
+  /// No description provided for @fieldAnnualIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual income'**
+  String get fieldAnnualIncome;
+
+  /// No description provided for @fieldHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get fieldHeight;
+
+  /// No description provided for @fieldWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get fieldWeight;
+
+  /// No description provided for @fieldMaritalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Marital status'**
+  String get fieldMaritalStatus;
+
+  /// No description provided for @fieldLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get fieldLanguages;
+
+  /// No description provided for @fieldHobbies.
+  ///
+  /// In en, this message translates to:
+  /// **'Hobbies'**
+  String get fieldHobbies;
+
+  /// No description provided for @fieldFatherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s name'**
+  String get fieldFatherName;
+
+  /// No description provided for @fieldFatherOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Father\'s occupation'**
+  String get fieldFatherOccupation;
+
+  /// No description provided for @fieldMotherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s name'**
+  String get fieldMotherName;
+
+  /// No description provided for @fieldMotherOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother\'s occupation'**
+  String get fieldMotherOccupation;
+
+  /// No description provided for @fieldBrothers.
+  ///
+  /// In en, this message translates to:
+  /// **'Brothers'**
+  String get fieldBrothers;
+
+  /// No description provided for @fieldSisters.
+  ///
+  /// In en, this message translates to:
+  /// **'Sisters'**
+  String get fieldSisters;
+
+  /// No description provided for @fieldFamilyType.
+  ///
+  /// In en, this message translates to:
+  /// **'Family type'**
+  String get fieldFamilyType;
+
+  /// No description provided for @fieldFamilyValues.
+  ///
+  /// In en, this message translates to:
+  /// **'Family values'**
+  String get fieldFamilyValues;
+
+  /// No description provided for @fieldFamilyStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Family status'**
+  String get fieldFamilyStatus;
+
+  /// No description provided for @fieldPreferredAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred age'**
+  String get fieldPreferredAge;
+
+  /// No description provided for @fieldPreferredHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred height'**
+  String get fieldPreferredHeight;
+
+  /// No description provided for @fieldPreferredStates.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred states'**
+  String get fieldPreferredStates;
+
+  /// No description provided for @fieldPreferredCastes.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred castes'**
+  String get fieldPreferredCastes;
+
+  /// No description provided for @fieldPreferredEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred education'**
+  String get fieldPreferredEducation;
+
+  /// No description provided for @fieldPreferredOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred occupation'**
+  String get fieldPreferredOccupation;
+
+  /// No description provided for @fieldPreferredIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred income'**
+  String get fieldPreferredIncome;
+
+  /// No description provided for @fieldOtherPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Other preferences'**
+  String get fieldOtherPreferences;
+
+  /// No description provided for @actionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get actionMessage;
+
+  /// No description provided for @actionRevealContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal / request contact'**
+  String get actionRevealContact;
+
+  /// No description provided for @pleaseSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in first'**
+  String get pleaseSignIn;
+
+  /// No description provided for @blockedNoReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t view contact details of a blocked profile'**
+  String get blockedNoReveal;
+
+  /// No description provided for @contactRequestPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact request pending'**
+  String get contactRequestPending;
+
+  /// No description provided for @signInToMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in to send a message'**
+  String get signInToMessage;
+
+  /// No description provided for @profileInactiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile inactive'**
+  String get profileInactiveTitle;
+
+  /// No description provided for @profileInactiveReactivatePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is deactivated. Reactivate it now to send messages?'**
+  String get profileInactiveReactivatePrompt;
+
+  /// No description provided for @actionNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get actionNotNow;
+
+  /// No description provided for @actionReactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Reactivate'**
+  String get actionReactivate;
+
+  /// No description provided for @profileReactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile reactivated'**
+  String get profileReactivated;
+
+  /// No description provided for @profileReactivateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t reactivate your profile. Please try again.'**
+  String get profileReactivateFailed;
+
+  /// No description provided for @messagingDisabledInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'This profile is not active. Messaging is turned off for now.'**
+  String get messagingDisabledInactive;
+
+  /// No description provided for @messagingDisabledBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Messaging is turned off for blocked profiles'**
+  String get messagingDisabledBlocked;
+
+  /// No description provided for @contactRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact request sent'**
+  String get contactRequestSent;
+
+  /// No description provided for @contactRequestFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t send the request. Please try again.'**
+  String get contactRequestFailed;
+
+  /// No description provided for @acceptContactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept contact request?'**
+  String get acceptContactTitle;
+
+  /// No description provided for @acceptContactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Share contact details with {name}?'**
+  String acceptContactBody(Object name);
+
+  /// No description provided for @commonNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get commonNo;
+
+  /// No description provided for @contactRequestAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact request accepted'**
+  String get contactRequestAccepted;
+
+  /// No description provided for @contactAcceptFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t accept the request. Please try again.'**
+  String get contactAcceptFailed;
+
+  /// No description provided for @interestSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest sent to {name}'**
+  String interestSentTo(Object name);
+
+  /// No description provided for @interestSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t send your interest. Please try again.'**
+  String get interestSendFailed;
+
+  /// No description provided for @shortlistRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from shortlist'**
+  String get shortlistRemoved;
+
+  /// No description provided for @shortlistAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to shortlist'**
+  String get shortlistAdded;
+
+  /// No description provided for @shortlistFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t update your shortlist. Please try again.'**
+  String get shortlistFailed;
+
+  /// No description provided for @contactDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details'**
+  String get contactDetailsTitle;
+
+  /// No description provided for @contactNoPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This member has not added a phone number yet.'**
+  String get contactNoPhone;
+
+  /// No description provided for @contactPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone: {number}'**
+  String contactPhone(Object number);
+
+  /// No description provided for @contactWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp: {number}'**
+  String contactWhatsapp(Object number);
+
+  /// No description provided for @contactLimitUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve reached your plan\'s contact limit. Upgrade your plan to see more.'**
+  String get contactLimitUpgrade;
+
+  /// No description provided for @contactRevealFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t show the contact details. Please try again.'**
+  String get contactRevealFailed;
+
+  /// No description provided for @messageTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Message {name}'**
+  String messageTo(Object name);
+
+  /// No description provided for @messageHintLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your message…'**
+  String get messageHintLong;
+
+  /// No description provided for @messageSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Message sent'**
+  String get messageSent;
+
+  /// No description provided for @messageSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t send your message. Please try again.'**
+  String get messageSendFailed;
+
+  /// No description provided for @blockProfileAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Block profile'**
+  String get blockProfileAction;
+
+  /// No description provided for @reportProfileAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Report profile'**
+  String get reportProfileAction;
+
+  /// No description provided for @blockProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Block profile?'**
+  String get blockProfileTitle;
+
+  /// No description provided for @blockProfileBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You will no longer see {name}, and they won\'t be able to contact you.'**
+  String blockProfileBody(Object name);
+
+  /// No description provided for @profileBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile blocked'**
+  String get profileBlocked;
+
+  /// No description provided for @blockFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t block this profile. Please try again.'**
+  String get blockFailed;
+
+  /// No description provided for @actionBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get actionBlock;
+
+  /// No description provided for @reportProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report profile'**
+  String get reportProfileTitle;
+
+  /// No description provided for @reportReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reportReason;
+
+  /// No description provided for @reportDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details (optional)'**
+  String get reportDetails;
+
+  /// No description provided for @reportSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Report submitted. Thank you for helping keep the community safe.'**
+  String get reportSubmitted;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t submit your report. Please try again.'**
+  String get reportFailed;
+
+  /// No description provided for @actionSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get actionSubmit;
+
+  /// No description provided for @similarEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No similar profiles found yet.'**
+  String get similarEmpty;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @previousPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous photo'**
+  String get previousPhoto;
+
+  /// No description provided for @nextPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Next photo'**
+  String get nextPhoto;
+
+  /// No description provided for @photoCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{total}'**
+  String photoCounter(int current, int total);
+
+  /// No description provided for @ageYearsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} years old'**
+  String ageYearsOld(int age);
+
+  /// No description provided for @incomeLpa.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{amount} LPA'**
+  String incomeLpa(String amount);
+
+  /// No description provided for @weightKg.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg'**
+  String weightKg(String weight);
+
+  /// No description provided for @ageRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{min} - {max} years'**
+  String ageRange(int min, int max);
+
+  /// No description provided for @heightRangeCm.
+  ///
+  /// In en, this message translates to:
+  /// **'{min} - {max} cm'**
+  String heightRangeCm(String min, String max);
+
+  /// No description provided for @incomeRangeLpa.
+  ///
+  /// In en, this message translates to:
+  /// **'₹{min} - {max} LPA'**
+  String incomeRangeLpa(String min, String max);
+
+  /// No description provided for @noLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'No limit'**
+  String get noLimit;
+
+  /// No description provided for @ageCityShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} • {city}'**
+  String ageCityShort(int age, String city);
 }
 
 class _AppLocalizationsDelegate
