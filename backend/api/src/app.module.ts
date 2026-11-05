@@ -1,4 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
+import { AdminModule } from './admin/admin.module';
 import { SupabaseAuthGuard } from './auth/auth.guard';
 import { API_CONFIG, ApiConfig } from './config';
 import { ContactsController } from './contacts/contacts.controller';
@@ -11,6 +12,7 @@ export class AppModule {
   static forRoot(config: ApiConfig): DynamicModule {
     return {
       module: AppModule,
+      imports: [AdminModule.forRoot(config)],
       controllers: [HealthController, MeController, ContactsController],
       providers: [
         { provide: API_CONFIG, useValue: config },
