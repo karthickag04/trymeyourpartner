@@ -220,9 +220,8 @@ class MatrimonialUser {
       if (s is List && s.isNotEmpty) s = s.first;
       if (s is Map && s.isNotEmpty) s = (s.values).first;
       if (s is String) {
-        try {
-          return DateTime.parse(s);
-        } catch (_) {}
+        final parsed = DateTime.tryParse(s);
+        if (parsed != null) return parsed;
       }
       return DateTime.now();
     }

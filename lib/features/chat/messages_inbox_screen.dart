@@ -8,6 +8,7 @@ import '../../shared/widgets/storage_image.dart';
 import '../../l10n/formatters.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
+import '../../shared/errors/report_error.dart';
 
 class MessagesInboxScreen extends StatefulWidget {
   const MessagesInboxScreen({super.key});
@@ -338,7 +339,9 @@ Future<Map<String, _LiteProfile>> _enrichProfiles(List<String> ids) async {
       try {
         final p = await ps.getProfileByProfileId(id);
         if (p != null) out[id] = _LiteProfile(name: p.name, imageUrl: null);
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'messages_inbox_screen');
+      }
     }
     return out;
   }

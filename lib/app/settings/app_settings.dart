@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../shared/errors/report_error.dart';
 
 /// Where settings come from. The app reads the `app_settings` table; tests
 /// supply a fake.
@@ -76,7 +77,9 @@ class AppSettings extends ChangeNotifier with WidgetsBindingObserver {
         _values = Map<String, dynamic>.from(jsonDecode(raw) as Map);
         notifyListeners();
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'app_settings');
+    }
   }
 
   Map<String, dynamic> _map(String key) {

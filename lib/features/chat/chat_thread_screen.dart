@@ -14,6 +14,7 @@ import '../../shared/widgets/storage_image.dart';
 import '../../l10n/formatters.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
+import '../../shared/errors/report_error.dart';
 
 class ChatThreadScreen extends StatefulWidget {
   final String otherProfileId;
@@ -69,7 +70,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     try {
       _realtime.unsubscribe(_channel);
       _realtime.unsubscribe(_receiptChannel);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'chat_thread_screen');
+    }
     _channel = null;
     _receiptChannel = null;
     _presencePoll?.cancel();
@@ -188,7 +191,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
       final status = await _presence.getPresence(widget.otherProfileId);
       if (!mounted) return;
       setState(() => _presenceStatus = status);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'chat_thread_screen');
+    }
   }
 
   void _startTypingLoop() {
@@ -206,7 +211,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
         if (t != _otherTyping) {
           setState(() => _otherTyping = t);
         }
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'chat_thread_screen');
+      }
     });
   }
 
@@ -251,7 +258,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
         if (msg.id.isNotEmpty) _seenIds.add(msg.id);
       });
       _scrollToBottom();
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'chat_thread_screen');
+    }
   }
 
   void _onReceiptUpdate(Map<String, dynamic> row) {
@@ -280,7 +289,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
           );
         }
       });
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'chat_thread_screen');
+    }
   }
 
   void _scrollToBottom() {

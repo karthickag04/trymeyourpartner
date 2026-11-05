@@ -25,7 +25,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 3 |
-| P1 Foundation & restructure | 13 | 4 | 6 | 1 |
+| P1 Foundation & restructure | 14 | 4 | 5 | 1 |
 | P2 Roles, admin console, moderation | 4 | 2 | 8 | 0 |
 | P3 Trust & safety | 0 | 0 | 9 | 0 |
 | P4 Plans & payments | 0 | 0 | 8 | 0 |
@@ -34,7 +34,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P7 Scale & growth | 0 | 0 | 8 | 0 |
 
 **Status:** Phase 0 done (3 owner steps left); Phase 1 mostly done; Phase 2 part 1 merged and live. CI green.
-**Next up (in order):** (1) P1-22 no silent failures, P1-21 security hygiene; (2) deploy the API (P1-11), then P2-08 app data via the API feature by feature with P1-06 Riverpod alongside; (3) P0-08 staging project and P1-23 browser tests in CI; (4) P2-04 moderation, P2-05 verification, then P3-01, P3-07, P3-08 (launch gate); (5) P2-11–P2-13 portability ([ADR 0001](adr/0001-vendor-portability.md)) and the rest of the tracker.
+**Next up (in order):** (1) P1-21 security hygiene; (2) deploy the API (P1-11), then P2-08 app data via the API feature by feature with P1-06 Riverpod alongside; (3) P0-08 staging project and P1-23 browser tests in CI; (4) P2-04 moderation, P2-05 verification, then P3-01, P3-07, P3-08 (launch gate); (5) P2-11–P2-13 portability ([ADR 0001](adr/0001-vendor-portability.md)) and the rest of the tracker.
 **Launch gate:** the 7 conditions in roadmap §14.4 (verification, matrimony-site rules, moderation SLAs, support and refunds, monitoring and backups, store pipeline, test data removed).
 **Owner steps:** choose where the API runs (Singapore region, next to the database); set the `api_service` password and the API's `DATABASE_URL`; enable the access-token hook; create the first two system_admin accounts; migrate to asymmetric JWT keys; separate production project before launch.
 
@@ -78,7 +78,7 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P1-19 | Store releases through CI: iOS build alongside Android; signed builds; staged rollout (5 % → 100 %); crash-free ≥ 99.5 % before widening | ⬜ | — | Roadmap §14.3 |
 | P1-20 | Reliability: targets (API 99.9 %, p95 < 500 ms), uptime checks and alerts, public status page, incident runbook | ⬜ | — | Roadmap §14.3 |
 | P1-21 | Security hygiene: dependency and secret scanning in CI; fixed `search_path` on the 10 flagged functions; members cannot execute trigger/internal functions; drop unused GraphQL exposure and the 3 empty public buckets | ⬜ | — | Supabase advisor 2026-11-05; roadmap §14.3 |
-| P1-22 | No silent failures: the 55 `catch (_) {}` blocks in the app (14 in `matrimonial_provider.dart`, 13 in `matrimonial_service.dart`, 7 on the home screen …) either handle the error or report it; save paths (qualifications, registration extras, contact info) always tell the member when something was not saved | ⬜ | — | Same class as the caste bug (Bugs table); a CI check stops new empty catches |
+| P1-22 | No silent failures: all 55 empty `catch` blocks fixed. Save paths report and rethrow, so the member sees "couldn't save" (qualifications, registration extras); a qualification type that cannot be matched stops the save instead of being dropped; caste/state/district lookups pass network errors on instead of reporting "not found"; 49 best-effort sites (presence, unread counts, remembered filters, closing channels …) report through `reportError` (`lib/shared/errors/report_error.dart`, the hook for Sentry in P1-10); date parsing uses `tryParse`. CI: `tool/check_silent_catches.sh` (app + admin console) | ✅ | this commit | 0 empty catches left; the check fails on a probe file with `catch (_) {}` and `catch (e, st) { }`; 1 new test (errors reach the sink); 112/112 app tests, analyze clean, format, vendor guards, web build. Phone: cold launch to home, 0 reported errors in the first 30 s |
 | P1-23 | Browser tests (`e2e/`) in CI against dedicated test accounts on the test/staging project, passwords as CI secrets; add the onboarding flows (new member → registration; complete member → home on every launch; incomplete → pre-filled form) | ⬜ | — | Would have caught the registration loop; needs P0-08 |
 
 ## Phase 2: Roles, admin console and moderation
@@ -165,6 +165,13 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P7-06 | White-label / multi-tenant readiness | ⬜ | — | |
 | P7-07 | Pen-test, DPDP audit, disaster-recovery drills | ⬜ | — | |
 | P7-08 | Acquisition: community and city pages for search engines (no member data without consent), referral rewards, attribution, app-store listing | ⬜ | — | Roadmap §14.3 |
+
+## Open bugs
+
+| Bug | Seen | Notes |
+|---|---|---|
+| Home: in Tamil the "Viewed you" section title (உங்களைப் பார்த்தவர்கள்) and its "See all" link overflow the row by 15–26 px | 2026-11-05, Redmi Note 8 Pro, dark theme | Section headers need the title to wrap or shrink; check every home section in Tamil |
+| Profile cards show "Not specified" in English when the app is in Tamil | 2026-11-05, same device | A hard-coded string missed by P1-13 |
 
 ## Bugs found and fixed along the way
 

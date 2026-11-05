@@ -4,6 +4,7 @@ import '../models/matrimonial_user.dart';
 import '../models/location_data.dart';
 import '../models/caste_data.dart' as models;
 import 'lookup_ids.dart';
+import '../errors/report_error.dart';
 
 /// See [MatrimonialService.getRegistrationExtras].
 class RegistrationExtras {
@@ -75,8 +76,9 @@ class MatrimonialService {
           .eq('name', name)
           .maybeSingle();
       return row == null ? null : row['id'] as String?;
-    } catch (_) {
-      return null;
+    } catch (e, st) {
+      reportError(e, st, where: '_resolveQualificationTypeIdByName');
+      rethrow;
     }
   }
 
@@ -98,8 +100,12 @@ class MatrimonialService {
       for (final e in entries) {
         final typeName = (e['type'] ?? '').trim();
         if (typeName.isEmpty) continue;
-        final typeId = await _resolveQualificationTypeIdByName(typeName);
-        if (typeId == null) continue;
+        // A chosen qualification that cannot be matched stops the save.
+        final typeId = requireLookupId(
+          'qualification',
+          typeName,
+          await _resolveQualificationTypeIdByName(typeName),
+        )!;
         payload.add({
           'profile_id': profileId,
           'type_id': typeId,
@@ -109,7 +115,10 @@ class MatrimonialService {
       if (payload.isNotEmpty) {
         await _supabase.from('profile_qualifications').insert(payload);
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'setProfileQualifications');
+      rethrow;
+    }
   }
 
   static Future<void> updateRegistrationExtras(
@@ -132,7 +141,10 @@ class MatrimonialService {
           .from('matrimonial_profiles')
           .update(data)
           .eq('id', profileId);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'updateRegistrationExtras');
+      rethrow;
+    }
   }
 
   // Get current user's matrimonial profile (without auto-assignment)
@@ -601,7 +613,10 @@ class MatrimonialService {
         _stateIdCache[stateName] = res['id'] as String;
         return _stateIdCache[stateName];
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: '_resolveStateIdByName');
+      rethrow;
+    }
     return null;
   }
 
@@ -629,7 +644,10 @@ class MatrimonialService {
         _districtIdCache[key] = res['id'] as String;
         return _districtIdCache[key];
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: '_resolveDistrictIdByName');
+      rethrow;
+    }
     return null;
   }
 
@@ -654,7 +672,10 @@ class MatrimonialService {
         _casteIdCache[key] = id;
         return id;
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: '_resolveCasteIdByName');
+      rethrow;
+    }
     return null;
   }
 
@@ -1160,7 +1181,9 @@ class MatrimonialService {
           // Already present; treat as success (idempotent)
           return true;
         }
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
 
       await _supabase.from('profile_interactions').insert({
         'from_profile_id': currentProfile.id,
@@ -1210,7 +1233,9 @@ class MatrimonialService {
         debugPrint(
           '⭐ toggleShortlist auth=${currentUser.id} myProfile=${currentProfile.id} target=$profileId',
         );
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
 
       // Pre-insert diagnostic: verify RLS precondition exists in DB
       try {
@@ -1223,7 +1248,9 @@ class MatrimonialService {
         debugPrint(
           '⭐ RLS precheck for shortlist: ${precheck != null ? 'OK' : 'MISSING'} (id=${currentProfile.id})',
         );
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
 
       final existing = await _supabase
           .from('shortlisted_profiles')
@@ -1298,7 +1325,9 @@ class MatrimonialService {
         debugPrint(
           '👁️ RLS precheck for view: ${precheck != null ? 'OK' : 'MISSING'} (viewer=${currentProfile.id})',
         );
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
 
       final existing = await _supabase
           .from('profile_views')
@@ -1364,7 +1393,9 @@ class MatrimonialService {
                 'insert_or_increment_view',
                 params: {'target_profile_id': profileId},
               );
-            } catch (_) {}
+            } catch (e, st) {
+              reportError(e, st, where: 'matrimonial_service');
+            }
           } else {
             rethrow;
           }
@@ -1851,13 +1882,19 @@ class MatrimonialService {
       // Upsert related tables with minimal rows to simplify editing flows
       try {
         await _supabase.from('contact_info').insert({'profile_id': pid});
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
       try {
         await _supabase.from('family_info').insert({'profile_id': pid});
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
       try {
         await _supabase.from('partner_preferences').insert({'profile_id': pid});
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_service');
+      }
 
       return true;
     } catch (e) {

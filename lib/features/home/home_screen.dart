@@ -20,6 +20,7 @@ import '../../l10n/formatters.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
 import '../../shared/widgets/count_badge.dart';
+import '../../shared/errors/report_error.dart';
 // no direct model import needed here
 
 class NewMatrimonialHomeScreen extends StatefulWidget {
@@ -544,7 +545,9 @@ class _NotificationsButtonState extends State<_NotificationsButton> {
           pendingContacts = received
               .where((r) => r.status == ContactRequestStatus.pending)
               .length;
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'home_screen');
+        }
       }
       if (!mounted) return;
       setState(() => _combined = interests + accepted + pendingContacts);
@@ -570,14 +573,18 @@ class _NotificationsButtonState extends State<_NotificationsButton> {
       final v = prefs.getInt(key) ?? 0;
       if (!mounted) return;
       setState(() => _lastSeenCombined = v);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'home_screen');
+    }
   }
 
   Future<void> _saveSeenBaseline(String profileId, int value) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(_prefsKey(profileId), value);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'home_screen');
+    }
   }
 
   String _prefsKey(String profileId) => 'notif_last_seen_combined_$profileId';
@@ -654,7 +661,9 @@ class _MessagesButtonState extends State<_MessagesButton> {
       if (_sub != null) {
         try {
           sl.realtimeService.unsubscribe(_sub);
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'home_screen');
+        }
         _sub = null;
       }
       _lastProfileId = currentId;
@@ -678,10 +687,14 @@ class _MessagesButtonState extends State<_MessagesButton> {
           try {
             final newCnt = await sl.messageService.getUnreadCount(my);
             if (mounted) setState(() => _unread = newCnt);
-          } catch (_) {}
+          } catch (e, st) {
+            reportError(e, st, where: 'home_screen');
+          }
         },
       );
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'home_screen');
+    }
   }
 
   @override
@@ -689,7 +702,9 @@ class _MessagesButtonState extends State<_MessagesButton> {
     if (_sub != null) {
       try {
         sl.realtimeService.unsubscribe(_sub);
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'home_screen');
+      }
       _sub = null;
     }
     super.dispose();

@@ -9,6 +9,7 @@ import '../../shared/theme/constants.dart';
 import '../profile/widgets/profile_card_horizontal.dart';
 import '../profile/profile_edit_screen.dart';
 import 'search_screen.dart';
+import '../../shared/errors/report_error.dart';
 
 class MatchesScreen extends StatefulWidget {
   const MatchesScreen({super.key, this.initialTabIndex});
@@ -90,7 +91,9 @@ class _MatchesScreenState extends State<MatchesScreen>
         await provider.loadAcceptedConnections(userId);
         setState(() => _loadedAccepted = true);
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matches_screen');
+    }
   }
 
   @override

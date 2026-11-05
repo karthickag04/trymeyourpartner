@@ -16,6 +16,7 @@ import '../../shared/models/saved_search.dart';
 import '../interests/requests_inbox_screen.dart';
 import '../../shared/models/contact_request.dart';
 import '../../shared/widgets/storage_image.dart';
+import '../../shared/errors/report_error.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({
@@ -124,7 +125,9 @@ class _SearchScreenState extends State<SearchScreen> {
     if (_providerListener != null) {
       try {
         _providerForListener?.removeListener(_providerListener!);
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'search_screen');
+      }
     }
     super.dispose();
   }
@@ -1468,7 +1471,9 @@ class _SearchScreenState extends State<SearchScreen> {
       final list = await sl.savedSearchService.list(my.id);
       if (!mounted) return;
       setState(() => _savedSearches = list);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'search_screen');
+    }
   }
 
   Future<void> _promptAndSaveCurrentSearch() async {

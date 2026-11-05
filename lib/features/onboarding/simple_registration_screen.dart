@@ -11,6 +11,7 @@ import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/services/matrimonial_service.dart';
 import '../../shared/theme/constants.dart';
 import 'registration_prefill.dart';
+import '../../shared/errors/report_error.dart';
 
 class SimpleRegistrationScreen extends StatefulWidget {
   const SimpleRegistrationScreen({super.key});
@@ -159,7 +160,9 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
     // Ensure provider has loaded districts for this state (populates cache)
     try {
       await p.prefetchLookups(stateId: st.id);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'simple_registration_screen');
+    }
     final districts = p.districtsFor(st.id);
     if (!mounted) return;
     setState(() {

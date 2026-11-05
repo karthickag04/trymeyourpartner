@@ -45,6 +45,7 @@ Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
    tool/check_vendor_imports.sh        # app: Supabase only in lib/data/supabase/
    tool/check_api_vendor.sh            # API: Supabase only in src/supabase/
    tool/check_sql_vendor.sh            # migrations: Supabase objects only in marked blocks
+   tool/check_silent_catches.sh        # no empty catch blocks: report (reportError) or rethrow
    flutter analyze            # must report: No issues found!
    flutter test
    flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
@@ -105,6 +106,7 @@ CI (app, Android, database, API, admin console) is green.
 
 - **API on plain PostgreSQL (P2-10):** the API connects as `api_service` and runs each request as the member, so row-level security applies; end-to-end tests run in CI.
 - **Vendor guards (P2-14):** CI blocks new Supabase-specific code in the app, API and migrations.
+- **No silent failures (P1-22):** no empty `catch` blocks (CI check); save errors reach the member, recovered errors go through `reportError`.
 - **Onboarding fixes (2026-11-05):** duplicate castes merged (live), caste saves reliably; registration only for new or incomplete members, pre-filled with saved details; a failed load shows a retry, never an empty form.
 - **No decorative Profile items (P1-18):** Interests/Matches shortcuts work, Change password, About dialog; Upgrade and Notification settings hidden.
 - **Themes and languages (P1-07, P1-13, merged from PR #2):**
@@ -118,8 +120,8 @@ CI (app, Android, database, API, admin console) is green.
 
 **Next (in order):**
 1. Quick safety fixes:
-   - P1-22 no silent failures (55 empty `catch` blocks; save paths first)
    - P1-21 security hygiene (Supabase advisor warnings, dependency and secret scanning)
+   - the two open Tamil UI bugs in the tracker (home section titles overflow, "Not specified" untranslated)
 2. Put the API to work:
    - deploy it (P1-11; owner picks the host and sets the `api_service` password)
    - P2-08 move app data access to the API, feature by feature, doing P1-06 Riverpod for each feature as it moves

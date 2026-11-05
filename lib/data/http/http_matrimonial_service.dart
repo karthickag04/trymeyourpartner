@@ -3,6 +3,7 @@ import '../../shared/models/matrimonial_user.dart';
 import '../../shared/models/location_data.dart';
 import '../../shared/models/caste_data.dart' as caste_model;
 import 'http_client.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpMatrimonialDomainService implements MatrimonialDomainService {
   final ApiClient api;
@@ -123,7 +124,9 @@ class HttpMatrimonialDomainService implements MatrimonialDomainService {
           data.map((k, v) => MapEntry(k.toString(), v)),
         );
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'http_matrimonial_service');
+    }
     return null;
   }
 

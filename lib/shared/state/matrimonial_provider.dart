@@ -10,6 +10,7 @@ import '../../app/di/service_locator.dart';
 import '../../core/services/matrimonial_domain_service.dart';
 import '../../core/services/realtime_service.dart';
 import '../../core/services/presence_service.dart';
+import '../errors/report_error.dart';
 
 class MatrimonialProvider with ChangeNotifier {
   final MatrimonialDomainService _svc = sl.matrimonialService;
@@ -156,7 +157,9 @@ class MatrimonialProvider with ChangeNotifier {
       if (r != null) {
         _lastReceivedRequestAt = DateTime.fromMillisecondsSinceEpoch(r);
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   Future<void> _persistLastLoadTimestamp({
@@ -170,7 +173,9 @@ class MatrimonialProvider with ChangeNotifier {
         _tsKey(category, profileId),
         at.millisecondsSinceEpoch,
       );
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   // Lookup getters
@@ -266,7 +271,9 @@ class MatrimonialProvider with ChangeNotifier {
         _occupationsCache = await _svc.getOccupations();
       }
       notifyListeners();
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   // Check if data needs to be loaded for a different user
@@ -837,7 +844,9 @@ class MatrimonialProvider with ChangeNotifier {
         lastSearchRecentlyActive ?? false,
       );
       await prefs.setString('lastSearchSortBy', lastSearchSortBy ?? 'active');
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   Future<void> _restoreLastSearchFromStorage() async {
@@ -874,7 +883,9 @@ class MatrimonialProvider with ChangeNotifier {
       lastSearchOnlineNow = readBool('lastSearchOnlineNow');
       lastSearchRecentlyActive = readBool('lastSearchRecentlyActive');
       lastSearchSortBy = _emptyToNull(readStr('lastSearchSortBy')) ?? 'active';
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   Future<void> _persistClearLastSearch() async {
@@ -899,7 +910,9 @@ class MatrimonialProvider with ChangeNotifier {
       await prefs.remove('lastSearchOnlineNow');
       await prefs.remove('lastSearchRecentlyActive');
       await prefs.remove('lastSearchSortBy');
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'matrimonial_provider');
+    }
   }
 
   String? _emptyToNull(String? v) => (v == null || v.isEmpty) ? null : v;
@@ -918,7 +931,9 @@ class MatrimonialProvider with ChangeNotifier {
           // ignore: unawaited_futures
           loadSentInterests(authUserId);
         }
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_provider');
+      }
       // Update local state if needed
       notifyListeners();
     } catch (e) {
@@ -1000,7 +1015,9 @@ class MatrimonialProvider with ChangeNotifier {
           if (authUserId != null) {
             await loadShortlistedProfiles(authUserId);
           }
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       }
 
       notifyListeners();
@@ -1238,7 +1255,9 @@ class MatrimonialProvider with ChangeNotifier {
             _pendingRealtimeToast = 'You have a new interest';
             notifyListeners();
           }
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       },
       onUpdateToMe: (row) async {
         try {
@@ -1250,7 +1269,9 @@ class MatrimonialProvider with ChangeNotifier {
             _pendingRealtimeToast = 'Interests updated';
             notifyListeners();
           }
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       },
       onUpdateFromMe: (row) async {
         try {
@@ -1262,14 +1283,18 @@ class MatrimonialProvider with ChangeNotifier {
             }
             notifyListeners();
           }
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       },
       onDeleteToMe: (row) async {
         try {
           await loadReceivedInterests(authUserId);
           _pendingRealtimeToast = 'An interest was withdrawn';
           notifyListeners();
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       },
     );
 
@@ -1287,7 +1312,9 @@ class MatrimonialProvider with ChangeNotifier {
             loadReceivedInterests(authUserId),
             loadAcceptedConnections(authUserId),
           ]);
-        } catch (_) {}
+        } catch (e, st) {
+          reportError(e, st, where: 'matrimonial_provider');
+        }
       });
     }
   }
@@ -1296,7 +1323,9 @@ class MatrimonialProvider with ChangeNotifier {
     if (_interactionsChannel != null) {
       try {
         _rt.unsubscribe(_interactionsChannel);
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'matrimonial_provider');
+      }
       _interactionsChannel = null;
       _interactionsSubscribedProfileId = null;
     }

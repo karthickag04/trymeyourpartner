@@ -6,6 +6,7 @@ import '../../../l10n/formatters.dart';
 import '../../../l10n/l10n.dart';
 import '../../../shared/models/presence_status.dart';
 import '../../../shared/theme/constants.dart';
+import '../../../shared/errors/report_error.dart';
 
 class PresenceIndicator extends StatefulWidget {
   final String profileId;
@@ -55,7 +56,9 @@ class _PresenceIndicatorState extends State<PresenceIndicator> {
       final s = await _presence.getPresence(widget.profileId);
       if (!mounted) return;
       setState(() => _status = s);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'presence_indicator');
+    }
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/services/auth_service.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpAuthService implements AuthService {
   final String baseUrl;
@@ -203,7 +204,9 @@ class HttpAuthService implements AuthService {
         headers: _jsonHeaders(),
         body: jsonEncode({'refreshToken': _refreshToken}),
       );
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'http_auth_service');
+    }
     _accessToken = null;
     _refreshToken = null;
     _userId = null;

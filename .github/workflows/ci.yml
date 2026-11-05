@@ -32,6 +32,9 @@ jobs:
       - name: Vendor portability check (docs/adr/0001)
         run: tool/check_vendor_imports.sh
 
+      - name: No empty catch blocks (P1-22)
+        run: tool/check_silent_catches.sh
+
       - name: Analyze
         run: flutter analyze
 

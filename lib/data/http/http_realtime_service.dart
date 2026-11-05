@@ -1,6 +1,7 @@
 import 'dart:async';
 import '../../core/services/realtime_service.dart';
 import 'http_client.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpRealtimeService implements RealtimeService {
   final ApiClient _api;
@@ -113,7 +114,9 @@ class _NotificationsPollHandle extends _BasePollHandle {
       for (final r in rows) {
         if (!seen.contains(r['id']?.toString())) await onInsert!(r);
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'http_realtime_service');
+    }
   }
 }
 

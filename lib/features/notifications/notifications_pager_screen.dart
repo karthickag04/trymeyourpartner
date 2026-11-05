@@ -13,6 +13,7 @@ import '../../l10n/formatters.dart';
 import '../../l10n/l10n.dart';
 import '../../shared/theme/constants.dart';
 import '../../shared/widgets/count_badge.dart';
+import '../../shared/errors/report_error.dart';
 
 class NotificationsPagerScreen extends StatefulWidget {
   final int initialIndex; // 0: Accepted, 1: Interests, 2: Contact Requests
@@ -175,7 +176,9 @@ class _NotificationsPagerScreenState extends State<NotificationsPagerScreen>
       _seenAccepted = prefs.getInt(_key('accepted')) ?? 0;
       _seenInterests = prefs.getInt(_key('interests')) ?? 0;
       _seenContacts = prefs.getInt(_key('contacts')) ?? 0;
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'notifications_pager_screen');
+    }
   }
 
   Future<void> _saveSeenBaselines() async {
@@ -185,7 +188,9 @@ class _NotificationsPagerScreenState extends State<NotificationsPagerScreen>
       await prefs.setInt(_key('accepted'), _seenAccepted);
       await prefs.setInt(_key('interests'), _seenInterests);
       await prefs.setInt(_key('contacts'), _seenContacts);
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'notifications_pager_screen');
+    }
   }
 
   void _markCurrentTabSeen() {
