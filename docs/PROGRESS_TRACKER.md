@@ -10,12 +10,22 @@ Every item comes from the phased plan in
 
 Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 needs the owner
 
+## Work tracks (running in parallel)
+
+| Track | Owner | Branch | Scope |
+|---|---|---|---|
+| A | Coordinator (main session) | `claude/tender-volta-6ujx4z` | P1-12 unified settings, database migrations (only this track applies them to the live project), CI, Android build, reviewing and merging tracks B and C, this tracker |
+| B | Agent: UI foundation | `claude/ui-foundation` | P1-07 design tokens + light/dark/system themes, P1-13 i18n (English + Tamil) |
+| C | Agent: admin console | `claude/admin-console` | Phase 2: org and roles tables, admin console app, staff sign-in with MFA, admin API |
+
+Tracks B and C start from track A's branch; the coordinator merges them back after review and tests.
+
 ## Summary
 
 | Phase | Done | Partly | Not started | Needs owner |
 |---|---|---|---|---|
 | P0 Stop the bleeding | 7 | 0 | 0 | 2 |
-| P1 Foundation & restructure | 7 | 2 | 2 | 0 |
+| P1 Foundation & restructure | 7 | 3 | 3 | 0 |
 | P2 Roles, admin console, moderation | 0 | 0 | 7 | 0 |
 | P3 Trust & safety | 0 | 0 | 6 | 0 |
 | P4 Plans & payments | 0 | 0 | 7 | 0 |
@@ -23,8 +33,8 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P6 Assisted service, branches, agents | 0 | 0 | 6 | 0 |
 | P7 Scale & growth | 0 | 0 | 7 | 0 |
 
-**Now working on:** P1-10 Android build in CI (job added; first run pending).
-**Next up:** P1-07 design tokens and dark theme, P1-06 Riverpod, P1-11 generated Dart client.
+**Now working on:** Track A: P1-12 unified settings; P1-10 Android CI fix. Track B: P1-07 + P1-13. Track C: Phase 2.
+**Next up (track A):** P1-06 Riverpod (after track B lands, to avoid editing the same screens at once), P1-11 generated Dart client.
 
 ## Phase 0: Stop the bleeding
 
@@ -50,22 +60,24 @@ Status: ✅ done · 🟡 in progress or partly done · ⬜ not started · 🙋 n
 | P1-04 | `go_router`: URL per tab, shareable `/p/<code>` profile links, sign-in redirect back to the link | ✅ | `fa24b94` | Browser: link while signed out → `/login?from=/p/…` → profile after sign-in; tab URLs; back button |
 | P1-05 | Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`) | ✅ | `92e2736` | Analyze, tests, build and browser flows unchanged |
 | P1-06 | Begin the Riverpod migration (auth, profile first) | ⬜ | — | |
-| P1-07 | Design-system tokens, real dark theme, accessibility pass | ⬜ | — | |
+| P1-07 | Design-system tokens, light/dark/system themes with per-user choice, accessibility pass | ⬜ | — | Track B |
 | P1-08 | CI: format, analyze, test, web build; database job (migrations twice + access rules) | ✅ | `b770248` | GitHub Actions runs 1–3 green |
 | P1-09 | Browser end-to-end tests (`e2e/`) | ✅ | `4ea8cb2`, `fa24b94` | Contact request → accept → reveal; routing; profile tab |
 | P1-10 | CI: Android build; Sentry; more unit and widget tests | 🟡 | `fa24b94`, `5362a2f` | Widget tests for splash and signed-out → sign-in added. Android debug APK job added; first run failed because the runner lacks the pinned NDK and its licence (fix: accept licences and install the NDK in CI, *this commit*). Sentry not yet. |
+| P1-12 | Unified settings: build config, admin-controlled `app_settings` (feature flags, quotas, support contacts, maintenance mode, minimum version), user preferences; one `AppSettings` service | 🟡 | — | Track A |
+| P1-13 | i18n: all user-visible strings in ARB files; English + Tamil; language switcher in onboarding and Settings; Tamil fonts; locale-aware dates/numbers | ⬜ | — | Track B |
 | P1-11 | Backend API skeleton (NestJS): Supabase token auth, OpenAPI, `/health`, `/v1/me`, contact reveal; generated Dart client; deployment | 🟡 | `2970891` | 12/12 API tests; live run against the test project with a real member token. Generated Dart client and deployment not yet. |
 
 ## Phase 2: Roles, admin console and moderation
 
 | ID | Item | Status | Commit | How it was verified |
 |---|---|---|---|---|
-| P2-01 | Org tables (`branches`, `teams`, `staff_accounts`, `agents`, `role_permissions`, `audit_log`); custom JWT claims | ⬜ | — | |
-| P2-02 | Admin console (Flutter Web): MFA login, role-aware navigation, Member 360, staff management | ⬜ | — | |
-| P2-03 | Seed roles `system_admin` … `agent`; permission editor for `system_admin` | ⬜ | — | |
+| P2-01 | Org tables (`branches`, `teams`, `staff_accounts`, `agents`, `role_permissions`, `audit_log`); custom JWT claims | ⬜ | — | Track C |
+| P2-02 | Admin console (Flutter Web): MFA login, role-aware navigation, Member 360, staff management | ⬜ | — | Track C |
+| P2-03 | Seed roles `system_admin` … `agent`; permission editor for `system_admin` | ⬜ | — | Track C |
 | P2-04 | Moderation queues: reports, profiles, photos; actions with reasons | ⬜ | — | |
 | P2-05 | Verification queue with maker–checker | ⬜ | — | |
-| P2-06 | Admin API (`/admin/v1`) with scope checks; PII views audited | ⬜ | — | |
+| P2-06 | Admin API (`/admin/v1`) with scope checks; PII views audited | ⬜ | — | Track C |
 | P2-07 | Master data management (castes, locations, qualifications, occupations) | ⬜ | — | |
 
 ## Phase 3: Trust & safety for members
