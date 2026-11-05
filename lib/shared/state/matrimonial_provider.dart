@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/matrimonial_user.dart';
 import '../models/location_data.dart';
 import '../models/caste_data.dart' as caste_model;
+import '../models/profile_requirements.dart';
+import 'profile_load_state.dart';
 import '../../app/di/service_locator.dart';
 import '../../core/services/matrimonial_domain_service.dart';
 import '../../core/services/realtime_service.dart';
@@ -117,6 +119,12 @@ class MatrimonialProvider with ChangeNotifier {
 
   MatrimonialUser? get currentUserProfile => _currentUserProfile;
 
+  ProfileLoadState _profileLoadState = ProfileLoadState.notLoaded;
+
+  /// Whether [currentUserProfile] is known. Null with [ProfileLoadState.loaded]
+  /// means "no profile yet"; with any other state it means "not known".
+  ProfileLoadState get profileLoadState => _profileLoadState;
+
   bool get isLoading => _isLoading;
   String get error => _error;
   bool get isInitialized => _isInitialized;
@@ -175,20 +183,8 @@ class MatrimonialProvider with ChangeNotifier {
   List<String> get occupations => _occupationsCache;
 
   // Mandatory fields required for enabling matches/search
-  bool isMandatoryComplete(MatrimonialUser profile) {
-    bool _has(String? s) => s != null && s.trim().isNotEmpty;
-    final now = DateTime.now();
-    final minDob = DateTime(now.year - 18, now.month, now.day);
-
-    final hasValidDob = profile.dateOfBirth.isBefore(minDob);
-
-    return _has(profile.religion) &&
-        _has(profile.caste) &&
-        _has(profile.state) &&
-        _has(profile.district) &&
-        _has(profile.education) &&
-        hasValidDob;
-  }
+  bool isMandatoryComplete(MatrimonialUser profile) =>
+      hasMandatoryProfileFields(profile);
 
   // Approximate completion percentage used for UI nudges
   int completionPercent(MatrimonialUser profile) {
@@ -392,6 +388,7 @@ class MatrimonialProvider with ChangeNotifier {
     _acceptedConnections.clear();
     _searchResults.clear();
     _currentUserProfile = null;
+    _profileLoadState = ProfileLoadState.notLoaded;
     _lastLoadedUserId = null;
     _lastDataLoadTime = null; // Clear load time
     _error = '';
@@ -425,13 +422,14 @@ class MatrimonialProvider with ChangeNotifier {
     try {
       _setLoading(true);
       _setError('');
+      _profileLoadState = ProfileLoadState.loading;
+      notifyListeners();
 
       // Ensure service is initialized
       await initialize();
 
-      // debugPrint('[MatrimonialProvider] load profile for $authUserId');
-
-      _currentUserProfile = await _svc.getCurrentUserProfile(authUserId);
+      _currentUserProfile = await _svc.loadOwnProfile(authUserId);
+      _profileLoadState = ProfileLoadState.loaded;
 
       if (_currentUserProfile != null) {
         // debugPrint('[MatrimonialProvider] profile found: ${_currentUserProfile!.name}');
@@ -451,8 +449,11 @@ class MatrimonialProvider with ChangeNotifier {
         _restoreLastLoadTimestamps(pid);
       }
     } catch (e) {
+      // Not "no profile": keep what we had and let the gate offer a retry.
+      _profileLoadState = ProfileLoadState.failed;
       _setError('Failed to load profile: $e');
       debugPrint('❌ Error loading profile: $e');
+      notifyListeners();
     } finally {
       _setLoading(false);
     }
@@ -1071,7 +1072,17 @@ class MatrimonialProvider with ChangeNotifier {
         saveFamily: saveFamily,
         savePartner: savePartner,
       );
-      _currentUserProfile = withCompletion;
+      // Show what the database now holds, not what the form sent: a value that
+      // was not stored (e.g. caste) must not look saved until the next launch.
+      final authId = await sl.authService.currentUserId();
+      try {
+        _currentUserProfile = authId == null
+            ? withCompletion
+            : (await _svc.loadOwnProfile(authId)) ?? withCompletion;
+        _profileLoadState = ProfileLoadState.loaded;
+      } catch (_) {
+        _currentUserProfile = withCompletion;
+      }
       // Immediately notify listeners so parent widgets (e.g., ProfileCompletionGate)
       // can react to the updated profile and perform routing if the profile
       // became mandatory-complete. This avoids a timing window where the

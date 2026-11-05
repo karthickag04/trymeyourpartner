@@ -5,6 +5,19 @@ import '../models/location_data.dart';
 import '../models/caste_data.dart' as models;
 import 'lookup_ids.dart';
 
+/// See [MatrimonialService.getRegistrationExtras].
+class RegistrationExtras {
+  const RegistrationExtras({
+    this.createdBy,
+    this.workStatus,
+    this.qualifications = const [],
+  });
+
+  final String? createdBy;
+  final String? workStatus;
+  final List<Map<String, String>> qualifications;
+}
+
 class MatrimonialService {
   // Lazily access the Supabase client to avoid early initialization issues
   static SupabaseClient get _supabase => Supabase.instance.client;
@@ -126,26 +139,56 @@ class MatrimonialService {
   static Future<MatrimonialUser?> getCurrentUserProfile(
     String authUserId,
   ) async {
-    await initialize();
     try {
-      final data = await _supabase
-          .from('matrimonial_profiles')
-          .select(
-            '*, state:states(name), district:districts(name), caste:castes!matrimonial_profiles_caste_id_fkey(name), sub_caste:castes!matrimonial_profiles_sub_caste_id_fkey(name), contact_info(*), family_info(*), partner_preferences(*)',
-          )
-          .eq('auth_user_id', authUserId)
-          .maybeSingle();
-      if (data == null) return null;
-      try {
-        debugPrint(
-          '🔎 getCurrentUserProfile: profile_image_url=${data['profile_image_url']} photo_urls=${data['photo_urls']}',
-        );
-      } catch (_) {}
-      return MatrimonialUser.fromJson(_normalizeProfileRow(data));
+      return await loadOwnProfile(authUserId);
     } catch (e) {
       debugPrint('❌ Error getting user profile: $e');
       return null;
     }
+  }
+
+  /// Null only when the member has no profile; throws when it cannot be loaded.
+  static Future<MatrimonialUser?> loadOwnProfile(String authUserId) async {
+    await initialize();
+    final data = await _supabase
+        .from('matrimonial_profiles')
+        .select(
+          '*, state:states(name), district:districts(name), caste:castes!matrimonial_profiles_caste_id_fkey(name), sub_caste:castes!matrimonial_profiles_sub_caste_id_fkey(name), contact_info(*), family_info(*), partner_preferences(*)',
+        )
+        .eq('auth_user_id', authUserId)
+        .maybeSingle();
+    if (data == null) return null;
+    return MatrimonialUser.fromJson(_normalizeProfileRow(data));
+  }
+
+  /// Registration details that are not part of [MatrimonialUser]: who created
+  /// the profile, work status and the qualification list.
+  static Future<RegistrationExtras> getRegistrationExtras(
+    String profileId,
+  ) async {
+    await initialize();
+    final row = await _supabase
+        .from('matrimonial_profiles')
+        .select(
+          'created_by, work_status, profile_qualifications(discipline, type:qualification_types(name))',
+        )
+        .eq('id', profileId)
+        .maybeSingle();
+    if (row == null) return const RegistrationExtras();
+    final quals = <Map<String, String>>[];
+    for (final q in (row['profile_qualifications'] as List? ?? const [])) {
+      final type = ((q['type'] as Map?)?['name'] ?? '').toString().trim();
+      if (type.isEmpty) continue;
+      quals.add({
+        'type': type,
+        'discipline': (q['discipline'] ?? '').toString().trim(),
+      });
+    }
+    return RegistrationExtras(
+      createdBy: row['created_by'] as String?,
+      workStatus: row['work_status'] as String?,
+      qualifications: quals,
+    );
   }
 
   // Lightweight helpers for activity checks

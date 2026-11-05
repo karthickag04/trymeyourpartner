@@ -128,6 +128,17 @@ class HttpMatrimonialDomainService implements MatrimonialDomainService {
   }
 
   @override
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId) async {
+    final data = await api.get('/profiles/me');
+    if (data is Map) {
+      return MatrimonialUser.fromJson(
+        data.map((k, v) => MapEntry(k.toString(), v)),
+      );
+    }
+    return null;
+  }
+
+  @override
   Future<void> saveProfile(
     MatrimonialUser profile, {
     bool saveContact = false,

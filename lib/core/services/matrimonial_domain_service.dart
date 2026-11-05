@@ -14,6 +14,10 @@ abstract class MatrimonialDomainService {
 
   // Profile
   Future<MatrimonialUser?> getCurrentUserProfile(String authUserId);
+
+  /// The member's own profile for deciding where to send them: null only when
+  /// they have no profile yet; throws when it could not be loaded.
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId);
   Future<void> saveProfile(
     MatrimonialUser profile, {
     bool saveContact = false,

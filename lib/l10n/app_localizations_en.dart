@@ -24,6 +24,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonRetry => 'Try again';
 
   @override
+  String get profileLoadFailed =>
+      'We couldn\'t load your profile. Your details are safe. Check your connection and try again.';
+
+  @override
   String get commonClose => 'Close';
 
   @override

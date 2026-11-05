@@ -37,6 +37,10 @@ class SupabaseMatrimonialDomainService implements MatrimonialDomainService {
       legacy.MatrimonialService.getCurrentUserProfile(authUserId);
 
   @override
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId) =>
+      legacy.MatrimonialService.loadOwnProfile(authUserId);
+
+  @override
   Future<List<MatrimonialUser>> getMatches(String userId) =>
       legacy.MatrimonialService.getMatches(userId);
 

@@ -24,6 +24,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String get commonRetry => 'மீண்டும் முயலவும்';
 
   @override
+  String get profileLoadFailed =>
+      'உங்கள் சுயவிவரத்தை ஏற்ற முடியவில்லை. உங்கள் விவரங்கள் பாதுகாப்பாக உள்ளன. இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.';
+
+  @override
   String get commonClose => 'மூடு';
 
   @override

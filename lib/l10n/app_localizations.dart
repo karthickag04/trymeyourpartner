@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get commonRetry;
 
+  /// No description provided for @profileLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your profile. Your details are safe. Check your connection and try again.'**
+  String get profileLoadFailed;
+
   /// No description provided for @commonClose.
   ///
   /// In en, this message translates to:

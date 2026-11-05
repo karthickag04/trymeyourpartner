@@ -8,6 +8,7 @@
   "commonCancel": "Cancel",
   "commonSave": "Save",
   "commonRetry": "Try again",
+  "profileLoadFailed": "We couldn't load your profile. Your details are safe. Check your connection and try again.",
   "commonClose": "Close",
   "commonDone": "Done",
   "commonNotSpecified": "Not specified",

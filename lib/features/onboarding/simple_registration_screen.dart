@@ -10,6 +10,7 @@ import '../auth/auth_provider.dart';
 import '../../shared/state/matrimonial_provider.dart';
 import '../../shared/services/matrimonial_service.dart';
 import '../../shared/theme/constants.dart';
+import 'registration_prefill.dart';
 
 class SimpleRegistrationScreen extends StatefulWidget {
   const SimpleRegistrationScreen({super.key});
@@ -88,35 +89,58 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
     _prefillFromProfile();
   }
 
-  void _prefillFromProfile() {
+  static const _createdByValues = {'self', 'sibling', 'parents', 'guardian'};
+  static const _workStatusValues = {'business', 'salaried', 'not_working'};
+
+  /// Starts the form with everything the member already saved, so returning
+  /// members only fill in what is missing. Never overwrites what they typed.
+  Future<void> _prefillFromProfile() async {
     final matrimony = context.read<MatrimonialProvider>();
     final profile = matrimony.currentUserProfile;
     if (profile == null) return;
-    // Prefill basic fields only if user hasn't typed anything yet
-    if ((_gender == null || _gender!.isEmpty) && profile.gender.isNotEmpty) {
-      _gender = profile.gender;
+    var extras = const RegistrationExtras();
+    try {
+      extras = await MatrimonialService.getRegistrationExtras(profile.id);
+    } catch (_) {
+      // The rest of the form still fills in; these fields stay as chosen.
     }
-    if ((_state == null || _state!.isEmpty) && profile.state.isNotEmpty) {
-      _state = profile.state;
-      // Trigger districts load based on prefilled state
-      // ignore: discarded_futures
-      _onStateChanged(_state);
+    if (!mounted) return;
+    final pre = RegistrationPrefill.from(profile, extras: extras);
+    void fill(TextEditingController c, String? v) {
+      if (c.text.trim().isEmpty && v != null) c.text = v;
     }
-    if ((_district == null || _district!.isEmpty) &&
-        profile.district.isNotEmpty) {
-      // We'll set this after districts load if it exists in options
-      _district = profile.district;
+
+    setState(() {
+      if (pre.name != null) _nameCtrl.text = pre.name!;
+      fill(_phoneCtrl, pre.phone);
+      fill(_whatsCtrl, pre.whatsapp);
+      fill(_cityCtrl, pre.city);
+      if (_dob == null && pre.dateOfBirth != null) {
+        _dob = pre.dateOfBirth;
+        _dobCtrl.text = context.formatDate(pre.dateOfBirth!);
+      }
+      _gender ??= pre.gender;
+      if (_createdByValues.contains(pre.createdBy))
+        _createdBy ??= pre.createdBy;
+      if (_workStatusValues.contains(pre.workStatus)) {
+        _workStatus ??= pre.workStatus;
+      }
+      if (pre.occupation != null &&
+          _occupationCategories.contains(pre.occupation)) {
+        _occupationCategory ??= pre.occupation;
+      }
+      if (_qualifications.isEmpty) _qualifications.addAll(pre.qualifications);
+    });
+    if (_state == null && pre.state != null) {
+      await _onStateChanged(pre.state, keep: pre.district);
     }
-    if ((_religion == null || _religion!.isEmpty) &&
-        profile.religion.isNotEmpty) {
-      _religion = profile.religion;
-      // Preload castes for this religion
-      // ignore: discarded_futures
-      _onReligionChanged(_religion);
+    if (_religion == null && pre.religion != null) {
+      await _onReligionChanged(pre.religion, keep: pre.caste);
     }
   }
 
-  Future<void> _onStateChanged(String? stateName) async {
+  /// [keep] is a district to keep selected if the state has it.
+  Future<void> _onStateChanged(String? stateName, {String? keep}) async {
     _state = stateName;
     _district = null;
     if (stateName == null) {
@@ -125,11 +149,13 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
       return;
     }
     final p = context.read<MatrimonialProvider>();
-    // Resolve state id via provider cache
-    final st = p.states.firstWhere(
-      (s) => s.name == stateName,
-      orElse: () => p.states.first,
-    );
+    final matches = p.states.where((s) => s.name == stateName);
+    if (matches.isEmpty) {
+      if (!mounted) return;
+      setState(() => _districtOptions = []);
+      return;
+    }
+    final st = matches.first;
     // Ensure provider has loaded districts for this state (populates cache)
     try {
       await p.prefetchLookups(stateId: st.id);
@@ -138,17 +164,15 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
     if (!mounted) return;
     setState(() {
       _districtOptions = districts.map((d) => d.name).toList();
-      // If we had a remembered district, keep it if present; otherwise default to first
-      if (_district != null && !_districtOptions.contains(_district)) {
-        _district = null;
-      }
-      if (_district == null && _districtOptions.isNotEmpty) {
-        _district = _districtOptions.first;
-      }
+      // The member picks a district; never pre-select one they did not choose.
+      _district = (keep != null && _districtOptions.contains(keep))
+          ? keep
+          : null;
     });
   }
 
-  Future<void> _onReligionChanged(String? religion) async {
+  /// [keep] is a caste to keep selected if the religion has it.
+  Future<void> _onReligionChanged(String? religion, {String? keep}) async {
     _religion = religion;
     _caste = null;
     if (religion == null) {
@@ -167,6 +191,7 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
         for (final name in castes.map((c) => c.name))
           if (seen.add(name)) name,
       ];
+      _caste = (keep != null && _casteOptions.contains(keep)) ? keep : null;
     });
   }
 
@@ -211,8 +236,14 @@ class _SimpleRegistrationScreenState extends State<SimpleRegistrationScreen> {
         education: effectiveEducation,
         occupation: _occupationCategory ?? profile.occupation,
         contactInfo: profile.contactInfo.copyWith(
-          phoneNumber: _phoneCtrl.text.trim(),
-          whatsappNumber: _whatsCtrl.text.trim(),
+          phoneNumber: keepStoredIfBlank(
+            _phoneCtrl.text,
+            profile.contactInfo.phoneNumber,
+          ),
+          whatsappNumber: keepStoredIfBlank(
+            _whatsCtrl.text,
+            profile.contactInfo.whatsappNumber,
+          ),
         ),
       );
 
