@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/contact_exchange_service.dart';
-import '../../models/contact_request.dart';
+import '../../shared/models/contact_request.dart';
 
 class SupabaseContactExchangeService implements ContactExchangeService {
   SupabaseClient get _db => Supabase.instance.client;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import '../../core/services/realtime_service.dart';
 import 'http_client.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpRealtimeService implements RealtimeService {
   final ApiClient _api;
@@ -50,6 +51,20 @@ class HttpRealtimeService implements RealtimeService {
   }
 
   @override
+  Future<Object?> subscribeNotifications(
+    String profileId, {
+    RealtimeCallback? onInsert,
+  }) async {
+    final handle = _NotificationsPollHandle(
+      api: _api,
+      profileId: profileId,
+      onInsert: onInsert,
+    );
+    handle.start();
+    return handle;
+  }
+
+  @override
   Future<Object?> subscribeUnreadCounter(
     String myProfileId, {
     RealtimeCallback? onChange,
@@ -61,6 +76,47 @@ class HttpRealtimeService implements RealtimeService {
     );
     handle.start();
     return handle;
+  }
+}
+
+/// Polls GET /notifications and reports rows not seen before
+/// (the first poll only records what already exists).
+class _NotificationsPollHandle extends _BasePollHandle {
+  final ApiClient api;
+  final String profileId;
+  final RealtimeCallback? onInsert;
+  Set<String>? _seen;
+  _NotificationsPollHandle({
+    required this.api,
+    required this.profileId,
+    this.onInsert,
+  });
+
+  @override
+  Duration get interval => const Duration(seconds: 20);
+
+  @override
+  void tick() async {
+    try {
+      final data = await api.get(
+        '/notifications',
+        query: {'profileId': profileId},
+      );
+      if (data is! List) return;
+      final rows = data
+          .whereType<Map>()
+          .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
+          .toList();
+      final ids = rows.map((r) => r['id']?.toString() ?? '').toSet();
+      final seen = _seen;
+      _seen = ids;
+      if (seen == null || onInsert == null) return;
+      for (final r in rows) {
+        if (!seen.contains(r['id']?.toString())) await onInsert!(r);
+      }
+    } catch (e, st) {
+      reportError(e, st, where: 'http_realtime_service');
+    }
   }
 }
 

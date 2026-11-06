@@ -1,4 +1,4 @@
-import '../../models/presence_status.dart';
+import '../../shared/models/presence_status.dart';
 
 abstract class PresenceService {
   Future<void> heartbeat({required String myProfileId});

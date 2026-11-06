@@ -1,0 +1,75 @@
+# Database migrations
+
+Migrations in `migrations/` are plain SQL, named `<timestamp>_<description>.sql`, and
+safe to run more than once. Apply them in timestamp order.
+
+Write portable PostgreSQL ([ADR 0001](../docs/adr/0001-vendor-portability.md)). Anything that
+only exists on Supabase (`auth.users`, `storage.*`, the `supabase_realtime` publication, vault …)
+goes between marker lines, so another provider can skip or replace exactly that part:
+
+```sql
+-- [supabase-only]
+alter publication supabase_realtime add table public.messages;
+-- [/supabase-only]
+```
+
+Use `public.app_current_user_id()` instead of `auth.uid()`. CI checks this with
+`tool/check_sql_vendor.sh`.
+
+## Baseline
+
+`20261105000000_baseline.sql` is the complete schema of the live project, generated from its
+catalog after Phase 0, plus the reference data (states, districts, castes, occupations,
+qualifications, icebreakers); no member data. A database built from it matches the live one
+object for object (27 tables, 58 policies, 21 triggers, 4 views, 83 constraints, 66 indexes,
+27 functions). Use it to create a new project, such as production; the existing project
+already has this schema.
+
+## Applying a migration
+
+1. Open the Supabase dashboard → **SQL Editor** for the **staging** project.
+2. Paste the migration file and run it. Check the app against staging.
+3. Repeat on the production project.
+
+With the Supabase CLI linked to a project, `supabase db push` applies pending files.
+
+## Tests
+
+`tests/local/run.sh` builds the schema in a plain Postgres from the migrations, baseline first
+(with a small stand-in for the Supabase-managed parts), applies every migration **twice** (they must be re-runnable) and
+checks the access rules as an anonymous visitor and as two members. CI runs it on every
+push; locally: `PGHOST=... PGUSER=postgres supabase/tests/local/run.sh`.
+
+
+`tests/phase0_member_checks.sql` signs in (inside the database) as two test members and
+checks the Phase 0 rules: no emails visible, no self-verification, no self-granted plans,
+contact reveal through the server only, no deleting other members. It needs two login
+accounts, `tmyp.test.a@example.com` and `tmyp.test.b@example.com` (profiles "Claude Test A"
+and "Claude Test B"). They are test data; delete them before real members join.
+
+## Applied
+
+| Migration | Project | Date | Result |
+|---|---|---|---|
+| `20261105000000_baseline.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | — | Not needed: generated from this project |
+| `20261105120000_phase0_security_hardening.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 15/15 member checks and all anonymous checks pass |
+| `20261106095000_app_identity_helper.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; equals `auth.uid()` for a signed-in member |
+| `20261107090000_api_service_role.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; `api_service` can log in, inherits nothing, cannot bypass row-level security, only member of `authenticated` (set, no inherit), timeouts 15 s / 30 s. No password yet (owner step). The API's statements run as `authenticated` with the test member's claims: own profile visible, 0 other contact rows, not staff |
+| `20261107100000_dedupe_castes.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied by the owner in the SQL editor; checked: 0 duplicate groups (39 → 20 castes, Hindu 29 → 15), unique index present, members cannot run the merge, 57/60 profiles keep their caste and none point at a deleted row |
+| `20261106100000_phase2_org_and_roles.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 20 permissions, 69 role grants; hook callable only by `supabase_auth_admin`. Hook not yet enabled (owner) |
+| `20261106096000_use_app_identity_helper.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; 0 `auth.uid()` uses left, 51 policies use the helper; 12/12 live member checks pass |
+| `20261106090000_app_settings.sql` | `lngpmjxiqfskpxbncfgl` (trymeyourpartner) | 2026-11-05 | Applied; anonymous read OK, anonymous write 401; maintenance mode toggled live and seen in the app |
+
+## History
+
+| Migration | What it does |
+|---|---|
+| `20261105000000_baseline.sql` | The full live schema and reference data, as the starting point for every new database. |
+| `20261106100000_phase2_org_and_roles.sql` | Phase 2: branches, teams, staff accounts, agents, permissions, role matrix, append-only audit log, staff helper functions, staff editing of `app_settings`, Supabase access-token hook (see `docs/ADMIN_CONSOLE.md`). |
+| `20261106096000_use_app_identity_helper.sql` | Rewrites every policy and function from `auth.uid()` to `app_current_user_id()` (same behaviour). |
+| `20261106095000_app_identity_helper.sql` | `app_current_user_id()`: provider-neutral identity for SQL (ADR 0001). New SQL uses it instead of `auth.uid()`. |
+| `20261106090000_app_settings.sql` | Admin-controlled settings (maintenance, support contacts, feature switches, free-plan limits, default language); `reveal_contact` reads the free quota and the contact-reveal switch from them. |
+| `20261105120000_phase0_security_hardening.sql` | Phase 0 fixes from `docs/PRODUCT_STRATEGY_AND_ROADMAP.md` §2: no anonymous access to member data, no self-granted verification/plans, server-side contact reveal with quota, caller checks on delete/restore, email no longer copied into the shared profile row (old values backed up to `private.profile_email_backup`), row-level security switched on for `deleted_users` and `auth_user_profile`, views run with the caller's rights. |
+
+The scripts that originally built the schema are kept for reference in `archive/legacy-sql/` and
+`archive/sql/`; the baseline migration replaces them.

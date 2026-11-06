@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/icebreaker_service.dart';
-import '../../models/icebreaker.dart';
+import '../../shared/models/icebreaker.dart';
 
 class SupabaseIcebreakerService implements IcebreakerService {
   SupabaseClient get _db => Supabase.instance.client;

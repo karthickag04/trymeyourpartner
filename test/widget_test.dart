@@ -1,20 +1,24 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trymeyourpartner/main.dart';
 
-void main() {
-  testWidgets('App widget builds without errors', (WidgetTester tester) async {
-    // Build the real app widget
-    await tester.pumpWidget(const TryMeYourPartnerApp());
+import 'helpers/signed_out_auth.dart';
 
-    // Basic smoke: Splash text is present
+void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
+  testWidgets('starts on the splash screen', (tester) async {
+    await tester.pumpWidget(TryMeYourPartnerApp(authService: SignedOutAuth()));
     expect(find.text('Loading your experience...'), findsOneWidget);
+    // Let the splash animation finish so no timers are left pending.
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+  });
+
+  testWidgets('a signed-out visitor ends up on the sign-in screen', (
+    tester,
+  ) async {
+    await tester.pumpWidget(TryMeYourPartnerApp(authService: SignedOutAuth()));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+    expect(find.text('Sign In'), findsWidgets);
   });
 }

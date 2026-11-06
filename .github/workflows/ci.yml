@@ -1,0 +1,225 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: App (analyze, test, web build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.32.8
+          channel: stable
+          cache: true
+
+      - name: Install packages (exactly as locked)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Vendor portability check (docs/adr/0001)
+        run: tool/check_vendor_imports.sh
+
+      - name: No empty catch blocks (P1-22)
+        run: tool/check_silent_catches.sh
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build web
+        # The publishable key is only needed at run time; CI builds with a placeholder.
+        run: flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
+
+  security:
+    name: Security (secrets, known vulnerabilities)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # scan every commit, not just the latest
+
+      - name: No secrets in the code or its history (gitleaks)
+        # Reviewed old findings are listed in .gitleaksignore.
+        run: |
+          f=gitleaks_8.24.3_linux_x64.tar.gz
+          curl -sSfL -o "$RUNNER_TEMP/$f" "https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/$f"
+          echo "9991e0b2903da4c8f6122b5c3186448b927a5da4deef1fe45271c3793f4ee29c  $RUNNER_TEMP/$f" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$f" -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" git --redact --no-banner --exit-code 1 .
+
+      - name: App and admin console packages have no known vulnerabilities (OSV)
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/osv-scanner" https://github.com/google/osv-scanner/releases/download/v2.2.2/osv-scanner_linux_amd64
+          echo "c799274b682e0437c802d4714a136ad09b39c65547c460049ba5358d28afa576  $RUNNER_TEMP/osv-scanner" | sha256sum -c -
+          chmod +x "$RUNNER_TEMP/osv-scanner"
+          "$RUNNER_TEMP/osv-scanner" scan source -L pubspec.lock -L apps/admin_console/pubspec.lock
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: API production packages have no known high-severity vulnerabilities
+        # Development-only packages never run in production; Dependabot raises
+        # updates for them.
+        working-directory: backend/api
+        run: npm audit --omit=dev --audit-level=high
+
+  admin_console:
+    name: Admin console (analyze, test, web build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: apps/admin_console
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.32.8
+          channel: stable
+          cache: true
+
+      - name: Install packages (exactly as locked)
+        run: flutter pub get --enforce-lockfile
+
+      - name: Provider code only in lib/data (ADR 0001)
+        run: tool/check_vendor_imports.sh
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build web
+        # The publishable key is only needed at run time; CI builds with a placeholder.
+        run: flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
+
+  android:
+    name: Android (debug APK)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.32.8
+          channel: stable
+          cache: true
+
+      - run: flutter pub get --enforce-lockfile
+
+      - name: Accept Android SDK licences and install the pinned NDK
+        # android/app/build.gradle.kts pins ndkVersion; the runner does not
+        # ship it, and Gradle cannot fetch it until the licences are accepted.
+        run: |
+          NDK=$(sed -nE 's/.*ndkVersion *= *"([^"]+)".*/\1/p' android/app/build.gradle.kts)
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null
+          "$SDKM" --install "ndk;$NDK" > /dev/null
+          echo "Installed NDK $NDK"
+
+      - name: Build debug APK
+        # The publishable key is only needed at run time; CI builds with a placeholder.
+        run: flutter build apk --debug --dart-define=SUPABASE_KEY=ci-placeholder
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
+
+  database:
+    name: Database (migrations + access rules)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17 # same major version as the live project
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Supabase-only SQL only in marked blocks (ADR 0001)
+        run: tool/check_sql_vendor.sh
+      - name: Apply migrations twice and check access rules
+        run: supabase/tests/local/run.sh
+
+  api:
+    name: Backend API (typecheck, test, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      # Throwaway CI database only; the live password is never in the repo.
+      TEST_DATABASE_URL: postgres://api_service:ci-only@localhost:5432/tmyp_ci
+      TEST_DATABASE_ADMIN_URL: postgres://postgres:postgres@localhost:5432/tmyp_ci
+    defaults:
+      run:
+        working-directory: backend/api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the database from the migrations (for the end-to-end tests)
+        working-directory: .
+        run: |
+          supabase/tests/local/run.sh > /dev/null
+          psql -d tmyp_ci -c "alter role api_service with password 'ci-only'"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/api/package-lock.json
+      - name: Provider code only in src/supabase (ADR 0001)
+        run: ../../tool/check_api_vendor.sh
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Test (unit, plus end to end against PostgreSQL as api_service)
+        run: npm test
+      - run: npm run build

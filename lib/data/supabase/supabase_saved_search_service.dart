@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/saved_search_service.dart';
-import '../../models/saved_search.dart';
+import '../../shared/models/saved_search.dart';
 
 class SupabaseSavedSearchService implements SavedSearchService {
   SupabaseClient get _db => Supabase.instance.client;

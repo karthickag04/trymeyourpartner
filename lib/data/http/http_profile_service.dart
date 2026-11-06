@@ -1,6 +1,6 @@
 import 'dart:convert';
 import '../../core/services/profile_service.dart';
-import '../../domain/models/profile.dart';
+import '../../shared/models/profile.dart';
 import 'http_client.dart';
 
 class HttpProfileService implements ProfileService {

@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # UI and Design
   cupertino_icons: ^1.0.8
@@ -37,13 +39,9 @@ dependencies:
   cached_network_image: ^3.3.1
   
   # Video Player
-  video_player: ^2.8.1
   
   # State Management
   provider: ^6.1.2
-  
-  # Navigation
-  # go_router removed (unused)
   
   # Supabase Integration
   supabase_flutter: ^2.5.6
@@ -58,7 +56,7 @@ dependencies:
   
   # Local Storage
   shared_preferences: ^2.2.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   # Removed unused local storage packages: hive, hive_flutter, path_provider, sqflite
   
   # Images: picking, lightweight editor, pure-Dart compression (web-safe)
@@ -66,6 +64,8 @@ dependencies:
   image_editor_plus: ^1.0.6
   image: ^4.2.0
   permission_handler: ^11.3.1
+  # Navigation (web URLs, deep links)
+  go_router: ^17.0.0
   
   # URL Launcher for OAuth
   # url_launcher removed (unused)
@@ -89,11 +89,10 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
-    - assets/images/
     - assets/icons/app_icon.png
-    - assets/videos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

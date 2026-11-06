@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/profile_service.dart';
-import '../../domain/models/profile.dart';
+import '../../shared/models/profile.dart';
 
 class SupabaseProfileService implements ProfileService {
   SupabaseClient get _client => Supabase.instance.client;

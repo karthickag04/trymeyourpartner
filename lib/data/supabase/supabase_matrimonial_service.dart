@@ -1,8 +1,8 @@
 import '../../core/services/matrimonial_domain_service.dart';
-import '../../models/matrimonial_user.dart';
-import '../../models/location_data.dart';
-import '../../models/caste_data.dart' as caste_model;
-import '../../services/matrimonial_service.dart' as legacy;
+import '../../shared/models/matrimonial_user.dart';
+import '../../shared/models/location_data.dart';
+import '../../shared/models/caste_data.dart' as caste_model;
+import '../../shared/services/matrimonial_service.dart' as legacy;
 
 class SupabaseMatrimonialDomainService implements MatrimonialDomainService {
   @override
@@ -35,6 +35,10 @@ class SupabaseMatrimonialDomainService implements MatrimonialDomainService {
   @override
   Future<MatrimonialUser?> getCurrentUserProfile(String authUserId) =>
       legacy.MatrimonialService.getCurrentUserProfile(authUserId);
+
+  @override
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId) =>
+      legacy.MatrimonialService.loadOwnProfile(authUserId);
 
   @override
   Future<List<MatrimonialUser>> getMatches(String userId) =>

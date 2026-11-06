@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/message_service.dart';
+import '../../shared/errors/report_error.dart';
 
 class SupabaseMessageService implements MessageService {
   SupabaseClient get _client => Supabase.instance.client;
@@ -86,7 +87,9 @@ class SupabaseMessageService implements MessageService {
         'mark_messages_read',
         params: {'p_message_ids': messageIds},
       );
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'supabase_message_service');
+    }
   }
 
   @override

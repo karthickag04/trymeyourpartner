@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// How large the member wants text, on top of their phone's own setting.
+enum TextSizeChoice {
+  small(0.9),
+  standard(1.0),
+  large(1.15),
+  extraLarge(1.3);
+
+  const TextSizeChoice(this.factor);
+  final double factor;
+}
+
+/// The member's display choices: light/dark/system theme, app language and
+/// text size.
+///
+/// Stored on the device with shared_preferences, so they apply before
+/// sign-in (for example on the sign-in and registration screens).
+class UserPreferences extends ChangeNotifier {
+  static const themeModeKey = 'prefs.themeMode';
+  static const localeKey = 'prefs.locale';
+  static const textSizeKey = 'prefs.textSize';
+
+  /// Languages the app is translated into.
+  static const supportedLanguageCodes = ['en', 'ta'];
+
+  ThemeMode _themeMode;
+  Locale? _locale;
+  TextSizeChoice _textSize;
+  SharedPreferences? _prefs;
+
+  UserPreferences({
+    ThemeMode themeMode = ThemeMode.system,
+    Locale? locale,
+    TextSizeChoice textSize = TextSizeChoice.standard,
+  }) : _themeMode = themeMode,
+       _locale = locale,
+       _textSize = textSize;
+
+  /// Reads saved choices. Missing or unknown values fall back to the system
+  /// theme and the default language.
+  static Future<UserPreferences> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    final p = UserPreferences(
+      themeMode: _parseThemeMode(prefs.getString(themeModeKey)),
+      locale: _parseLocale(prefs.getString(localeKey)),
+      textSize: _parseTextSize(prefs.getString(textSizeKey)),
+    );
+    p._prefs = prefs;
+    return p;
+  }
+
+  ThemeMode get themeMode => _themeMode;
+
+  TextSizeChoice get textSize => _textSize;
+
+  /// The language the member chose, or null if they have not chosen one.
+  Locale? get locale => _locale;
+
+  /// The language to show: the member's choice, else [defaultLanguageCode]
+  /// (the admin-controlled default), else English.
+  Locale effectiveLocale(String defaultLanguageCode) {
+    if (_locale != null) return _locale!;
+    return supportedLanguageCodes.contains(defaultLanguageCode)
+        ? Locale(defaultLanguageCode)
+        : const Locale('en');
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    if (mode == _themeMode) return;
+    _themeMode = mode;
+    notifyListeners();
+    final prefs = _prefs ??= await SharedPreferences.getInstance();
+    await prefs.setString(themeModeKey, mode.name);
+  }
+
+  Future<void> setLocale(Locale? locale) async {
+    if (locale != null &&
+        !supportedLanguageCodes.contains(locale.languageCode)) {
+      return;
+    }
+    if (locale?.languageCode == _locale?.languageCode) return;
+    _locale = locale == null ? null : Locale(locale.languageCode);
+    notifyListeners();
+    final prefs = _prefs ??= await SharedPreferences.getInstance();
+    if (_locale == null) {
+      await prefs.remove(localeKey);
+    } else {
+      await prefs.setString(localeKey, _locale!.languageCode);
+    }
+  }
+
+  Future<void> setTextSize(TextSizeChoice size) async {
+    if (size == _textSize) return;
+    _textSize = size;
+    notifyListeners();
+    final prefs = _prefs ??= await SharedPreferences.getInstance();
+    await prefs.setString(textSizeKey, size.name);
+  }
+
+  static TextSizeChoice _parseTextSize(String? value) =>
+      TextSizeChoice.values.firstWhere(
+        (t) => t.name == value,
+        orElse: () => TextSizeChoice.standard,
+      );
+
+  static ThemeMode _parseThemeMode(String? value) => ThemeMode.values
+      .firstWhere((m) => m.name == value, orElse: () => ThemeMode.system);
+
+  static Locale? _parseLocale(String? value) =>
+      value != null && supportedLanguageCodes.contains(value)
+      ? Locale(value)
+      : null;
+}

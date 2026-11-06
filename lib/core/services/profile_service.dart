@@ -1,4 +1,4 @@
-import '../../domain/models/profile.dart';
+import '../../shared/models/profile.dart';
 
 abstract class ProfileService {
   Future<Profile?> getMyProfile();

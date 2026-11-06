@@ -1,0 +1,161 @@
+# AGENTS.md: working on TryMeYourPartner
+
+Read this first, whether you are a person or an AI coding agent. It explains how the project is
+set up, the rules every change must follow, what is already done, and what comes next.
+
+- **Product plan:** [`docs/PRODUCT_STRATEGY_AND_ROADMAP.md`](docs/PRODUCT_STRATEGY_AND_ROADMAP.md)
+- **What is done and next (always current):** [`docs/PROGRESS_TRACKER.md`](docs/PROGRESS_TRACKER.md)
+- **Admin console and staff roles:** [`docs/ADMIN_CONSOLE.md`](docs/ADMIN_CONSOLE.md)
+- **Staying portable away from Supabase:** [`docs/adr/0001-vendor-portability.md`](docs/adr/0001-vendor-portability.md)
+- **Database migrations:** [`supabase/README.md`](supabase/README.md) · **Backend API:** [`backend/README.md`](backend/README.md)
+
+## 1. What this is
+
+A matrimony platform for the Tamil and wider Indian diaspora:
+
+| Part | Path | Stack |
+|---|---|---|
+| Member app (Android, iOS, Web) | `lib/` (root Flutter project) | Flutter 3.32.8, Provider, go_router |
+| Admin console (staff, Web) | `apps/admin_console/` | Flutter 3.32.8 (separate project) |
+| Backend API | `backend/api/` | NestJS 11, TypeScript 5.9, Node 22 |
+| Database | `supabase/migrations/` | PostgreSQL on Supabase (plain SQL migrations) |
+| Browser tests | `e2e/` | Playwright + Chromium (`flow.js`, `routes.js`, `email.js`, `lang.js`, `maint.js`, `realtime.js`) |
+
+Supabase project (test, serves as staging until launch): `lngpmjxiqfskpxbncfgl`.
+
+## 2. Set up locally
+
+1. **Flutter 3.32.8 exactly** (from `.metadata`). Newer versions do not build the locked packages.
+2. Member app:
+   ```bash
+   cp .env.example .env          # set SUPABASE_KEY to the publishable key (sb_publishable_...)
+   flutter pub get --enforce-lockfile
+   flutter run -d chrome --dart-define-from-file=.env     # Windows: run_app.bat
+   ```
+   The publishable key is in Supabase → Settings → API Keys. **Never** use the secret key in an app.
+3. Admin console: same in `apps/admin_console/` with its own `.env` (`SUPABASE_URL`, `SUPABASE_KEY`, `API_BASE_URL`).
+4. Backend API: `cd backend/api && cp .env.example .env && npm ci && npm test`.
+5. Database tests need a local PostgreSQL 17 (same as CI and the live project): `PGHOST=localhost PGUSER=postgres supabase/tests/local/run.sh`.
+
+## 3. Rules for every change
+
+1. **Run the checks before every commit** (CI runs the same on every push and PR):
+   ```bash
+   dart format --output=none --set-exit-if-changed lib test
+   tool/check_vendor_imports.sh        # app: Supabase only in lib/data/supabase/
+   tool/check_api_vendor.sh            # API: Supabase only in src/supabase/
+   tool/check_sql_vendor.sh            # migrations: Supabase objects only in marked blocks
+   tool/check_silent_catches.sh        # no empty catch blocks: report (reportError) or rethrow
+   flutter analyze            # must report: No issues found!
+   flutter test
+   flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
+   (cd backend/api && npm run typecheck && npm test && npm run build)
+   (cd apps/admin_console && flutter analyze && flutter test)
+   PGHOST=localhost PGUSER=postgres supabase/tests/local/run.sh
+   ```
+2. **Update `docs/PROGRESS_TRACKER.md` in the same commit** as the work: status, commit, and how it was verified.
+3. **Database changes only via new files in `supabase/migrations/`** named `<timestamp>_<what>.sql`.
+   Every migration must be safe to run twice (CI applies all of them twice). Never edit an applied migration.
+   Record each one in `supabase/README.md` when it is applied to a project.
+4. **Applying migrations to the live project** is done deliberately by one person or session at a time
+   (SQL editor, or `supabase db push`), never by parallel agents. After a migration that adds tables or
+   functions, run `notify pgrst, 'reload schema';`.
+5. **Vendor portability (ADR 0001):**
+   - Commit to PostgreSQL, not to Supabase. The API talks to Postgres directly; no PostgREST, Edge Functions or dashboard-only setup.
+   - Buckets, access rules, hooks and publications are created in migrations, never only in the dashboard.
+   - New integrations (OTP, payments, push, messaging, video, search) go behind our own interface in the API (table in ADR 0001).
+   - No `package:supabase_flutter` imports outside `lib/data/supabase/` (CI enforces it; the legacy allowlist in `tool/check_vendor_imports.sh` may only shrink).
+   - New SQL uses `public.app_current_user_id()`, never `auth.uid()`.
+   - Supabase-only objects (`auth.users`, `storage.*`, the realtime publication …) go between
+     `-- [supabase-only]` and `-- [/supabase-only]` lines (CI enforces it).
+   - Files are stored by storage path, not provider URL.
+6. **Security:**
+   - Members must never be able to write trust or money fields (verification, plans, quotas, counters). Those go through `SECURITY DEFINER` functions or the API.
+   - New tables get row-level security and policies `to authenticated` (not `public`).
+   - Never put secrets in the repo or in an app build.
+7. **No decorative UI.** Do not add buttons that only show "coming soon"; hide what does not work yet.
+8. **Git:** commits as `etzbot <etzbot@enthamizh.org>` (`git config user.email etzbot@enthamizh.org`).
+   Small commits whose messages say what was verified. Do not include AI model names in commits, code or PRs.
+
+## 4. Where things stand (2026-11-05)
+
+Branch `claude/tender-volta-6ujx4z`, draft [PR #1](https://github.com/karthickag04/trymeyourpartner/pull/1) into `main`.
+CI (app, Android, database, API, admin console) is green.
+
+**Done:**
+- **Phase 0 (security):**
+  - Anonymous access to member data is closed, including emails and the profile-delete function.
+  - Members can't self-verify or grant themselves plans.
+  - Contact reveal is checked server-side and never returns the address.
+  - Row-level security is on everywhere; applied and tested live.
+- **Phase 1 (foundation):**
+  - Dead code and fake screens removed.
+  - Feature-first folders (`lib/app`, `lib/features/*`, `lib/shared`).
+  - go_router with web URLs and shareable `/p/<code>` profile links.
+  - CI with an Android APK build.
+  - Baseline migration that reproduces the live schema exactly.
+  - NestJS API with provider-neutral token checks (JWKS).
+  - Admin-controlled `app_settings`: maintenance mode, support contacts, feature switches, free quota.
+  - Portability work (ADR 0001, identity helper, realtime behind interfaces).
+- **Phase 2, part 1 (merged from PR #3):**
+  - Staff roles and permissions with an append-only audit log.
+  - Admin console with password plus authenticator (TOTP) sign-in.
+  - Staff list, roles matrix and settings editor.
+  - Admin API (`/admin/v1/me`, `/admin/v1/staff`).
+- **Bugs fixed along the way:** see the "Bugs" table in the tracker (e.g. blank login email, 404s on every login, "mark as read" always failing, contact reveal never showing numbers).
+
+- **API on plain PostgreSQL (P2-10):** the API connects as `api_service` and runs each request as the member, so row-level security applies; end-to-end tests run in CI.
+- **Vendor guards (P2-14):** CI blocks new Supabase-specific code in the app, API and migrations.
+- **Text size setting (P1-24):** Settings → Text size; Tamil drawn at 90 % so layouts fit; long titles wrap and dropdowns shorten long values.
+- **No silent failures (P1-22):** no empty `catch` blocks (CI check); save errors reach the member, recovered errors go through `reportError`.
+- **Onboarding fixes (2026-11-05):** duplicate castes merged (live), caste saves reliably; registration only for new or incomplete members, pre-filled with saved details; a failed load shows a retry, never an empty form.
+- **No decorative Profile items (P1-18):** Interests/Matches shortcuts work, Change password, About dialog; Upgrade and Notification settings hidden.
+- **Themes and languages (P1-07, P1-13, merged from PR #2):**
+  - design tokens, and light/dark/system themes with an Appearance setting
+  - English and Tamil throughout, with a language switcher on sign-in, registration and Profile
+
+**Branches:**
+- `claude/tender-volta-6ujx4z` is the integration branch (all work merged here).
+- `claude/ui-foundation` and `claude/admin-console` are merged; don't reuse them.
+- `claude/admin-console-2` (draft PR #4) holds only an older draft of this file; close it.
+
+**Next (in order):**
+1. Quick safety fixes:
+   - P1-21 security hygiene: done in the repo; apply `20261108090000_security_hygiene.sql` live (owner step 6) and re-run the advisor
+   - re-check every screen in Tamil at Standard and Extra large text on a phone (`--dart-define=FULL_ERRORS=true`)
+2. Put the API to work:
+   - deploy it (P1-11; owner picks the host and sets the `api_service` password)
+   - P2-08 move app data access to the API, feature by feature, doing P1-06 Riverpod for each feature as it moves
+3. Test against a safe copy:
+   - P0-08 separate staging project (today one project holds test and real members)
+   - P1-23 browser tests in CI, including the onboarding flows
+4. Launch-gate work (roadmap §14.4):
+   - P2-04 moderation queues, P2-05 maker–checker verification
+   - P3-01 phone OTP, P3-07 matrimony-site rules, P3-08 live profiles and scam-aware chat
+   - P3-09 support desk, P4-08 fair billing, P1-20 reliability, P1-19 store releases
+5. Portability ([ADR 0001](docs/adr/0001-vendor-portability.md)): P2-11 own identity table, P2-12 storage as code,
+   P2-13 realtime as our own events, P2-09 exit runbook and restore drill.
+6. The rest of Phase 2 (Member 360, creating and disabling staff), then Phases 3–7 per the tracker.
+7. Later: bring back Upgrade with the paywall (Phase 4) and Notification settings once preferences are stored (both hidden by P1-18).
+
+**Owner steps (Supabase dashboard and hosting):**
+1. Choose where the backend API runs (a host in the Singapore region, next to the database).
+2. Set the backend API's database password (SQL in `backend/README.md`, "Database role") and its `DATABASE_URL`.
+3. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
+4. Create the first two `system_admin` accounts (SQL in `docs/ADMIN_CONSOLE.md`).
+5. Settings → JWT Keys → migrate to asymmetric keys (the API then uses JWKS automatically).
+6. Fix the Supabase security advisor reports (2026-11-05):
+   - SQL editor: run `supabase/migrations/20261108090000_security_hygiene.sql`, then `notify pgrst, 'reload schema';`
+   - Authentication → turn on leaked-password protection; set email OTP expiry under one hour
+   - Settings → API Keys → disable the legacy API keys (the old anon key is in the first commit)
+   - Settings → Infrastructure → upgrade Postgres (security patches pending)
+   - GitHub → Settings → Advanced Security → turn on Dependabot alerts, Dependabot security updates
+     and secret scanning push protection
+7. Create a separate staging/production project before real members join (P0-08).
+
+## 5. Test data on the test project
+
+- Test members `tmyp.test.a@example.com` and `tmyp.test.b@example.com` (profiles "Claude Test A" / "Claude Test B").
+  Set their passwords in Supabase → Authentication → Users if you need them for `e2e/`.
+  **Delete them before real members join.**
+- `private.profile_email_backup` holds the profile emails blanked in Phase 0.

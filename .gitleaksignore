@@ -1,0 +1,12 @@
+# Findings in old commits that were reviewed (P1-21, 2026-11-06). Secret
+# scanning in CI (.github/workflows/ci.yml) fails on anything not listed here.
+# Add a line only after the secret has been revoked or shown to be harmless.
+
+# A member's user id (a UUID) in an old seed script, not a secret.
+e154347ef4cab6efb72d702c893f5845a2533d6f:archive/sql/supabase_complete_fresh_seed.sql:generic-api-key:41
+
+# The legacy anon key, built into the first app versions. It is public by
+# design (it only grants what row-level security allows anonymous visitors),
+# and the apps now use the publishable key. Owner step: disable the legacy
+# API keys in Supabase (Settings > API Keys) so this one stops working.
+e154347ef4cab6efb72d702c893f5845a2533d6f:lib/config/supabase_config.dart:jwt:5

@@ -1,6 +1,6 @@
-import '../../models/matrimonial_user.dart';
-import '../../models/location_data.dart';
-import '../../models/caste_data.dart' as caste_model;
+import '../../shared/models/matrimonial_user.dart';
+import '../../shared/models/location_data.dart';
+import '../../shared/models/caste_data.dart' as caste_model;
 
 abstract class MatrimonialDomainService {
   Future<void> initialize();
@@ -14,6 +14,10 @@ abstract class MatrimonialDomainService {
 
   // Profile
   Future<MatrimonialUser?> getCurrentUserProfile(String authUserId);
+
+  /// The member's own profile for deciding where to send them: null only when
+  /// they have no profile yet; throws when it could not be loaded.
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId);
   Future<void> saveProfile(
     MatrimonialUser profile, {
     bool saveContact = false,

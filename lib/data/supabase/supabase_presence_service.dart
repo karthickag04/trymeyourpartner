@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/presence_service.dart';
-import '../../models/presence_status.dart';
+import '../../shared/models/presence_status.dart';
+import '../../shared/errors/report_error.dart';
 
 class SupabasePresenceService implements PresenceService {
   @override
@@ -28,7 +29,9 @@ class SupabasePresenceService implements PresenceService {
       if (res is List && res.isNotEmpty && res.first is Map<String, dynamic>) {
         return PresenceStatus.fromJson(res.first as Map<String, dynamic>);
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'supabase_presence_service');
+    }
     return const PresenceStatus(isOnline: false);
   }
 }

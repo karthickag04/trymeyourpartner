@@ -1,5 +1,6 @@
 import '../../core/services/message_service.dart';
 import 'http_client.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpMessageService implements MessageService {
   final ApiClient api;
@@ -97,7 +98,9 @@ class HttpMessageService implements MessageService {
           }
         }
         return unread;
-      } catch (_) {}
+      } catch (e, st) {
+        reportError(e, st, where: 'http_message_service');
+      }
     }
     return 0;
   }

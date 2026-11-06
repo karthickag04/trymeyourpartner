@@ -1,8 +1,9 @@
 import '../../core/services/matrimonial_domain_service.dart';
-import '../../models/matrimonial_user.dart';
-import '../../models/location_data.dart';
-import '../../models/caste_data.dart' as caste_model;
+import '../../shared/models/matrimonial_user.dart';
+import '../../shared/models/location_data.dart';
+import '../../shared/models/caste_data.dart' as caste_model;
 import 'http_client.dart';
+import '../../shared/errors/report_error.dart';
 
 class HttpMatrimonialDomainService implements MatrimonialDomainService {
   final ApiClient api;
@@ -123,7 +124,20 @@ class HttpMatrimonialDomainService implements MatrimonialDomainService {
           data.map((k, v) => MapEntry(k.toString(), v)),
         );
       }
-    } catch (_) {}
+    } catch (e, st) {
+      reportError(e, st, where: 'http_matrimonial_service');
+    }
+    return null;
+  }
+
+  @override
+  Future<MatrimonialUser?> loadOwnProfile(String authUserId) async {
+    final data = await api.get('/profiles/me');
+    if (data is Map) {
+      return MatrimonialUser.fromJson(
+        data.map((k, v) => MapEntry(k.toString(), v)),
+      );
+    }
     return null;
   }
 
