@@ -1,0 +1,38 @@
+# Dependency updates (P1-21). Security updates for every ecosystem below are
+# raised as soon as an advisory is published (repository Settings > Advanced
+# Security > Dependabot security updates). Routine version updates:
+#   - Flutter packages: none (open-pull-requests-limit 0), because the app is
+#     pinned to Flutter 3.32.8 and newer packages often need a newer Flutter;
+#     only security updates come through.
+#   - API (npm) and GitHub Actions: weekly, grouped into one pull request each.
+version: 2
+updates:
+  - package-ecosystem: pub
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: pub
+    directory: /apps/admin_console
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: npm
+    directory: /backend/api
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      api-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+    groups:
+      actions:
+        patterns: ["*"]

@@ -36,6 +36,10 @@
     "ts-jest": "29.4.15",
     "typescript": "5.9.3"
   },
+  "overrides": {
+    "multer": "2.5.0",
+    "js-yaml": "5.4.1"
+  },
   "jest": {
     "testEnvironment": "node",
     "rootDir": ".",

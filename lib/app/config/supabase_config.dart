@@ -13,10 +13,6 @@ class SupabaseConfig {
   static const String matchesTable = 'matches';
   static const String interestsTable = 'interests';
 
-  // Storage buckets
-  static const String avatarsBucket = 'avatars';
-  static const String profileImagesBucket = 'profile-images';
-
   // Auth settings
   static const int sessionTimeoutMinutes = 60;
   static const bool enableAutoRefresh = true;

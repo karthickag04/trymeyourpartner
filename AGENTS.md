@@ -121,7 +121,7 @@ CI (app, Android, database, API, admin console) is green.
 
 **Next (in order):**
 1. Quick safety fixes:
-   - P1-21 security hygiene (Supabase advisor warnings, dependency and secret scanning)
+   - P1-21 security hygiene: done in the repo; apply `20261108090000_security_hygiene.sql` live (owner step 6) and re-run the advisor
    - re-check every screen in Tamil at Standard and Extra large text on a phone (`--dart-define=FULL_ERRORS=true`)
 2. Put the API to work:
    - deploy it (P1-11; owner picks the host and sets the `api_service` password)
@@ -144,9 +144,13 @@ CI (app, Android, database, API, admin console) is green.
 3. Authentication → Hooks → Customize Access Token → `public.custom_access_token_hook`.
 4. Create the first two `system_admin` accounts (SQL in `docs/ADMIN_CONSOLE.md`).
 5. Settings → JWT Keys → migrate to asymmetric keys (the API then uses JWKS automatically).
-6. Fix the Supabase security advisor reports (2026-11-05): Authentication → turn on leaked-password
-   protection; set email OTP expiry under one hour; Settings → Infrastructure → upgrade Postgres
-   (security patches pending).
+6. Fix the Supabase security advisor reports (2026-11-05):
+   - SQL editor: run `supabase/migrations/20261108090000_security_hygiene.sql`, then `notify pgrst, 'reload schema';`
+   - Authentication → turn on leaked-password protection; set email OTP expiry under one hour
+   - Settings → API Keys → disable the legacy API keys (the old anon key is in the first commit)
+   - Settings → Infrastructure → upgrade Postgres (security patches pending)
+   - GitHub → Settings → Advanced Security → turn on Dependabot alerts, Dependabot security updates
+     and secret scanning push protection
 7. Create a separate staging/production project before real members join (P0-08).
 
 ## 5. Test data on the test project

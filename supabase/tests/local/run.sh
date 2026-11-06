@@ -120,4 +120,13 @@ expect3 "A caste after merge|Pillai|t"                                # referenc
 expect3 "A preferred castes after merge|1"                            # list de-duplicated
 expect3 "copy deleted|0"
 
+OUT5=$($P -At -f "$HERE/50_security_hygiene_checks.sql" 2>&1 | sed 's/^psql:[^:]*:[0-9]*: //')
+echo "$OUT5"
+expect5() { grep -qF -- "$1" <<<"$OUT5" || { echo "MISSING EXPECTED: $1"; exit 1; }; }
+expect5 "functions without search_path|0"                            # P1-21
+expect5 "trigger functions members can call|0"
+expect5 "ERROR:  permission denied for function update_updated_at_column"
+expect5 "A updated_at refreshed|t"                                    # triggers still fire for members
+expect5 "members can generate profile ids|t"
+
 echo "All database checks passed."

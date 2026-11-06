@@ -45,6 +45,41 @@ jobs:
         # The publishable key is only needed at run time; CI builds with a placeholder.
         run: flutter build web --dart-define=SUPABASE_KEY=ci-placeholder --no-web-resources-cdn
 
+  security:
+    name: Security (secrets, known vulnerabilities)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # scan every commit, not just the latest
+
+      - name: No secrets in the code or its history (gitleaks)
+        # Reviewed old findings are listed in .gitleaksignore.
+        run: |
+          f=gitleaks_8.24.3_linux_x64.tar.gz
+          curl -sSfL -o "$RUNNER_TEMP/$f" "https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/$f"
+          echo "9991e0b2903da4c8f6122b5c3186448b927a5da4deef1fe45271c3793f4ee29c  $RUNNER_TEMP/$f" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$f" -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" git --redact --no-banner --exit-code 1 .
+
+      - name: App and admin console packages have no known vulnerabilities (OSV)
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/osv-scanner" https://github.com/google/osv-scanner/releases/download/v2.2.2/osv-scanner_linux_amd64
+          echo "c799274b682e0437c802d4714a136ad09b39c65547c460049ba5358d28afa576  $RUNNER_TEMP/osv-scanner" | sha256sum -c -
+          chmod +x "$RUNNER_TEMP/osv-scanner"
+          "$RUNNER_TEMP/osv-scanner" scan source -L pubspec.lock -L apps/admin_console/pubspec.lock
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: API production packages have no known high-severity vulnerabilities
+        # Development-only packages never run in production; Dependabot raises
+        # updates for them.
+        working-directory: backend/api
+        run: npm audit --omit=dev --audit-level=high
+
   admin_console:
     name: Admin console (analyze, test, web build)
     runs-on: ubuntu-latest
